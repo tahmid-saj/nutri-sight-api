@@ -1,44 +1,55 @@
 const { nutritionTrackedDaysDatabase, nutritionTrackedDaysSummaryDatabase } = require("./nutrition-tracker.mongo");
 const axios = require("axios");
+
+const { getNutritionTrackedDays, getNutritionTrackedDaysSummary,
+  addNutritionTrackedDay, updateNutritionTrackedDay, removeNutritionTrackedDay,
+  updateNutritionTrackedDays, updateNutritionTrackedDaysSummary } = require("./nutrition-tracker.mongo.crud")
  
 // sign in
-async function getNutritionTrackedDays() {
-
+async function getNutritionTrackedDaysData(userId, email) {
+  console.log("Getting nutrition tracked days data");
+  return getNutritionTrackedDays(userId, email);
 };
 
-async function getNutritionTrackedDaysSummary() {
-
+async function getNutritionTrackedDaysSummaryData(userId, email) {
+  console.log("Getting nutrition tracked days summary data");
+  return getNutritionTrackedDaysSummary(userId, email);
 };
 
 // nutrition tracked days operations
-async function postNutritionTrackedDay() {
-
+async function postNutritionTrackedDay(userId, email, nutritionTrackedDay) {
+  console.log("Posting nutrition tracked day");
+  addNutritionTrackedDay(userId, email, nutritionTrackedDay);
 };
 
 async function putNutritionTrackedDay() {
-
+  console.log("Updating nutrition tracked day");
+  updateNutritionTrackedDay(userId, email, nutritionTrackedDay);
 };
 
-async function deleteNutritionTrackedDay() {
-
+async function deleteNutritionTrackedDay(userId, email, nutritionTrackedDate) {
+  console.log("Deleting nutrition tracked day");
+  removeNutritionTrackedDay(userId, email, nutritionTrackedDate);
 };
 
 // sign out
-async function putNutritionTrackedDays() {
-
+async function putNutritionTrackedDaysData(userId, email, nutritionTrackedDays) {
+  updateNutritionTrackedDays(userId, email, nutritionTrackedDays);
+  console.log("Putting nutrition tracked days");
 };
 
-async function putNutritionTrackedDaysSummary() {
-
+async function putNutritionTrackedDaysSummaryData(userId, email, nutritionTrackedDaysSummary) {
+  updateNutritionTrackedDaysSummary(userId, email, nutritionTrackedDaysSummary);
+  console.log("Putting nutrition tracked days summary");
 };
 
 module.exports = {
-  getNutritionTrackedDays,
-  getNutritionTrackedDaysSummary,
+  getNutritionTrackedDaysData,
+  getNutritionTrackedDaysSummaryData,
   postNutritionTrackedDay,
   putNutritionTrackedDay,
   deleteNutritionTrackedDay,
-  putNutritionTrackedDays,
-  putNutritionTrackedDaysSummary,
+  putNutritionTrackedDaysData,
+  putNutritionTrackedDaysSummaryData,
 }
 
