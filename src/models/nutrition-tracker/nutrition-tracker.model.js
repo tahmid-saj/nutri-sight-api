@@ -22,7 +22,7 @@ async function postNutritionTrackedDay(userId, email, nutritionTrackedDay) {
   addNutritionTrackedDay(userId, email, nutritionTrackedDay);
 };
 
-async function putNutritionTrackedDay() {
+async function putNutritionTrackedDay(userId, email, nutritionTrackedDay) {
   console.log("Updating nutrition tracked day");
   updateNutritionTrackedDay(userId, email, nutritionTrackedDay);
 };
