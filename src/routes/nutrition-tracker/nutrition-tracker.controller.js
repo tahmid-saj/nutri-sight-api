@@ -1,6 +1,6 @@
-const { getNutritionTrackedDays, getNutritionTrackedDaysSummary,
+const { getNutritionTrackedDaysData, getNutritionTrackedDaysSummaryData,
   postNutritionTrackedDay, putNutritionTrackedDay, deleteNutritionTrackedDay,
-  putNutritionTrackedDays, putNutritionTrackedDaysSummary } = require("../../models/nutrition-tracker/nutrient-tracker.model")
+  putNutritionTrackedDaysData, putNutritionTrackedDaysSummaryData } = require("../../models/nutrition-tracker/nutrient-tracker.model")
 
 // signed in
 async function httpGetNutritionTrackedDays(req, res) {
@@ -8,7 +8,7 @@ async function httpGetNutritionTrackedDays(req, res) {
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetNutritionTrackedDays = await getNutritionTrackedDays(userId, email);
+    const resGetNutritionTrackedDays = await getNutritionTrackedDaysData(userId, email);
 
     if (resGetNutritionTrackedDays) return res.status(200).json(resGetNutritionTrackedDays);
   } catch (error) {
@@ -22,7 +22,7 @@ async function httpGetNutritionTrackedDaysSummary(req, res) {
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummary(userId, email);
+    const resGetNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummaryData(userId, email);
 
     if (resGetNutritionTrackedDaysSummary) return res.status(200).json(resGetNutritionTrackedDaysSummary);
   } catch (error) {
@@ -84,7 +84,7 @@ async function httpPutNutritionTrackedDays(req, res) {
     const userId = req.params.userid;
     const email = req.params.email;
     const { nutritionTrackedDays } = req.body;
-    const resPutNutritionTrackedDays = await putNutritionTrackedDays(userId, email, nutritionTrackedDays);
+    const resPutNutritionTrackedDays = await putNutritionTrackedDaysData(userId, email, nutritionTrackedDays);
 
     if (resPutNutritionTrackedDays) return res.status(200);
   } catch (error) {
@@ -99,7 +99,7 @@ async function httpPutNutritionTrackedDaysSummary(req, res) {
     const userId = req.params.userid;
     const email = req.params.email;
     const { nutritionTrackedDaysSummary } = req.body;
-    const resPutNutritionTrackedDaysSummary = await putNutritionTrackedDaysSummary(userId, email, nutritionTrackedDaysSummary);
+    const resPutNutritionTrackedDaysSummary = await putNutritionTrackedDaysSummaryData(userId, email, nutritionTrackedDaysSummary);
 
     if (resPutNutritionTrackedDaysSummary) return res.status(200);
   } catch (error) {
