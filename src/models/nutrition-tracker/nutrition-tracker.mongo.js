@@ -85,8 +85,8 @@ const nutritionTrackedDaysSummarySchema = new mongoose.Schema({
   }
 });
 
-const nutritionTrackedDaysDatabase = new mongoose.model("NutritionTrackedDays", nutritionTrackedDaysSchema);
-const nutritionTrackedDaysSummaryDatabase = new mongoose.model("NutritionTrackedDaysSummary", nutritionTrackedDaysSummarySchema);
+const nutritionTrackedDaysDatabase = mongoose.model("NutritionTrackedDays", nutritionTrackedDaysSchema);
+const nutritionTrackedDaysSummaryDatabase = mongoose.model("NutritionTrackedDaysSummary", nutritionTrackedDaysSummarySchema);
 
 module.exports = {
   nutritionTrackedDaysDatabase,
