@@ -67,30 +67,65 @@ async function getNutritionTrackedDaysSummary(userId, email) {
 }
 
 // tracked days operations
-async function addNutritionTrackedDayToSummary(userId, email, nutritionTrackedDay) {
+async function calculateAverageConsumption(userId, email) {
+  const trackedDaysAvgConsumptions = await nutritionTrackedDaysDatabase.find({
+    userId: userId,
+    email: email,
+  })
+  .then(trackedDayConsumptions => {
+    // TODO: need to move to calculations folder
+    const totalCaloriesConsumption = trackedDayConsumptions.reduce((totalCaloriesConsumption, { calories }) => {
+      return totalCaloriesConsumption + calories;
+    }, 0)
+
+    const totalCarbohydratesConsumption = trackedDayConsumptions.reduce((totalCarbohydratesConsumption, { macronutrients }) => {
+      return totalCarbohydratesConsumption + macronutrients.carbohydrates;
+    }, 0)
+
+    const totalProteinConsumption = trackedDayConsumptions.reduce((totalProteinConsumption, { macronutrients }) => {
+      return totalProteinConsumption + macronutrients.protein;
+    }, 0)
+
+    const totalFatConsumption = trackedDayConsumptions.reduce((totalFatConsumption, { macronutrients }) => {
+      return totalFatConsumption + macronutrients.fat;
+    }, 0)
+
+    return {
+      avgCaloriesConsumption: totalCaloriesConsumption / trackedDayConsumptions.length,
+      avgCarbohydratesConsumption: totalCarbohydratesConsumption / trackedDayConsumptions.length,
+      avgProteinConsumption: totalProteinConsumption / trackedDayConsumptions.length,
+      avgFatConsumption: totalFatConsumption / trackedDayConsumptions.length,
+    }
+  });
+
+  return trackedDaysAvgConsumptions;
+}
+
+async function addNutritionTrackedDayToSummary(userId, email) {
   const nutritionTrackedDaySummaryExists = await nutritionTrackedDaysSummaryDatabase.findOne({
     userId: userId,
     email: email
   });
 
   if (nutritionTrackedDaySummaryExists) {
+    const { avgCaloriesConsumption, avgCarbohydratesConsumption, 
+      avgProteinConsumption, avgFatConsumption } = await calculateAverageConsumption(userId, email);
+
     await nutritionTrackedDaysSummaryDatabase.updateOne({
       userId: userId,
       email: email,
     }, {
-      $inc: {
-        averageDailyCaloriesConsumption: Number(nutritionTrackedDay.calories),
-        averageDailyCarbohydratesConsumption: Number(nutritionTrackedDay.macronutrients.carbohydrates),
-        averageDailyProteinConsumption: Number(nutritionTrackedDay.macronutrients.protein),
-        averageDailyFatConsumption: Number(nutritionTrackedDay.macronutrients.fat),
-      }
+      averageDailyCaloriesConsumption: avgCaloriesConsumption,
+      averageDailyCarbohydratesConsumption: avgCarbohydratesConsumption,
+      averageDailyProteinConsumption: avgProteinConsumption,
+      averageDailyFatConsumption: avgFatConsumption,
     })
   } else {
     return;
   }
 }
 
-async function createNutritionTrackedDaySummary(userId, email, nutritionTrackedDay) {
+async function updateNutritionTrackedDaySummary(userId, email, nutritionTrackedDay) {
   const nutritionTrackedDaySummaryExists = await nutritionTrackedDaysSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -160,7 +195,7 @@ async function addNutritionTrackedDay(userId, email, nutritionTrackedDay) {
 
     await newNutritionTrackedDay.save();
 
-    await createNutritionTrackedDaySummary(userId, email, nutritionTrackedDay);
+    await updateNutritionTrackedDaySummary(userId, email, nutritionTrackedDay);
   } else {
     return;
   }
@@ -201,17 +236,17 @@ async function updateNutritionTrackedDay(userId, email, originalNutritionTracked
     // const updatedCarbohydrates = Number(updatedNutritionTrackedDay.macronutrients.carbohydrates);
     // const updatedProtein = Number(updatedNutritionTrackedDay.macronutrients.protein);
     // const updatedFat = Number(updatedNutritionTrackedDay.macronutrients.fat);
+    const { avgCaloriesConsumption, avgCarbohydratesConsumption, 
+      avgProteinConsumption, avgFatConsumption } = await calculateAverageConsumption(userId, email);
 
     await nutritionTrackedDaysSummaryDatabase.updateOne({
       userId: userId,
       email: email,
     }, {
-      $inc: {
-        averageDailyCaloriesConsumption: Number(updatedNutritionTrackedDay.calories) - Number(originalNutritionTrackedDay.calories),
-        averageDailyCarbohydratesConsumption: Number(updatedNutritionTrackedDay.macronutrients.carbohydrates) - Number(originalNutritionTrackedDay.macronutrients.carbohydrates),
-        averageDailyProteinConsumption: Number(updatedNutritionTrackedDay.macronutrients.protein) - Number(originalNutritionTrackedDay.macronutrients.protein),
-        averageDailyFatConsumption: Number(updatedNutritionTrackedDay.macronutrients.fat) - Number(originalNutritionTrackedDay.macronutrients.fat),
-      }
+      averageDailyCaloriesConsumption: avgCaloriesConsumption,
+      averageDailyCarbohydratesConsumption: avgCarbohydratesConsumption,
+      averageDailyProteinConsumption: avgProteinConsumption,
+      averageDailyFatConsumption: avgFatConsumption,
     });
   } else {
     await createUpdatedNutritionTrackedDaysSummary(userId, email, updatedNutritionTrackedDay);
