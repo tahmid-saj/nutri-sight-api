@@ -219,11 +219,51 @@ async function removeNutritionTrackedDay(userId, email, nutritionTrackedDate) {
 
 // user sign out
 async function updateNutritionTrackedDays(userId, email, nutritionTrackedDays) {
+  const nutritionTrackedDaysExists = await nutritionTrackedDaysDatabase.findOne({
+    userId: userId,
+    email: email
+  });
 
+  if (nutritionTrackedDaysExists && nutritionTrackedDays !== undefined && nutritionTrackedDays.length !== 0) {
+    nutritionTrackedDays.map(async (nutritionTrackedDay) => {
+      await nutritionTrackedDaysDatabase.updateOne({
+        userId: userId,
+        email: email,
+        dateTracked: nutritionTrackedDay.dateTracked,
+      }, {
+        calories: nutritionTrackedDay.calories,
+        macronutrients: {
+          carbohydrates: nutritionTrackedDay.macronutrients.carbohydrates,
+          protein: nutritionTrackedDay.macronutrients.protein,
+          fat: nutritionTrackedDay.macronutrients.fat
+        },
+        micronutrients: nutritionTrackedDay.micronutrients
+      })
+    })
+  } else {
+    return;
+  }
 }
 
 async function updateNutritionTrackedDaysSummary(userId, email, nutritionTrackedDaysSummary) {
+  const nutritionTrackedDaysSummaryExists = await nutritionTrackedDaysDatabase.findOne({
+    userId: userId,
+    email: email
+  });
 
+  if (nutritionTrackedDaysSummaryExists && nutritionTrackedDaysSummary !== undefined && nutritionTrackedDaysSummary !== Object({})) {
+    await nutritionTrackedDaysSummaryDatabase.updateOne({
+      userId: userId,
+      email: email,
+    }, {
+      averageDailyCaloriesConsumption: nutritionTrackedDaysSummary.averageDailyCaloriesConsumption,
+      averageDailyCarbohydratesConsumption: nutritionTrackedDaysSummary.averageDailyCarbohydratesConsumption,
+      averageDailyProteinConsumption: nutritionTrackedDaysSummary.averageDailyProteinConsumption,
+      averageDailyFatConsumption: nutritionTrackedDaysSummary.averageDailyFatConsumption,
+    })
+  } else {
+    return;
+  }
 }
 
 module.exports = {
