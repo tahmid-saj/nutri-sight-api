@@ -10,7 +10,7 @@ const app = express();
 // middleware
 // TODO: move to env
 app.use(cors({
-  origin: 'https://localhost:3000'
+  origin: 'http://localhost:3000'
 }));
 app.use(morgan("combined"));
 app.use(express.json());

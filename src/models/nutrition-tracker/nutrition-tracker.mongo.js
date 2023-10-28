@@ -63,6 +63,14 @@ const nutritionTrackedDaysSchema = new mongoose.Schema({
 });
 
 const nutritionTrackedDaysSummarySchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
   averageDailyCaloriesConsumption: {
     type: Number,
     required: true,
