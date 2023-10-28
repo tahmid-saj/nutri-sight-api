@@ -10,7 +10,7 @@ const nutritionTrackedDaysSchema = new mongoose.Schema({
     required: true,
   },
   dateTracked: {
-    type: Date,
+    type: String,
     required: true,
   },
   calories: {
