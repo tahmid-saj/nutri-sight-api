@@ -188,7 +188,33 @@ async function updateNutritionTrackedDay(userId, email, originalNutritionTracked
 }
 
 async function removeNutritionTrackedDay(userId, email, nutritionTrackedDate) {
-  
+  const nutritionTrackedDayExists = await nutritionTrackedDaysDatabase.findOne({
+    userId: userId,
+    email: email,
+    dateTracked: nutritionTrackedDate
+  });
+
+  if (nutritionTrackedDayExists) {
+    await nutritionTrackedDaysDatabase.updateOne({
+      userId: userId,
+      email: email,
+    }, {
+      $inc: {
+        averageDailyCaloriesConsumption: -Number(nutritionTrackedDayExists.calories),
+        averageDailyCarbohydratesConsumption: -Number(nutritionTrackedDayExists.macronutrients.carbohydrates),
+        averageDailyProteinConsumption: -Number(nutritionTrackedDayExists.macronutrients.protein),
+        averageDailyFatConsumption: -Number(nutritionTrackedDayExists.macronutrients.fat)
+      }
+    });
+
+    await nutritionTrackedDaysDatabase.deleteOne({
+      userId: userId,
+      email: email,
+      nutritionTrackedDate: nutritionTrackedDate
+    })
+  } else {
+    return;
+  }
 }
 
 // user sign out
