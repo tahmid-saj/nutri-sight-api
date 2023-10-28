@@ -50,10 +50,11 @@ async function httpPostNutritionTrackedDay(req, res) {
 async function httpPutNutritionTrackedDay(req, res) {
   // return res.status(200).json(putNutritionTrackedDay());
   try {
-    const nutritionTrackedDay = req.body;
+    const { originalNutritionTrackedDay } = req.body;
+    const { updatedNutritionTrackedDay } = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
-    const resPutNutritionTrackedDay = await putNutritionTrackedDay(userId, email, nutritionTrackedDay);
+    const resPutNutritionTrackedDay = await putNutritionTrackedDay(userId, email, originalNutritionTrackedDay, updatedNutritionTrackedDay);
 
     if (resPutNutritionTrackedDay) return res.status(200)
   } catch (error) {
