@@ -1,6 +1,6 @@
 const { getNutritionTrackedDaysData, getNutritionTrackedDaysSummaryData,
   postNutritionTrackedDay, putNutritionTrackedDay, deleteNutritionTrackedDay,
-  putNutritionTrackedDaysData, putNutritionTrackedDaysSummaryData } = require("../../models/nutrition-tracker/nutrient-tracker.model")
+  putNutritionTrackedDaysData, putNutritionTrackedDaysSummaryData } = require("../../models/nutrition-tracker/nutrition-tracker.model")
 
 // signed in
 async function httpGetNutritionTrackedDays(req, res) {

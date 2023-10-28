@@ -118,6 +118,8 @@ async function addNutritionTrackedDay(userId, email, nutritionTrackedDay) {
     dateTracked: nutritionTrackedDay.dateTracked
   });
 
+  console.log(nutritionTrackedDay)
+
   if (!nutritionTrackedDayExists) {
     const newNutritionTrackedDay = new nutritionTrackedDaysDatabase({
       userId: userId,
@@ -171,6 +173,8 @@ async function updateNutritionTrackedDay(userId, email, originalNutritionTracked
   });
 
   if (nutritionTrackedDaySummaryExists) {
+    console.log(originalNutritionTrackedDay, updatedNutritionTrackedDay)
+
     await nutritionTrackedDaysSummaryDatabase.updateOne({
       userId: userId,
       email: email,
