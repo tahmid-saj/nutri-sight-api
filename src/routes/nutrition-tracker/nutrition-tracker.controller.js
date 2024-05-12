@@ -47,6 +47,21 @@ async function httpPostNutritionTrackedDay(req, res) {
   }
 };
 
+async function httpDeleteNutritionTrackedDay(req, res) {
+  // return res.status(200).json(deleteNutritionTrackedDay());
+  try {
+    const nutritionTrackedDate = String(req.body)
+    const userId = req.params.userid;
+    const email = req.params.email;
+    const resDeleteNutritionTrackedDay = await deleteNutritionTrackedDay(userId, email, nutritionTrackedDate);
+
+    if (resDeleteNutritionTrackedDay) return res.status(200)
+  } catch (error) {
+    // TODO: handle error
+    console.log(error);
+  }
+};
+
 async function httpPutNutritionTrackedDay(req, res) {
   // return res.status(200).json(putNutritionTrackedDay());
   try {
@@ -57,21 +72,6 @@ async function httpPutNutritionTrackedDay(req, res) {
     const resPutNutritionTrackedDay = await putNutritionTrackedDay(userId, email, originalNutritionTrackedDay, updatedNutritionTrackedDay);
 
     if (resPutNutritionTrackedDay) return res.status(200)
-  } catch (error) {
-    // TODO: handle error
-    console.log(error);
-  }
-};
-
-async function httpDeleteNutritionTrackedDay(req, res) {
-  // return res.status(200).json(deleteNutritionTrackedDay());
-  try {
-    const nutritionTrackedDate = String(req.body)
-    const userId = req.params.userid;
-    const email = req.params.email;
-    const resDeleteNutritionTrackedDay = await deleteNutritionTrackedDay(userId, email, nutritionTrackedDate);
-
-    if (resDeleteNutritionTrackedDay) return res.status(200)
   } catch (error) {
     // TODO: handle error
     console.log(error);
