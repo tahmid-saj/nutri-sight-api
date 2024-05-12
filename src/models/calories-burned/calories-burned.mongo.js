@@ -37,6 +37,4 @@ const trackedCaloriesBurnedSchema = new mongoose.Schema({
 
 const trackedCaloriesBurnedDatabase = mongoose.model("TrackedCaloriesBurned", trackedCaloriesBurnedSchema)
 
-module.exports = {
-  trackedCaloriesBurnedDatabase
-}
+module.exports = trackedCaloriesBurnedDatabase
