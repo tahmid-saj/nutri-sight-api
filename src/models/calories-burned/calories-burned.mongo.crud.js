@@ -1,4 +1,4 @@
-const { trackedCaloriesBurnedDatabase } = require("./calories-burned.model")
+const trackedCaloriesBurnedDatabase = require("./calories-burned.mongo")
 
 // calories burned crud for mongodb
 
@@ -52,7 +52,9 @@ async function addTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
       activityId: trackedCaloriesBurned.activityId
     })
   
-    await newTrackedCaloriesBurned.save()
+    const res = await newTrackedCaloriesBurned.save()
+    console.log(res)
+    return res
   } else {
     return
   }
@@ -69,7 +71,7 @@ async function removeTrackedCaloriesBurned(userId, email, activityId) {
     await trackedCaloriesBurnedDatabase.deleteOne({
       userId: userId,
       email: email,
-      expenseId: activityId
+      activityId: activityId
     })
   } else {
     return

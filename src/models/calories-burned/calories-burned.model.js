@@ -3,6 +3,9 @@ const { getTrackedCaloriesBurned,
   updateTrackedCaloriesBurned
 } = require("./calories-burned.mongo.crud")
 
+// TODO: handle error
+
+
 // sign in
 async function getTrackedCaloriesBurnedData(userId, email) {
   console.log("Getting tracked calories burned data")
@@ -11,19 +14,19 @@ async function getTrackedCaloriesBurnedData(userId, email) {
 
 // calories burned operations
 async function postTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
+  await addTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
   console.log("Posting tracked calories burned data")
-  return addTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
 }
 
 async function deleteTrackedCaloriesBurned(userId, email, activityId) {
+  await removeTrackedCaloriesBurned(userId, email, activityId)
   console.log("Deleting tracked calories burned data")
-  return removeTrackedCaloriesBurned(userId, email, activityId)
 }
 
 // sign out
 async function putTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
+  await updateTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
   console.log("Updating tracked calories burned data")
-  return updateTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
 }
 
 module.exports = {
