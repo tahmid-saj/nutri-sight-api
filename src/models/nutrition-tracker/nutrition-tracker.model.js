@@ -22,14 +22,14 @@ async function postNutritionTrackedDay(userId, email, nutritionTrackedDay) {
   addNutritionTrackedDay(userId, email, nutritionTrackedDay);
 };
 
+async function deleteNutritionTrackedDay(userId, email, nutritionTrackedDate) {
+  removeNutritionTrackedDay(userId, email, nutritionTrackedDate);
+  console.log("Deleting nutrition tracked day");
+};
+
 async function putNutritionTrackedDay(userId, email, originalNutritionTrackedDay, updatedNutritionTrackedDay) {
   console.log("Updating nutrition tracked day");
   updateNutritionTrackedDay(userId, email, originalNutritionTrackedDay, updatedNutritionTrackedDay);
-};
-
-async function deleteNutritionTrackedDay(userId, email, nutritionTrackedDate) {
-  console.log("Deleting nutrition tracked day");
-  removeNutritionTrackedDay(userId, email, nutritionTrackedDate);
 };
 
 // sign out
