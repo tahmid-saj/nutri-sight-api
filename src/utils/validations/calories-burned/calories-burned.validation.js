@@ -1,0 +1,1 @@
+// validations for calories burned
