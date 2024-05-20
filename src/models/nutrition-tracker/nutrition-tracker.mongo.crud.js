@@ -177,8 +177,6 @@ async function addNutritionTrackedDay(userId, email, nutritionTrackedDay) {
     dateTracked: nutritionTrackedDay.dateTracked
   });
 
-  console.log(nutritionTrackedDay)
-
   if (!nutritionTrackedDayExists) {
     const newNutritionTrackedDay = new nutritionTrackedDaysDatabase({
       userId: userId,
@@ -287,7 +285,6 @@ async function updateNutritionTrackedDay(userId, email, originalNutritionTracked
   });
 
   if (nutritionTrackedDaySummaryExists) {
-    console.log(Number(originalNutritionTrackedDay.calories))
     // const updatedCarbohydrates = Number(updatedNutritionTrackedDay.macronutrients.carbohydrates);
     // const updatedProtein = Number(updatedNutritionTrackedDay.macronutrients.protein);
     // const updatedFat = Number(updatedNutritionTrackedDay.macronutrients.fat);

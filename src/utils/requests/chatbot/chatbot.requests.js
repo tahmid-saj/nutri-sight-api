@@ -9,8 +9,6 @@ async function getChatBotResponse(messageInput) {
       model: process.env.REACT_APP_OPEN_API_MODEL,
       max_tokens: DEFAULT_CHATBOT_MAX_TOKENS
     });
-  
-    // console.log(response.choices[0].message.content);
 
     return {
       message: response.choices[0].message.content

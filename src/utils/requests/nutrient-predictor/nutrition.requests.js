@@ -8,7 +8,6 @@ const res = async (food) => {
     })
 
     const res = await resActivityResults.json()
-    console.log(res)
     return res
   } catch (error) {
     // errorOnGetSearchActivity()

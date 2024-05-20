@@ -8,7 +8,6 @@ const res = async (trackedDayInfo) => {
     })
 
     const res = await resActivityResults.json()
-    console.log(res)
     return res
   } catch (error) {
     if (error) {

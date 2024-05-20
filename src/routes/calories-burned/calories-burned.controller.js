@@ -24,7 +24,6 @@ async function httpPostTrackedCaloriesBurned(req, res) {
     const userId = req.params.userid;
     const email = req.params.email;
     const resPostTrackedCaloriesBurned = await postTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
-    console.log("posted")
 
     if (resPostTrackedCaloriesBurned) return res.status(200)
   } catch (error) {
@@ -39,7 +38,6 @@ async function httpDeleteTrackedCaloriesBurned(req, res) {
     const userId = req.params.userid;
     const email = req.params.email;
     const resDeleteTrackedCaloriesBurned = await deleteTrackedCaloriesBurned(userId, email, activityId)
-    console.log("deleted")
 
     if (resDeleteTrackedCaloriesBurned) return res.status(200)
   } catch (error) {

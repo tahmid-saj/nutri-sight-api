@@ -53,7 +53,6 @@ async function addTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
     })
   
     const res = await newTrackedCaloriesBurned.save()
-    console.log(res)
     return res
   } else {
     return
