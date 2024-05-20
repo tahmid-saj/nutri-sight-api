@@ -1,14 +1,11 @@
 const http = require('http');
 const mongoose = require('mongoose');
 require("dotenv").config();
-
 const { mongoConnect } = require("./services/mongodb/mongodb.service");
-
 const { app } = require("./app");
-
-const PORT = process.env.PORT || 8000;
-
 const server = http.createServer(app);
+
+const PORT = process.env.PORT;
 
 async function startServer() {
   await mongoConnect();
