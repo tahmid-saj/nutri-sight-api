@@ -6,10 +6,6 @@
 # testing
 /coverage
 
-# utils
-/src/utils
-src/utils
-
 # env variables
 .env
 
