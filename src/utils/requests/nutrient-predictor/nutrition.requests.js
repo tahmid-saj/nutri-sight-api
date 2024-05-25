@@ -13,7 +13,7 @@ const res = async (food) => {
     // errorOnGetSearchActivity()
 
     if (error) {
-      return console.error("Request failed:", error)
+      return console.error("Request failed: ", error)
     }
   }
 }
