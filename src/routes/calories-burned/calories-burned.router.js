@@ -1,6 +1,6 @@
 const express = require("express")
 
-const { httpGetTrackedCaloriesBurned,
+const { httpGetSearchedActivity, httpGetTrackedCaloriesBurned,
   httpPostTrackedCaloriesBurned, httpDeleteTrackedCaloriesBurned,
   httpPutTrackedCaloriesBurned
 } = require("./calories-burned.controller")
@@ -8,6 +8,9 @@ const { httpGetTrackedCaloriesBurned,
 const caloriesBurnedRouter = express.Router()
 
 // TODO: move to env variables
+// searching activity
+caloriesBurnedRouter.post("/search-activity", httpGetSearchedActivity)
+
 // user sign in
 caloriesBurnedRouter.get("/tracked-calories-burned/:userid/:email", httpGetTrackedCaloriesBurned)
 
