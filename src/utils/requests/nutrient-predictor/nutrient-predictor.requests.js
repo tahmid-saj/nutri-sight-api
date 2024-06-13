@@ -1,7 +1,7 @@
 const { errorOnGetNutrientPredictions } = require("../../errors/nutrient-predictor.errors")
 
 // helper functions
-const processNutrientPredictions = async (nutrientPredictions) => {
+async function processNutrientPredictions(nutrientPredictions) {
   return nutrientPredictions.map((nutrientPrediction) => {
     return {
       name: nutrientPrediction.name,
