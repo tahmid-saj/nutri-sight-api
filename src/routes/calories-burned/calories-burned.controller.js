@@ -1,7 +1,24 @@
+const { getSearchedActivity } = require("../../utils/requests/calories-burned/calories-burned.requests")
 const { getTrackedCaloriesBurnedData, 
   postTrackedCaloriesBurned, deleteTrackedCaloriesBurned,
   putTrackedCaloriesBurned 
 } = require("../../models/calories-burned/calories-burned.model")
+
+// searching activity
+async function httpGetSearchedActivity(req, res) {
+  try {
+    const activity = String(req.body.activity)
+    const dateTracked = String(req.body.dateTracked)
+    const weightPounds = String(req.body.weightPounds)
+    const durationMinutes = String(req.body.durationMinutes)
+
+    const resGetSearchedActivity = await getSearchedActivity(activity, dateTracked, weightPounds, durationMinutes)
+
+    if (resGetSearchedActivity) return res.status(200).json(resGetSearchedActivity)
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 // signed in
 async function httpGetTrackedCaloriesBurned(req, res) {
@@ -62,6 +79,7 @@ async function httpPutTrackedCaloriesBurned(req, res) {
 }
 
 module.exports = {
+  httpGetSearchedActivity,
   httpGetTrackedCaloriesBurned,
   httpPostTrackedCaloriesBurned,
   httpDeleteTrackedCaloriesBurned,
