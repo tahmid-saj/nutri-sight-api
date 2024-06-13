@@ -12,11 +12,11 @@ const caloriesBurnedRouter = express.Router()
 caloriesBurnedRouter.get("/tracked-calories-burned/:userid/:email", httpGetTrackedCaloriesBurned)
 
 // calories burned operations
-caloriesBurnedRouter.post("/tracked-calories-burned/:userid/:email/add", httpPostTrackedCaloriesBurned)
-caloriesBurnedRouter.delete("/tracked-calories-burned/:userid/:email/remove", httpDeleteTrackedCaloriesBurned)
+caloriesBurnedRouter.post("/tracked-calories-burned/:userid/:email", httpPostTrackedCaloriesBurned)
+caloriesBurnedRouter.delete("/tracked-calories-burned/:userid/:email", httpDeleteTrackedCaloriesBurned)
 
 // user sign out
-caloriesBurnedRouter.put("/tracked-calories-burned/:userid/:email/update", httpPutTrackedCaloriesBurned)
+caloriesBurnedRouter.put("/tracked-calories-burned/:userid/:email", httpPutTrackedCaloriesBurned)
 
 module.exports = {
   caloriesBurnedRouter
