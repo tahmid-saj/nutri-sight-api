@@ -12,9 +12,9 @@ nutritionTrackerRouter.get("/nutrition-tracked-days/:userid/:email", httpGetNutr
 nutritionTrackerRouter.get("/nutrition-tracked-days-summary/:userid/:email", httpGetNutritionTrackedDaysSummary);
 
 // nutrition tracked days operations
-nutritionTrackerRouter.post("/nutrition-tracked-days/:userid/:email/add", httpPostNutritionTrackedDay);
-nutritionTrackerRouter.delete("/nutrition-tracked-days/:userid/:email/remove", httpDeleteNutritionTrackedDay);
-nutritionTrackerRouter.put("/nutrition-tracked-days/:userid/:email/update", httpPutNutritionTrackedDay);
+nutritionTrackerRouter.post("/nutrition-tracked-days/:userid/:email", httpPostNutritionTrackedDay);
+nutritionTrackerRouter.delete("/nutrition-tracked-days/:userid/:email", httpDeleteNutritionTrackedDay);
+nutritionTrackerRouter.put("/nutrition-tracked-days/:userid/:email", httpPutNutritionTrackedDay);
 
 // user sign out
 nutritionTrackerRouter.put("/nutrition-tracked-days/:userid/:email", httpPutNutritionTrackedDays);
