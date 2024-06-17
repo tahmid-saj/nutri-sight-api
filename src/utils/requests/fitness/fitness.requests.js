@@ -17,7 +17,7 @@ async function processSearchedExercise(exercises) {
 // searching exercise
 async function getSearchedExercise(exerciseQuery) {
   try {
-    let url = `${REACT_APP_API_NINJAS_EXERCISES_URL}${exerciseQuery.exerciseName}`
+    let url = `${process.env.REACT_APP_API_NINJAS_EXERCISES_URL}${exerciseQuery.exerciseName}`
 
     if (exerciseQuery.exerciseType !== "") {
       url = url + `&type=${exerciseQuery.exerciseType}`
