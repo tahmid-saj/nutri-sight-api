@@ -20,7 +20,7 @@ async function getExercises(userId, email) {
         exerciseEquipment: exercise.exerciseEquipment,
         exerciseDifficulty: exercise.exerciseDifficulty,
         exerciseInstructions: exercise.exerciseInstructions,
-        exerciseTag: exercise.exercisesTagLimit,
+        exerciseTag: exercise.exerciseTag,
       }
     })
 
@@ -38,10 +38,12 @@ async function getExercises(userId, email) {
 
 // calories burned operations
 async function addExercise(userId, email, exercise) {
+  console.log(exercise)
+
   const exerciseExists = await exercisesDatabase.findOne({
     userId: userId,
     email: email,
-    exerciseTag: exercise.exerciseTag
+    exerciseTag: Number(exercise.exerciseTag)
   })
 
   if (!exerciseExists) {
@@ -57,11 +59,10 @@ async function addExercise(userId, email, exercise) {
       exerciseEquipment: exercise.exerciseEquipment,
       exerciseDifficulty: exercise.exerciseDifficulty,
       exerciseInstructions: exercise.exerciseInstructions,
-      exerciseTag: exercise.exercisesTagLimit,
+      exerciseTag: exercise.exerciseTag,
     })
   
-    const res = await newExercise.save()
-    return res
+    await newExercise.save()
   } else {
     return
   }
@@ -71,7 +72,7 @@ async function removeExercise(userId, email, exerciseTag) {
   const exerciseExists = await exercisesDatabase.findOne({
     userId: userId,
     email: email,
-    exerciseTag: exerciseTag
+    exerciseTag: Number(exerciseTag)
   })
 
   if (exerciseExists) {
@@ -97,7 +98,7 @@ async function updateExercises(userId, email, exercises) {
       await exercisesDatabase.updateOne({
         userId: userId,
         email: email,
-        exerciseTag: exercise.exerciseTag
+        exerciseTag: Number(exercise.exerciseTag)
       }, {
         exerciseDate: exercise.exerciseDate,
         exerciseName: exercise.exerciseName,

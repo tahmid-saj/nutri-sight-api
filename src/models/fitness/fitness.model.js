@@ -14,19 +14,22 @@ async function getExercisesData(userId, email) {
 
 // fitness operations
 async function postExercise(userId, email, exercise) {
-  await addExercise(userId, email, exercise)
+  addExercise(userId, email, exercise)
   console.log("Posting tracked fitness data")
+  return true
 }
 
 async function deleteExercise(userId, email, exerciseTag) {
-  await removeExercise(userId, email, exerciseTag)
+  removeExercise(userId, email, exerciseTag)
   console.log("Deleting tracked fitness data")
+  return true
 }
 
 // sign out
 async function putExercises(userId, email, exercises) {
-  await updateExercises(userId, email, exercises)
+  updateExercises(userId, email, exercises)
   console.log("Updating tracked fitness data")
+  return true
 }
 
 module.exports = {
