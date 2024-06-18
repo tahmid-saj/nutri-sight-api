@@ -45,7 +45,7 @@ async function httpPostExercise(req, res) {
 
 async function httpDeleteExercise(req, res) {
   try {
-    const exerciseTag = Number(String(req.body)) 
+    const exerciseTag = Number(String(req.body))
     const userId = req.params.userid;
     const email = req.params.email;
     const resDeleteExercise = await deleteExercise(userId, email, exerciseTag)
