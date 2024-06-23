@@ -38,8 +38,6 @@ async function getExercises(userId, email) {
 
 // calories burned operations
 async function addExercise(userId, email, exercise) {
-  console.log(exercise)
-
   const exerciseExists = await exercisesDatabase.findOne({
     userId: userId,
     email: email,

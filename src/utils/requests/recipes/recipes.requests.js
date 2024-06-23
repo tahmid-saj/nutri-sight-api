@@ -15,7 +15,6 @@ function timeout(seconds) {
 // multiple recipes
 async function getRecipes(recipe) {
   try {
-    console.log(`${process.env.REACT_APP_RECIPES_URL}${recipe}?${process.env.REACT_APP_RECIPES_API_KEY_NAME}${process.env.REACT_APP_RECIPES_API_KEY}`);
     const fetchPromiseRecipes = fetch(`${process.env.REACT_APP_RECIPES_URL}${recipe}?${process.env.REACT_APP_RECIPES_API_KEY_NAME}${process.env.REACT_APP_RECIPES_API_KEY}`)
     const resRecipes = await Promise.race([fetchPromiseRecipes, timeout(TIMEOUT_SEC)]);
     const dataRecipes = await resRecipes.json();
