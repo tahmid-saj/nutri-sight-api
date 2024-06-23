@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "index.js" }
+  ],
+  "functions": {
+    "index.js": {
+      "maxDuration": 60
+    }
+  }
+}
