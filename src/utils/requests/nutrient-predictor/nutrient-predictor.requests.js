@@ -1,4 +1,5 @@
 const { errorOnGetNutrientPredictions } = require("../../errors/nutrient-predictor.errors")
+require("dotenv").config();
 
 // helper functions
 async function processNutrientPredictions(nutrientPredictions) {
@@ -29,7 +30,7 @@ async function getNutrientPrediction(mealDescription) {
     const resNutrientPredictions = await fetch(`${process.env.REACT_APP_API_NINJAS_NUTRIENT_PREDICTOR_URL}${mealDescription}`, {
       method: "GET",
       headers: {
-        "X-Api-Key": `${process.env.REACT_APP_API_NINJAS_KEY}`
+        "X-Api-Key": `${process.env.API_NINJAS_KEY}`
       }
     })
 
