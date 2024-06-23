@@ -1,6 +1,7 @@
 const { errorOnGetChatBotResponse } = require("../../errors/chatbot.errors")
 const { DEFAULT_CHATBOT_MAX_TOKENS } = require("../../constants/chatbot.constants")
 const { openai } = require("../../../services/open-ai/open-ai.service")
+require("dotenv").config();
 
 async function getChatBotResponse(messageInput) {
   try {

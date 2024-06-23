@@ -1,4 +1,5 @@
 const { errorOnGetSearchActivity } = require("../../errors/calories-burned.errors")
+require("dotenv").config();
 
 // helper functions
 async function processSearchedActivity(activity, dateTracked, weightPounds, durationMinutes, activityResults) {
@@ -29,7 +30,7 @@ async function getSearchedActivity(activity, dateTracked, weightPounds, duration
     const resActivityResults = await fetch(`${url}`, {
       method: "GET",
       headers: {
-        "X-Api-Key": `${process.env.REACT_APP_API_NINJAS_KEY}`
+        "X-Api-Key": `${process.env.API_NINJAS_KEY}`
       }
     })
 

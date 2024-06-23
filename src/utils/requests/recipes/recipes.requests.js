@@ -1,5 +1,6 @@
 const { errorOnDisplaySearchedRecipes } = require("../../errors/recipes.errors")
 const { TIMEOUT_SEC } = require("../../constants/recipes.constants")
+require("dotenv").config();
 
 // helpers functions
 function timeout(seconds) {
