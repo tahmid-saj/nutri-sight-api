@@ -1,0 +1,33 @@
+# queries
+type Query {
+  trackedCaloriesBurnedByUser(userId: String!, email: String!): [UserTrackedCaloriesBurned]
+}
+
+# mutations
+type Mutation {
+  createUserTrackedCaloriesBurned(userId: String!, email: String!, trackedCaloriesBurned: TrackedCaloriesBunedInfo!): Boolean
+  deleteUserTrackedCaloriesBurned(userId: String!, email: String!, activityId: Int!): Boolean
+  updateUserTrackedCaloriesBurned(userId: String!, email: String!, trackedCaloriesBurned: [TrackedCaloriesBunedInfo]!): Boolean
+}
+
+# inputs
+input TrackedCaloriesBunedInfo {
+  dateTracked: String!
+  activity: String!
+  durationMinutes: Float!
+  caloriesBurnedPerHour: Float!
+  totalCaloriesBurned: Float!
+  activityId: Int!
+}
+
+# types
+type UserTrackedCaloriesBurned {
+  userId: String!
+  email: String!
+  dateTracked: String!
+  activity: String!
+  durationMinutes: Float!
+  caloriesBurnedPerHour: Float!
+  totalCaloriesBurned: Float!
+  activityId: Int!
+}
