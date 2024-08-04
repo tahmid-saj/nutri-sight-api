@@ -4,8 +4,25 @@ type Query {
 }
 
 # mutations
+type Mutation {
+  createUserExercise(userId: String!, email: String!, exercise: ExerciseInfo!): Boolean
+  deleteUserExercise(userId: String!, email: String!, exerciseTag: Int!): Boolean
+  updateUserExercises(userId: String!, email: String!, exercises: [ExerciseInfo]!): Boolean
+}
 
 # inputs
+input ExerciseInfo {
+  exerciseDate: String!
+  exerciseName: String!
+  exerciseSets: Int!
+  exerciseReps: Int!
+  exerciseType: String!
+  exerciseMuscle: String!
+  exerciseEquipment: String!
+  exerciseDifficulty: String!
+  exerciseInstructions: String!
+  exerciseTag: Int!
+}
 
 # types
 type UserExercises {
