@@ -6,8 +6,46 @@ type Query {
 }
 
 # mutations
+type Mutation {
+  # nutrition tracked days operations
+  createUserNutritionTrackedDay(userId: String!, email: String!, nutritionTrackedDay: NutritionTrackedDayInfo!): Boolean
+  deleteUserNutritionTrackedDay(userId: String!, email: String!, nutritionTrackedDate: String!): Boolean
+  updateUserNutritionTrackedDay(userId: String!, email: String!, nutritionTrackedDayInfoUpdate: NutritionTrackedDayInfoUpdate!): Boolean
+  updateUserNutritionTrackedDays(userId: String!, email: String!, nutritionTrackedDays: [NutritionTrackedDayInfo]!): Boolean
+  updateUserNutritionTrackedDaysSummary(userId: String!, email: String!, nutritionTrackedDaysSummary: NutritionTrackedDaysSummaryInfo!): Boolean
+}
 
 # inputs
+input NutritionTrackedDayInfo {
+  dateTracked: String!
+  calories: Float!
+  macronutrients: MacronutrientInfo!
+  micronutrients: [MicronutrientInfo]!
+}
+
+input MacronutrientInfo {
+  carbohydrates: Float!
+  protein: Float!
+  fat: Float!
+}
+
+input MicronutrientInfo {
+  name: String!
+  amount: Float!
+  unit: String!
+}
+
+input NutritionTrackedDayInfoUpdate {
+  originalNutritionTrackedDay: NutritionTrackedDayInfo!
+  updatedNutritionTrackedDay: NutritionTrackedDayInfo!
+}
+
+input NutritionTrackedDaysSummaryInfo {
+  averageDailyCaloriesConsumption: Float!
+  averageDailyCarbohydratesConsumption: Float!
+  averageDailyProteinConsumption: Float!
+  averageDailyFatConsumption: Float!
+}
 
 # types
 type UserNutritionTrackedDays {
