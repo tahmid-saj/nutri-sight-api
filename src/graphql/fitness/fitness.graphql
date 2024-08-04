@@ -1,0 +1,24 @@
+# queries
+type Query {
+  exercisesByUser(userId: String!, email: String!): [UserExercises]
+}
+
+# mutations
+
+# inputs
+
+# types
+type UserExercises {
+  userId: String!
+  email: String!
+  exerciseDate: String!
+  exerciseName: String!
+  exerciseSets: Int!
+  exerciseReps: Int!
+  exerciseType: String!
+  exerciseMuscle: String!
+  exerciseEquipment: String!
+  exerciseDifficulty: String!
+  exerciseInstructions: String!
+  exerciseTag: Int!
+}
