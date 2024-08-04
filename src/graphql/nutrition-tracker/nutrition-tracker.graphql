@@ -1,0 +1,40 @@
+# queries
+type Query {
+  # user sign in
+  nutritionTrackedDaysByUser(userId: String!, email: String!): [UserNutritionTrackedDays]
+}
+
+# mutations
+
+# inputs
+
+# types
+type UserNutritionTrackedDays {
+  userId: String!
+  email: String!
+  dateTracked: String!
+  calories: Float!
+  macronutrients: Macronutrient!
+  micronutrients: [Micronutrient]!
+}
+
+type Macronutrient {
+  carbohydrates: Float!
+  protein: Float!
+  fat: Float!
+}
+
+type Micronutrient {
+  name: String!
+  amount: Float!
+  unit: String!
+}
+
+type UserNutritionTrackedDaysSummary {
+  userId: String!
+  email: String!
+  averageDailyCaloriesConsumption: Float!
+  averageDailyCarbohydratesConsumption: Float!
+  averageDailyProteinConsumption: Float!
+  averageDailyFatConsumption: Float!
+}
