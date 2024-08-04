@@ -2,6 +2,7 @@
 type Query {
   # user sign in
   nutritionTrackedDaysByUser(userId: String!, email: String!): [UserNutritionTrackedDays]
+  nutritionTrackedDaysSummaryByUser(userId: String!, email: String!): UserNutritionTrackedDaysSummary
 }
 
 # mutations
