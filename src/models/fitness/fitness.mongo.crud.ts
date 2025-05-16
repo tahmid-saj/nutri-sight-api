@@ -1,9 +1,11 @@
-const exercisesDatabase = require("./fitness.mongo")
+import { Document } from "mongodb"
+import { exercisesDatabase } from "./fitness.mongo.js"
+import { Email, Exercise, ExerciseTag, UserId } from "./fitness.types.js"
 
 // exercises crud for mongodb
 
 // user sign in
-async function getExercises(userId, email) {
+export async function getExercises(userId: UserId, email: Email): Promise<{ exercises: Exercise[] }> {
   const exercises = await exercisesDatabase.find({
     userId: userId,
     email: email
@@ -29,6 +31,7 @@ async function getExercises(userId, email) {
   .catch(error => {
     // TODO: handle error
     console.log(error)
+    return [] as Exercise[]
   })
 
   return {
@@ -37,7 +40,7 @@ async function getExercises(userId, email) {
 }
 
 // calories burned operations
-async function addExercise(userId, email, exercise) {
+export async function addExercise(userId: UserId, email: Email, exercise: Exercise): Promise<any> {
   const exerciseExists = await exercisesDatabase.findOne({
     userId: userId,
     email: email,
@@ -66,7 +69,7 @@ async function addExercise(userId, email, exercise) {
   }
 }
 
-async function removeExercise(userId, email, exerciseTag) {
+export async function removeExercise(userId: UserId, email: Email, exerciseTag: ExerciseTag): Promise<void> {
   const exerciseExists = await exercisesDatabase.findOne({
     userId: userId,
     email: email,
@@ -85,7 +88,7 @@ async function removeExercise(userId, email, exerciseTag) {
 }
 
 // user sign out
-async function updateExercises(userId, email, exercises) {
+export async function updateExercises(userId: UserId, email: Email, exercises: Exercise[]): Promise<void> {
   const exercisesExists = await exercisesDatabase.findOne({
     userId: userId,
     email: email
@@ -112,11 +115,4 @@ async function updateExercises(userId, email, exercises) {
   } else {
     return
   }
-}
-
-module.exports = {
-  getExercises,
-  addExercise,
-  removeExercise,
-  updateExercises
 }
