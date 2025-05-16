@@ -1,9 +1,9 @@
-import { Email, UserId } from "../../models/calories-burned/calories-burned.types"
+import { Email, UserId } from "../../models/calories-burned/calories-burned.types.js"
 import  { getExercises,
   addExercise, removeExercise,
   updateExercises
-} from "../../models/fitness/fitness.mongo.crud"
-import { Exercise, ExerciseTag } from "../../models/fitness/fitness.types"
+} from "../../models/fitness/fitness.mongo.crud.js"
+import { Exercise, ExerciseTag } from "../../models/fitness/fitness.types.js"
 
 export async function exercisesByUser(userId: UserId, email: Email): Promise<Exercise[]> {
   const exercises = await getExercises(userId, email)
