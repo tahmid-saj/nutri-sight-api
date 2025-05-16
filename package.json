@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon index.js",
-    "start": "node index.js"
+    "start": "nodemon src/index.ts",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +17,10 @@
   "dependencies": {
     "@graphql-tools/load-files": "^7.0.0",
     "@graphql-tools/schema": "^10.0.4",
+    "@types/express": "^5.0.1",
+    "@types/express-serve-static-core": "^5.0.6",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.15.18",
     "apollo-server-express": "^3.13.0",
     "axios": "^1.6.0",
     "body-parser": "^1.20.2",
@@ -28,6 +35,9 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
     "openai": "^4.46.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vercel": "^41.7.8"
   }
 }

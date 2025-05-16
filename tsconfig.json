@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // or "ES6"
+    "module": "ESNext", // or "ES6"
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "outDir": "dist",
+    "rootDir": "./src",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "incremental": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": ["src/**/*", "src/.d.ts", "src"],
+  "exclude": ["node_modules"]
+}
