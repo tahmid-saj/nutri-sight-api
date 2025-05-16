@@ -3,7 +3,7 @@ import express, { Router } from "express"
 import { httpGetSearchedActivity, httpGetTrackedCaloriesBurned,
   httpPostTrackedCaloriesBurned, httpDeleteTrackedCaloriesBurned,
   httpPutTrackedCaloriesBurned
-} from "./calories-burned.controller.js"
+} from "./calories-burned.controller.ts"
 
 const caloriesBurnedRouter: Router = express.Router()
 

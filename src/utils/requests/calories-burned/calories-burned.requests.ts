@@ -1,10 +1,13 @@
-const { errorOnGetSearchActivity } = require("../../errors/calories-burned.errors")
-require("dotenv").config();
+import { errorOnGetSearchActivity } from "../../errors/calories-burned.errors.ts"
+import dotenv from "dotenv"
+
+dotenv.config()
+
 
 // helper functions
 export async function processSearchedActivity(activity: string, dateTracked: string, 
     activityResults: any) {
-  return activityResults.map((activityResult) => {
+  return activityResults.map((activityResult: any) => {
     return {
       activity: String(activityResult.name),
       searchedActivity: String(activity),

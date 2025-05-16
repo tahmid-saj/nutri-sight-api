@@ -1,6 +1,6 @@
 import { Document } from "mongodb"
-import { trackedCaloriesBurnedDatabase } from "./calories-burned.mongo.js"
-import { ActivityId, Email, TrackedCaloriesBurned, UserId } from "./calories-burned.types.js"
+import { trackedCaloriesBurnedDatabase } from "./calories-burned.mongo.ts"
+import { ActivityId, Email, TrackedCaloriesBurned, UserId } from "./calories-burned.types.ts"
 
 // calories burned crud for mongodb
 

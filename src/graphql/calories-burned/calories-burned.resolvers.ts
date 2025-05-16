@@ -1,7 +1,6 @@
-import { TrackedCaloriesBurned } from "../../models/calories-burned/calories-burned.types.js"
+import { TrackedCaloriesBurned } from "../../models/calories-burned/calories-burned.types.ts"
 import { trackedCaloriesBurnedByUser, createUserTrackedCaloriesBurned, 
-  deleteUserTrackedCaloriesBurned, updateUserTrackedCaloriesBurned } 
-from "./calories-burned.model.js"
+  deleteUserTrackedCaloriesBurned, updateUserTrackedCaloriesBurned } from "./calories-burned.model.ts"
 
 type UserArgs = {
   userId: string,
@@ -10,21 +9,33 @@ type UserArgs = {
   activityId: number
 }
 
-module.exports = {
+export const resolvers = {
   Query: {
-    trackedCaloriesBurnedByUser: (parent: any, args: UserArgs): Promise<TrackedCaloriesBurned[]> => {
-      return trackedCaloriesBurnedByUser(args.userId, args.email)
-    }
+    trackedCaloriesBurnedByUser: (
+      parent: any,
+      args: UserArgs
+    ): Promise<TrackedCaloriesBurned[]> => {
+      return trackedCaloriesBurnedByUser(args.userId, args.email);
+    },
   },
   Mutation: {
-    createUserTrackedCaloriesBurned: (parent: any, args: UserArgs): Promise<boolean> => {
-      return createUserTrackedCaloriesBurned(args.userId, args.email, args.trackedCaloriesBurned)
+    createUserTrackedCaloriesBurned: (
+      parent: any,
+      args: UserArgs
+    ): Promise<boolean> => {
+      return createUserTrackedCaloriesBurned(args.userId, args.email, args.trackedCaloriesBurned);
     },
-    deleteUserTrackedCaloriesBurned: (parent: any, args: UserArgs): Promise<boolean> => {
-      return deleteUserTrackedCaloriesBurned(args.userId, args.email, args.activityId)
+    deleteUserTrackedCaloriesBurned: (
+      parent: any,
+      args: UserArgs
+    ): Promise<boolean> => {
+      return deleteUserTrackedCaloriesBurned(args.userId, args.email, args.activityId);
     },
-    updateUserTrackedCaloriesBurned: (parent: any, args: UserArgs): Promise<boolean> => {
-      return updateUserTrackedCaloriesBurned(args.userId, args.email, args.trackedCaloriesBurned)
-    }
-  }
-}
+    updateUserTrackedCaloriesBurned: (
+      parent: any,
+      args: UserArgs
+    ): Promise<boolean> => {
+      return updateUserTrackedCaloriesBurned(args.userId, args.email, args.trackedCaloriesBurned);
+    },
+  },
+};

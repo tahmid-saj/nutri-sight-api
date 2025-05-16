@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { getNutritionTrackedDaysData, getNutritionTrackedDaysSummaryData,
   postNutritionTrackedDay, putNutritionTrackedDay, deleteNutritionTrackedDay,
   putNutritionTrackedDaysData, putNutritionTrackedDaysSummaryData } 
-from "../../models/nutrition-tracker/nutrition-tracker.model.js"
+from "../../models/nutrition-tracker/nutrition-tracker.model.ts"
 
 // signed in
 export async function httpGetNutritionTrackedDays(req: Request, res: Response) {
@@ -11,7 +11,7 @@ export async function httpGetNutritionTrackedDays(req: Request, res: Response) {
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetNutritionTrackedDays = await getNutritionTrackedDaysData(userId, email);
+    const resGetNutritionTrackedDays = await getNutritionTrackedDaysData(userId!, email!);
 
     if (resGetNutritionTrackedDays) {
       res.status(200).json(resGetNutritionTrackedDays)
@@ -27,7 +27,7 @@ export async function httpGetNutritionTrackedDaysSummary(req: Request, res: Resp
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummaryData(userId, email);
+    const resGetNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummaryData(userId!, email!);
 
     if (resGetNutritionTrackedDaysSummary) {
       res.status(200).json(resGetNutritionTrackedDaysSummary)
@@ -45,7 +45,7 @@ export async function httpPostNutritionTrackedDay(req: Request, res: Response): 
     const nutritionTrackedDay = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
-    const resPostNutritionTrackedDay = await postNutritionTrackedDay(userId, email, nutritionTrackedDay);
+    const resPostNutritionTrackedDay = await postNutritionTrackedDay(userId!, email!, nutritionTrackedDay);
 
     if (resPostNutritionTrackedDay) {
       res.status(200)
@@ -62,7 +62,7 @@ export async function httpDeleteNutritionTrackedDay(req: Request, res: Response)
     const nutritionTrackedDate = String(req.body)
     const userId = req.params.userid;
     const email = req.params.email;
-    const resDeleteNutritionTrackedDay = await deleteNutritionTrackedDay(userId, email, nutritionTrackedDate);
+    const resDeleteNutritionTrackedDay = await deleteNutritionTrackedDay(userId!, email!, nutritionTrackedDate);
 
     if (resDeleteNutritionTrackedDay) {
       res.status(200)
@@ -80,7 +80,7 @@ export async function httpPutNutritionTrackedDay(req: Request, res: Response): P
     const { updatedNutritionTrackedDay } = req.body;
     const userId = req.params.userid;
     const email = req.params.email;
-    const resPutNutritionTrackedDay = await putNutritionTrackedDay(userId, email, originalNutritionTrackedDay, updatedNutritionTrackedDay);
+    const resPutNutritionTrackedDay = await putNutritionTrackedDay(userId!, email!, originalNutritionTrackedDay, updatedNutritionTrackedDay);
 
     if (resPutNutritionTrackedDay) {
       res.status(200)
@@ -98,7 +98,7 @@ export async function httpPutNutritionTrackedDays(req: Request, res: Response): 
     const userId = req.params.userid;
     const email = req.params.email;
     const { nutritionTrackedDays } = req.body;
-    const resPutNutritionTrackedDays = await putNutritionTrackedDaysData(userId, email, nutritionTrackedDays);
+    const resPutNutritionTrackedDays = await putNutritionTrackedDaysData(userId!, email!, nutritionTrackedDays);
 
     if (resPutNutritionTrackedDays) {
       res.status(200)
@@ -115,7 +115,7 @@ export async function httpPutNutritionTrackedDaysSummary(req: Request, res: Resp
     const userId = req.params.userid;
     const email = req.params.email;
     const { nutritionTrackedDaysSummary } = req.body;
-    const resPutNutritionTrackedDaysSummary = await putNutritionTrackedDaysSummaryData(userId, email, nutritionTrackedDaysSummary);
+    const resPutNutritionTrackedDaysSummary = await putNutritionTrackedDaysSummaryData(userId!, email!, nutritionTrackedDaysSummary);
 
     if (resPutNutritionTrackedDaysSummary) {
       res.status(200)

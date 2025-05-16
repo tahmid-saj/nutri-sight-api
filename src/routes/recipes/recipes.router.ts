@@ -1,6 +1,6 @@
 import express, { Router } from "express"
 
-import { httpGetRecipes, httpGetRecipe } from "./recipes.controller.js"
+import { httpGetRecipes, httpGetRecipe } from "./recipes.controller.ts"
 
 const recipesRouter: Router = express.Router()
 

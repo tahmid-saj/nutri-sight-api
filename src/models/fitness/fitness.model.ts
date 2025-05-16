@@ -1,8 +1,8 @@
 import { getExercises,
   addExercise, removeExercise,
   updateExercises
-} from "./fitness.mongo.crud.js"
-import { UserId, Email, Exercise, ExerciseTag } from "./fitness.types.js"
+} from "./fitness.mongo.crud.ts"
+import { UserId, Email, Exercise, ExerciseTag } from "./fitness.types.ts"
 
 // TODO: handle error
 
@@ -13,20 +13,20 @@ export async function getExercisesData(userId: UserId, email: Email): Promise<an
 }
 
 // fitness operations
-async function postExercise(userId: UserId, email: Email, exercise: Exercise): Promise<boolean> {
+export async function postExercise(userId: UserId, email: Email, exercise: Exercise): Promise<boolean> {
   addExercise(userId, email, exercise)
   console.log("Posting tracked fitness data")
   return true
 }
 
-async function deleteExercise(userId: UserId, email: Email, exerciseTag: ExerciseTag): Promise<boolean> {
+export async function deleteExercise(userId: UserId, email: Email, exerciseTag: ExerciseTag): Promise<boolean> {
   removeExercise(userId, email, exerciseTag)
   console.log("Deleting tracked fitness data")
   return true
 }
 
 // sign out
-async function putExercises(userId: UserId, email: Email, exercises: Exercise[]): Promise<boolean> {
+export async function putExercises(userId: UserId, email: Email, exercises: Exercise[]): Promise<boolean> {
   updateExercises(userId, email, exercises)
   console.log("Updating tracked fitness data")
   return true

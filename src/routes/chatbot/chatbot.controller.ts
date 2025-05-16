@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { getChatBotResponse } from "../../utils/requests/chatbot/chatbot.requests"
+import { getChatBotResponse } from "../../utils/requests/chatbot/chatbot.requests.ts"
 
 // chatbot response
 export async function httpGetChatBotResponse(req: Request, res: Response): Promise<void> {

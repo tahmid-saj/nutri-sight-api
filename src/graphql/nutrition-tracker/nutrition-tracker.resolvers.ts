@@ -1,9 +1,10 @@
-import { NutritionTrackedDate, NutritionTrackedDay, NutritionTrackedDaysSummary } from "../../models/nutrition-tracker/nutrition-tracker.types.js"
+import { NutritionTrackedDate, NutritionTrackedDay, 
+  NutritionTrackedDaysSummary } from "../../models/nutrition-tracker/nutrition-tracker.types.ts"
 import { nutritionTrackedDaysByUser, nutritionTrackedDaysSummaryByUser, 
   createUserNutritionTrackedDay, deleteUserNutritionTrackedDay, 
   updateUserNutritionTrackedDay, updateUserNutritionTrackedDays,
   updateUserNutritionTrackedDaysSummary
-} from "./nutrition-tracker.model.js"
+} from "./nutrition-tracker.model.ts"
 
 type UserArgs = {
   userId: string,
@@ -18,7 +19,7 @@ type UserArgs = {
   nutritionTrackedDaysSummary: NutritionTrackedDaysSummary
 }
 
-module.exports = {
+export const resolvers = {
   Query: {
     nutritionTrackedDaysByUser: (parent: any, args: UserArgs) => {
       return nutritionTrackedDaysByUser(args.userId, args.email)

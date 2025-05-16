@@ -1,15 +1,14 @@
-import { nutritionTrackedDaysDatabase, nutritionTrackedDaysSummaryDatabase } from "./nutrition-tracker.mongo.js"
 import axios from "axios"
 
 import { getNutritionTrackedDays, getNutritionTrackedDaysSummary,
   addNutritionTrackedDay, updateNutritionTrackedDay, removeNutritionTrackedDay,
   updateNutritionTrackedDays, updateNutritionTrackedDaysSummary } 
-from "./nutrition-tracker.mongo.crud.js"
-import { UserId } from "./nutrition-tracker.types.js";
-import { Email } from "./nutrition-tracker.types.js";
-import { NutritionTrackedDay } from "./nutrition-tracker.types.js";
-import { NutritionTrackedDate } from "./nutrition-tracker.types.js";
-import { NutritionTrackedDaysSummary } from "./nutrition-tracker.types.js";
+from "./nutrition-tracker.mongo.crud.ts"
+import { UserId } from "./nutrition-tracker.types.ts";
+import { Email } from "./nutrition-tracker.types.ts";
+import { NutritionTrackedDay } from "./nutrition-tracker.types.ts";
+import { NutritionTrackedDate } from "./nutrition-tracker.types.ts";
+import { NutritionTrackedDaysSummary } from "./nutrition-tracker.types.ts";
  
 // sign in
 export async function getNutritionTrackedDaysData(userId: UserId, email: Email): Promise<any> {

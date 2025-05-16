@@ -1,6 +1,6 @@
-import { Exercise } from "../../models/fitness/fitness.types"
+import { Exercise } from "../../models/fitness/fitness.types.ts"
 import { exercisesByUser, createUserExercise, 
-  deleteUserExercise, updateUserExercises } from "./fitness.model.js"
+  deleteUserExercise, updateUserExercises } from "./fitness.model.ts"
 
 type UserArgs = {
   userId: string,
@@ -10,7 +10,7 @@ type UserArgs = {
   exercises: Exercise[]
 }
 
-module.exports = {
+export const resolvers = {
   Query: {
     exercisesByUser: (parent: any, args: UserArgs): Promise<Exercise[]> => {
       return exercisesByUser(args.userId, args.email)

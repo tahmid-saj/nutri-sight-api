@@ -1,7 +1,7 @@
-import { nutritionTrackedDaysDatabase, nutritionTrackedDaysSummaryDatabase } from "./nutrition-tracker.mongo.js"
+import { nutritionTrackedDaysDatabase, nutritionTrackedDaysSummaryDatabase } from "./nutrition-tracker.mongo.ts"
 
-import { validateGetNutritionTrackedDaysSummary } from "../../utils/validations/nutrition-tracker/nutrition-tracker.validations.js"
-import { Email, NutritionTrackedDate, NutritionTrackedDay, NutritionTrackedDaysSummary, UserId } from "./nutrition-tracker.types.js";
+import { validateGetNutritionTrackedDaysSummary } from "../../utils/validations/nutrition-tracker/nutrition-tracker.validations.ts"
+import { Email, NutritionTrackedDate, NutritionTrackedDay, NutritionTrackedDaysSummary, UserId } from "./nutrition-tracker.types.ts";
 import { Document } from "mongodb";
 
 // nutrition tracker crud for mongodb

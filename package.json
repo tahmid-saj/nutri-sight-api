@@ -2,10 +2,10 @@
   "name": "nutri-sight-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "start": "nodemon --watch src --ext ts --exec \"node --loader ts-node/esm\" src/index.ts",
     "build": "rimraf dist && tsc",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
@@ -33,10 +33,11 @@
     "mongodb": "^6.2.0",
     "mongoose": "^7.6.3",
     "morgan": "^1.10.0",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.1.10",
     "openai": "^4.46.1",
     "request": "^2.88.2",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
     "vercel": "^41.7.8"
   }
