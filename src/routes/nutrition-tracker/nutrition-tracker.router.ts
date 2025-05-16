@@ -1,10 +1,11 @@
-const express = require('express');
+import express, { Router } from 'express'
 
-const { httpGetNutritionTrackedDays, httpGetNutritionTrackedDaysSummary,
+import { httpGetNutritionTrackedDays, httpGetNutritionTrackedDaysSummary,
   httpPostNutritionTrackedDay, httpPutNutritionTrackedDay, httpDeleteNutritionTrackedDay,
-  httpPutNutritionTrackedDays, httpPutNutritionTrackedDaysSummary } = require("./nutrition-tracker.controller");
+  httpPutNutritionTrackedDays, httpPutNutritionTrackedDaysSummary } 
+from "./nutrition-tracker.controller.js"
 
-const nutritionTrackerRouter = express.Router();
+const nutritionTrackerRouter: Router = express.Router();
 
 // TODO: move to env variables
 // user sign in
@@ -20,6 +21,4 @@ nutritionTrackerRouter.put("/nutrition-tracked-days/:userid/:email", httpPutNutr
 nutritionTrackerRouter.put("/nutrition-tracked-days/:userid/:email", httpPutNutritionTrackedDays);
 nutritionTrackerRouter.put("/nutrition-tracked-days-summary/:userid/:email", httpPutNutritionTrackedDaysSummary);
 
-module.exports = {
-  nutritionTrackerRouter,
-};
+export { nutritionTrackerRouter }

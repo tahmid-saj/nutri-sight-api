@@ -1,11 +1,11 @@
-const express = require("express")
+import express, { Router } from "express"
 
-const { httpGetSearchedActivity, httpGetTrackedCaloriesBurned,
+import { httpGetSearchedActivity, httpGetTrackedCaloriesBurned,
   httpPostTrackedCaloriesBurned, httpDeleteTrackedCaloriesBurned,
   httpPutTrackedCaloriesBurned
-} = require("./calories-burned.controller")
- 
-const caloriesBurnedRouter = express.Router()
+} from "./calories-burned.controller.js"
+
+const caloriesBurnedRouter: Router = express.Router()
 
 // TODO: move to env variables
 // searching activity
@@ -21,6 +21,4 @@ caloriesBurnedRouter.delete("/tracked-calories-burned/:userid/:email", httpDelet
 // user sign out
 caloriesBurnedRouter.put("/tracked-calories-burned/:userid/:email", httpPutTrackedCaloriesBurned)
 
-module.exports = {
-  caloriesBurnedRouter
-}
+export { caloriesBurnedRouter }

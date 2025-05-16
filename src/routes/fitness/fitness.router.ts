@@ -1,10 +1,10 @@
-const express = require("express")
+import express, { Router } from "express"
 
-const { httpGetSearchedExercise, httpGetExercises, httpPostExercise,
+import { httpGetSearchedExercise, httpGetExercises, httpPostExercise,
   httpDeleteExercise, httpPutExercises
-} = require("./fitness.controller")
+} from "./fitness.controller.js"
 
-const fitnessRouter = express.Router()
+const fitnessRouter: Router = express.Router()
 
 // TODO: move to env variables
 // searching exercise
@@ -20,6 +20,4 @@ fitnessRouter.delete("/exercises/:userid/:email", httpDeleteExercise)
 // user sign out
 fitnessRouter.put("/exercises/:userid/:email", httpPutExercises)
 
-module.exports = {
-  fitnessRouter
-}
+export { fitnessRouter }
