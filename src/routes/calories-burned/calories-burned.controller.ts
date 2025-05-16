@@ -1,11 +1,12 @@
-const { getSearchedActivity } = require("../../utils/requests/calories-burned/calories-burned.requests")
-const { getTrackedCaloriesBurnedData, 
+import { Request, Response } from 'express';
+import { getSearchedActivity } from "../../utils/requests/calories-burned/calories-burned.requests.js"
+import { getTrackedCaloriesBurnedData, 
   postTrackedCaloriesBurned, deleteTrackedCaloriesBurned,
   putTrackedCaloriesBurned 
-} = require("../../models/calories-burned/calories-burned.model")
+} from "../../models/calories-burned/calories-burned.model.js"
 
 // searching activity
-async function httpGetSearchedActivity(req, res) {
+export async function httpGetSearchedActivity(req: Request, res: Response): Promise<void> {
   try {
     const activity = String(req.body.activity)
     const dateTracked = String(req.body.dateTracked)
@@ -14,20 +15,24 @@ async function httpGetSearchedActivity(req, res) {
 
     const resGetSearchedActivity = await getSearchedActivity(activity, dateTracked, weightPounds, durationMinutes)
 
-    if (resGetSearchedActivity) return res.status(200).json(resGetSearchedActivity)
+    if (resGetSearchedActivity) {
+      res.status(200).json(resGetSearchedActivity)
+    }
   } catch (error) {
     console.log(error)
   }
 }
 
 // signed in
-async function httpGetTrackedCaloriesBurned(req, res) {
+export async function httpGetTrackedCaloriesBurned(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid;
     const email = req.params.email;
     const resGetTrackedCaloriesBurned = await getTrackedCaloriesBurnedData(userId, email)
 
-    if (resGetTrackedCaloriesBurned) return res.status(200).json(resGetTrackedCaloriesBurned)
+    if (resGetTrackedCaloriesBurned) {  
+      res.status(200).json(resGetTrackedCaloriesBurned)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error)
@@ -35,28 +40,32 @@ async function httpGetTrackedCaloriesBurned(req, res) {
 }
 
 // calories burned operations
-async function httpPostTrackedCaloriesBurned(req, res) {
+export async function httpPostTrackedCaloriesBurned(req: Request, res: Response): Promise<void> {
   try {
     const trackedCaloriesBurned = req.body
     const userId = req.params.userid;
     const email = req.params.email;
     const resPostTrackedCaloriesBurned = await postTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
 
-    if (resPostTrackedCaloriesBurned) return res.status(200)
+    if (resPostTrackedCaloriesBurned) {
+      res.status(200)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error)
   }
 }
 
-async function httpDeleteTrackedCaloriesBurned(req, res) {
+export async function httpDeleteTrackedCaloriesBurned(req: Request, res: Response): Promise<void> {
   try {
     const activityId = Number(String(req.body)) 
     const userId = req.params.userid;
     const email = req.params.email;
     const resDeleteTrackedCaloriesBurned = await deleteTrackedCaloriesBurned(userId, email, activityId)
 
-    if (resDeleteTrackedCaloriesBurned) return res.status(200)
+    if (resDeleteTrackedCaloriesBurned) {
+      res.status(200)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error)
@@ -64,24 +73,18 @@ async function httpDeleteTrackedCaloriesBurned(req, res) {
 }
 
 // signed out
-async function httpPutTrackedCaloriesBurned(req, res) {
+export async function httpPutTrackedCaloriesBurned(req: Request, res: Response): Promise<void> {
   try {
     const userId = req.params.userid;
     const email = req.params.email;
     const { trackedCaloriesBurned } = req.body
     const resPutTrackedCaloriesBurned = await putTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
 
-    if (resPutTrackedCaloriesBurned) return res.status(200)
+    if (resPutTrackedCaloriesBurned) {
+      res.status(200)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error)
   }
-}
-
-module.exports = {
-  httpGetSearchedActivity,
-  httpGetTrackedCaloriesBurned,
-  httpPostTrackedCaloriesBurned,
-  httpDeleteTrackedCaloriesBurned,
-  httpPutTrackedCaloriesBurned
 }
