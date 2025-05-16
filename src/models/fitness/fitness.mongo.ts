@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from 'mongoose'
 
 const exercisesSchema = new mongoose.Schema({
   userId: {
@@ -51,6 +51,4 @@ const exercisesSchema = new mongoose.Schema({
   }
 })
 
-const exercisesDatabase = mongoose.model("Exercises", exercisesSchema)
-
-module.exports = exercisesDatabase
+export const exercisesDatabase = mongoose.model("Exercises", exercisesSchema)

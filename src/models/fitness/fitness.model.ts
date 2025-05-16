@@ -1,40 +1,33 @@
-const { getExercises,
+import { getExercises,
   addExercise, removeExercise,
   updateExercises
-} = require("./fitness.mongo.crud")
+} from "./fitness.mongo.crud.js"
+import { UserId, Email, Exercise, ExerciseTag } from "./fitness.types.js"
 
 // TODO: handle error
 
-
 // sign in
-async function getExercisesData(userId, email) {
+export async function getExercisesData(userId: UserId, email: Email): Promise<any> {
   console.log("Getting tracked fitness data")
   return getExercises(userId, email)
 }
 
 // fitness operations
-async function postExercise(userId, email, exercise) {
+async function postExercise(userId: UserId, email: Email, exercise: Exercise): Promise<boolean> {
   addExercise(userId, email, exercise)
   console.log("Posting tracked fitness data")
   return true
 }
 
-async function deleteExercise(userId, email, exerciseTag) {
+async function deleteExercise(userId: UserId, email: Email, exerciseTag: ExerciseTag): Promise<boolean> {
   removeExercise(userId, email, exerciseTag)
   console.log("Deleting tracked fitness data")
   return true
 }
 
 // sign out
-async function putExercises(userId, email, exercises) {
+async function putExercises(userId: UserId, email: Email, exercises: Exercise[]): Promise<boolean> {
   updateExercises(userId, email, exercises)
   console.log("Updating tracked fitness data")
   return true
-}
-
-module.exports = {
-  getExercisesData,
-  postExercise,
-  deleteExercise,
-  putExercises
 }
