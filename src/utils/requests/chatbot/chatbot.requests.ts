@@ -3,7 +3,7 @@ const { DEFAULT_CHATBOT_MAX_TOKENS } = require("../../constants/chatbot.constant
 const { openai } = require("../../../services/open-ai/open-ai.service")
 require("dotenv").config();
 
-async function getChatBotResponse(messageInput) {
+export async function getChatBotResponse(messageInput: string) {
   try {
     const response = await openai.chat.completions.create({
       messages: [{ role: process.env.REACT_APP_OPEN_API_ROLE, content: messageInput }],
@@ -18,8 +18,4 @@ async function getChatBotResponse(messageInput) {
     console.log("Error getting chatbot response")
     errorOnGetChatBotResponse()
   }
-}
-
-module.exports = {
-  getChatBotResponse
 }

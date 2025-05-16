@@ -2,7 +2,7 @@ const { errorOnGetSearchedExercise } = require("../../errors/fitness.errors")
 require("dotenv").config();
 
 // helper functions
-async function processSearchedExercise(exercises) {
+export async function processSearchedExercise(exercises) {
   return exercises.map((exercise) => {
     return {
       exerciseName: exercise.name,
@@ -16,7 +16,7 @@ async function processSearchedExercise(exercises) {
 }
 
 // searching exercise
-async function getSearchedExercise(exerciseQuery) {
+export async function getSearchedExercise(exerciseQuery: any) {
   try {
     let url = `${process.env.REACT_APP_API_NINJAS_EXERCISES_URL}${exerciseQuery.exerciseName}`
 
@@ -46,8 +46,4 @@ async function getSearchedExercise(exerciseQuery) {
     console.log(error)
     errorOnGetSearchedExercise()
   }
-}
-
-module.exports = {
-  getSearchedExercise
 }

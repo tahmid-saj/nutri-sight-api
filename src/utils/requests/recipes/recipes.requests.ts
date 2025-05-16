@@ -3,7 +3,7 @@ const { TIMEOUT_SEC } = require("../../constants/recipes.constants")
 require("dotenv").config();
 
 // helpers functions
-function timeout(seconds) {
+function timeout(seconds: number) {
   return new Promise(function (_, reject) {
     setTimeout(function () {
       reject(new Error(`Request took too long! Timeout after ${seconds} seconds`));
@@ -13,10 +13,10 @@ function timeout(seconds) {
 
 // requests
 // multiple recipes
-async function getRecipes(recipe) {
+export async function getRecipes(recipe: string) {
   try {
     const fetchPromiseRecipes = fetch(`${process.env.REACT_APP_RECIPES_URL}${recipe}?${process.env.REACT_APP_RECIPES_API_KEY_NAME}${process.env.REACT_APP_RECIPES_API_KEY}`)
-    const resRecipes = await Promise.race([fetchPromiseRecipes, timeout(TIMEOUT_SEC)]);
+    const resRecipes: any = await Promise.race([fetchPromiseRecipes, timeout(TIMEOUT_SEC)]);
     const dataRecipes = await resRecipes.json();
 
     if (!resRecipes.ok) {
@@ -33,10 +33,10 @@ async function getRecipes(recipe) {
 }
 
 // single recipe info
-async function getRecipe(recipe) {
+export async function getRecipe(recipe: any) {
   try {
     const fetchPromiseRecipe = fetch(`${process.env.REACT_APP_RECIPE_URL}${recipe.id}?${process.env.REACT_APP_RECIPES_API_KEY_NAME}${process.env.REACT_APP_RECIPES_API_KEY}`);
-    const resRecipe = await Promise.race([fetchPromiseRecipe, timeout(TIMEOUT_SEC)]);
+    const resRecipe: any = await Promise.race([fetchPromiseRecipe, timeout(TIMEOUT_SEC)]);
     const dataRecipe = await resRecipe.json();
 
     if (!resRecipe.ok) {
@@ -50,9 +50,4 @@ async function getRecipe(recipe) {
     errorOnDisplaySearchedRecipes(recipe.title);
     console.log(error);
   }
-}
-
-module.exports = {
-  getRecipes,
-  getRecipe
 }
