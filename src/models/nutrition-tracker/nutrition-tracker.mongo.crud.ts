@@ -1,11 +1,13 @@
-const { nutritionTrackedDaysDatabase, nutritionTrackedDaysSummaryDatabase } = require("./nutrition-tracker.mongo");
+import { nutritionTrackedDaysDatabase, nutritionTrackedDaysSummaryDatabase } from "./nutrition-tracker.mongo.js"
 
-const { validateGetNutritionTrackedDaysSummary } = require("../../utils/validations/nutrition-tracker/nutrition-tracker.validations")
+import { validateGetNutritionTrackedDaysSummary } from "../../utils/validations/nutrition-tracker/nutrition-tracker.validations.js"
+import { Email, NutritionTrackedDate, NutritionTrackedDay, NutritionTrackedDaysSummary, UserId } from "./nutrition-tracker.types.js";
+import { Document } from "mongodb";
 
 // nutrition tracker crud for mongodb
 
 // user sign in
-async function getNutritionTrackedDays(userId, email) {
+export async function getNutritionTrackedDays(userId: UserId, email: Email): Promise<{ nutritionTrackedDays: NutritionTrackedDay[] }> {
   const nutritionTrackedDays = await nutritionTrackedDaysDatabase.find({
     userId: userId,
     email: email
@@ -29,6 +31,7 @@ async function getNutritionTrackedDays(userId, email) {
   .catch(error => {
     // TODO: handle error
     console.log(error)
+    return [] as NutritionTrackedDay[]
   });
 
   return {
@@ -36,17 +39,17 @@ async function getNutritionTrackedDays(userId, email) {
   }
 }
 
-async function getNutritionTrackedDaysSummary(userId, email) {
+export async function getNutritionTrackedDaysSummary(userId: UserId, email: Email): Promise<{ nutritionTrackedDaysSummary: NutritionTrackedDaysSummary | void}> {
   const nutritionTrackedDaysSummary = await nutritionTrackedDaysSummaryDatabase.findOne({
     userId: userId,
     email: email
   })
-  .then(res => {
+  .then((res: any) => {
     if (validateGetNutritionTrackedDaysSummary(res) === true) return Object({})
 
     return res.toObject()
   })
-  .then(res => {
+  .then((res: Document) => {
     const summary = {
       averageDailyCaloriesConsumption: res.averageDailyCaloriesConsumption,
       averageDailyCarbohydratesConsumption: res.averageDailyCarbohydratesConsumption,
@@ -67,7 +70,7 @@ async function getNutritionTrackedDaysSummary(userId, email) {
 }
 
 // tracked days operations
-async function calculateAverageConsumption(userId, email) {
+export async function calculateAverageConsumption(userId: UserId, email: Email): Promise<any> {
   const trackedDaysAvgConsumptions = await nutritionTrackedDaysDatabase.find({
     userId: userId,
     email: email,
@@ -101,7 +104,7 @@ async function calculateAverageConsumption(userId, email) {
   return trackedDaysAvgConsumptions;
 }
 
-async function addNutritionTrackedDayToSummary(userId, email) {
+export async function addNutritionTrackedDayToSummary(userId: UserId, email: Email): Promise<void> {
   const nutritionTrackedDaySummaryExists = await nutritionTrackedDaysSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -125,7 +128,7 @@ async function addNutritionTrackedDayToSummary(userId, email) {
   }
 }
 
-async function updateNutritionTrackedDaySummary(userId, email, nutritionTrackedDay) {
+export async function updateNutritionTrackedDaySummary(userId: UserId, email: Email, nutritionTrackedDay: NutritionTrackedDay) {
   const nutritionTrackedDaySummaryExists = await nutritionTrackedDaysSummaryDatabase.findOne({
     userId: userId,
     email: email
@@ -143,12 +146,13 @@ async function updateNutritionTrackedDaySummary(userId, email, nutritionTrackedD
 
     await newNutritionTrackedDaySummary.save();
   } else {
-    await addNutritionTrackedDayToSummary(userId, email, nutritionTrackedDay);
+    await addNutritionTrackedDayToSummary(userId, email);
     return;
   }
 }
 
-async function createUpdatedNutritionTrackedDaysSummary(userId, email, updatedNutritionTrackedDay) {
+export async function createUpdatedNutritionTrackedDaysSummary(userId: UserId, email: Email, 
+  updatedNutritionTrackedDay: NutritionTrackedDay): Promise<void> {
   const nutritionTrackedDaySummaryExists = await nutritionTrackedDaysSummaryDatabase.find({
     userId: userId,
     email: email
@@ -170,7 +174,8 @@ async function createUpdatedNutritionTrackedDaysSummary(userId, email, updatedNu
   }
 }
 
-async function addNutritionTrackedDay(userId, email, nutritionTrackedDay) {
+export async function addNutritionTrackedDay(userId: UserId, email: Email, 
+  nutritionTrackedDay: NutritionTrackedDay): Promise<void> {
   const nutritionTrackedDayExists = await nutritionTrackedDaysDatabase.findOne({
     userId: userId,
     email: email,
@@ -199,7 +204,8 @@ async function addNutritionTrackedDay(userId, email, nutritionTrackedDay) {
   }
 }
 
-async function removeNutritionTrackedDay(userId, email, nutritionTrackedDate) {
+export async function removeNutritionTrackedDay(userId: UserId, email: Email, 
+  nutritionTrackedDate: NutritionTrackedDate): Promise<void> {
   const nutritionTrackedDayExists = await nutritionTrackedDaysDatabase.findOne({
     userId: userId,
     email: email,
@@ -254,7 +260,8 @@ async function removeNutritionTrackedDay(userId, email, nutritionTrackedDate) {
   }
 }
 
-async function updateNutritionTrackedDay(userId, email, originalNutritionTrackedDay, updatedNutritionTrackedDay) {
+export async function updateNutritionTrackedDay(userId: UserId, email: Email, 
+  originalNutritionTrackedDay: NutritionTrackedDay, updatedNutritionTrackedDay: NutritionTrackedDay): Promise<void> {
   const nutritionTrackedDayExists = await nutritionTrackedDaysDatabase.findOne({
     userId: userId,
     email: email,
@@ -306,7 +313,8 @@ async function updateNutritionTrackedDay(userId, email, originalNutritionTracked
 }
 
 // user sign out
-async function updateNutritionTrackedDays(userId, email, nutritionTrackedDays) {
+export async function updateNutritionTrackedDays(userId: UserId, email: Email, 
+  nutritionTrackedDays: NutritionTrackedDay[]): Promise<void> {
   const nutritionTrackedDaysExists = await nutritionTrackedDaysDatabase.findOne({
     userId: userId,
     email: email
@@ -333,7 +341,8 @@ async function updateNutritionTrackedDays(userId, email, nutritionTrackedDays) {
   }
 }
 
-async function updateNutritionTrackedDaysSummary(userId, email, nutritionTrackedDaysSummary) {
+export async function updateNutritionTrackedDaysSummary(userId: UserId, email: Email, 
+  nutritionTrackedDaysSummary: NutritionTrackedDaysSummary): Promise<void> {
   const nutritionTrackedDaysSummaryExists = await nutritionTrackedDaysDatabase.findOne({
     userId: userId,
     email: email
@@ -352,14 +361,4 @@ async function updateNutritionTrackedDaysSummary(userId, email, nutritionTracked
   } else {
     return;
   }
-}
-
-module.exports = {
-  getNutritionTrackedDays,
-  getNutritionTrackedDaysSummary,
-  addNutritionTrackedDay,
-  updateNutritionTrackedDay,
-  removeNutritionTrackedDay,
-  updateNutritionTrackedDays,
-  updateNutritionTrackedDaysSummary,
 }

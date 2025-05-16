@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const nutritionTrackedDaysSchema = new mongoose.Schema({
   userId: {
@@ -93,10 +93,6 @@ const nutritionTrackedDaysSummarySchema = new mongoose.Schema({
   }
 });
 
-const nutritionTrackedDaysDatabase = mongoose.model("NutritionTrackedDays", nutritionTrackedDaysSchema);
-const nutritionTrackedDaysSummaryDatabase = mongoose.model("NutritionTrackedDaysSummary", nutritionTrackedDaysSummarySchema);
+export const nutritionTrackedDaysDatabase = mongoose.model("NutritionTrackedDays", nutritionTrackedDaysSchema);
+export const nutritionTrackedDaysSummaryDatabase = mongoose.model("NutritionTrackedDaysSummary", nutritionTrackedDaysSummarySchema);
 
-module.exports = {
-  nutritionTrackedDaysDatabase,
-  nutritionTrackedDaysSummaryDatabase,
-}
