@@ -1,9 +1,12 @@
-const { errorOnGetNutrientPredictions } = require("../../errors/nutrient-predictor.errors")
-require("dotenv").config();
+import { errorOnGetNutrientPredictions } from "../../errors/nutrient-predictor.errors.ts"
+import dotenv from "dotenv"
+
+dotenv.config()
+
 
 // helper functions
-export async function processNutrientPredictions(nutrientPredictions) {
-  return nutrientPredictions.map((nutrientPrediction) => {
+export async function processNutrientPredictions(nutrientPredictions: any) {
+  return nutrientPredictions.map((nutrientPrediction: any) => {
     return {
       name: nutrientPrediction.name,
       servingSizeG: nutrientPrediction.serving_size_g,

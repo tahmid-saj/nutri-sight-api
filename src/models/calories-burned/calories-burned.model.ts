@@ -1,8 +1,8 @@
 import { getTrackedCaloriesBurned,
   addTrackedCaloriesBurned, removeTrackedCaloriesBurned,
   updateTrackedCaloriesBurned
-} from "./calories-burned.mongo.crud.js"
-import { ActivityId, Email, TrackedCaloriesBurned, UserId } from "./calories-burned.types.js"
+} from "./calories-burned.mongo.crud.ts"
+import { ActivityId, Email, TrackedCaloriesBurned, UserId } from "./calories-burned.types.ts"
 
 // TODO: handle error
 

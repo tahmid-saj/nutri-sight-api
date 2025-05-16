@@ -2,7 +2,7 @@ import express, { Router } from "express"
 
 import { httpGetSearchedExercise, httpGetExercises, httpPostExercise,
   httpDeleteExercise, httpPutExercises
-} from "./fitness.controller.js"
+} from "./fitness.controller.ts"
 
 const fitnessRouter: Router = express.Router()
 

@@ -1,9 +1,12 @@
-const { errorOnGetSearchedExercise } = require("../../errors/fitness.errors")
-require("dotenv").config();
+import { errorOnGetSearchedExercise } from "../../errors/fitness.errors.ts"
+import dotenv from "dotenv"
+
+dotenv.config()
+
 
 // helper functions
-export async function processSearchedExercise(exercises) {
-  return exercises.map((exercise) => {
+export async function processSearchedExercise(exercises: any) {
+  return exercises.map((exercise: any) => {
     return {
       exerciseName: exercise.name,
       exerciseType: exercise.type,

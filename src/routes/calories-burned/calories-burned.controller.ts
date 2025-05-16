@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { getSearchedActivity } from "../../utils/requests/calories-burned/calories-burned.requests.js"
+import { getSearchedActivity } from "../../utils/requests/calories-burned/calories-burned.requests.ts"
 import { getTrackedCaloriesBurnedData, 
   postTrackedCaloriesBurned, deleteTrackedCaloriesBurned,
   putTrackedCaloriesBurned 
-} from "../../models/calories-burned/calories-burned.model.js"
+} from "../../models/calories-burned/calories-burned.model.ts"
 
 // searching activity
 export async function httpGetSearchedActivity(req: Request, res: Response): Promise<void> {
@@ -28,7 +28,7 @@ export async function httpGetTrackedCaloriesBurned(req: Request, res: Response):
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetTrackedCaloriesBurned = await getTrackedCaloriesBurnedData(userId, email)
+    const resGetTrackedCaloriesBurned = await getTrackedCaloriesBurnedData(userId!, email!)
 
     if (resGetTrackedCaloriesBurned) {  
       res.status(200).json(resGetTrackedCaloriesBurned)
@@ -45,7 +45,7 @@ export async function httpPostTrackedCaloriesBurned(req: Request, res: Response)
     const trackedCaloriesBurned = req.body
     const userId = req.params.userid;
     const email = req.params.email;
-    const resPostTrackedCaloriesBurned = await postTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
+    const resPostTrackedCaloriesBurned = await postTrackedCaloriesBurned(userId!, email!, trackedCaloriesBurned)
 
     if (resPostTrackedCaloriesBurned) {
       res.status(200)
@@ -61,7 +61,7 @@ export async function httpDeleteTrackedCaloriesBurned(req: Request, res: Respons
     const activityId = Number(String(req.body)) 
     const userId = req.params.userid;
     const email = req.params.email;
-    const resDeleteTrackedCaloriesBurned = await deleteTrackedCaloriesBurned(userId, email, activityId)
+    const resDeleteTrackedCaloriesBurned = await deleteTrackedCaloriesBurned(userId!, email!, activityId)
 
     if (resDeleteTrackedCaloriesBurned) {
       res.status(200)
@@ -78,7 +78,7 @@ export async function httpPutTrackedCaloriesBurned(req: Request, res: Response):
     const userId = req.params.userid;
     const email = req.params.email;
     const { trackedCaloriesBurned } = req.body
-    const resPutTrackedCaloriesBurned = await putTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
+    const resPutTrackedCaloriesBurned = await putTrackedCaloriesBurned(userId!, email!, trackedCaloriesBurned)
 
     if (resPutTrackedCaloriesBurned) {
       res.status(200)

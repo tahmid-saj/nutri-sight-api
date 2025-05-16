@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ESNext", // or "ES6"
-    "module": "ESNext", // or "ES6"
-    "moduleResolution": "Node",
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,

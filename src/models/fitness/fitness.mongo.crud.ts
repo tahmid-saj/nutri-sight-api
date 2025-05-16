@@ -1,6 +1,6 @@
 import { Document } from "mongodb"
-import { exercisesDatabase } from "./fitness.mongo.js"
-import { Email, Exercise, ExerciseTag, UserId } from "./fitness.types.js"
+import { exercisesDatabase } from "./fitness.mongo.ts"
+import { Email, Exercise, ExerciseTag, UserId } from "./fitness.types.ts"
 
 // exercises crud for mongodb
 

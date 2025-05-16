@@ -1,6 +1,9 @@
-const { errorOnDisplaySearchedRecipes } = require("../../errors/recipes.errors")
-const { TIMEOUT_SEC } = require("../../constants/recipes.constants")
-require("dotenv").config();
+import { errorOnDisplaySearchedRecipes } from "../../errors/recipes.errors.ts"
+import { TIMEOUT_SEC } from "../../constants/recipes.constants.ts"
+import dotenv from "dotenv"
+
+dotenv.config()
+
 
 // helpers functions
 function timeout(seconds: number) {

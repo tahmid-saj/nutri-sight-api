@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { getNutrientPrediction } from "../../utils/requests/nutrient-predictor/nutrient-predictor.requests.js"
+import { getNutrientPrediction } from "../../utils/requests/nutrient-predictor/nutrient-predictor.requests.ts"
 
 // nutrient prediction
 export async function httpGetNutrientPrediction(req: Request, res: Response): Promise<void> {
