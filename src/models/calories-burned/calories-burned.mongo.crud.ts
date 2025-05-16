@@ -1,15 +1,17 @@
-const trackedCaloriesBurnedDatabase = require("./calories-burned.mongo")
+import { Document } from "mongodb"
+import { trackedCaloriesBurnedDatabase } from "./calories-burned.mongo.js"
+import { ActivityId, Email, TrackedCaloriesBurned, UserId } from "./calories-burned.types.js"
 
 // calories burned crud for mongodb
 
 // user sign in
-async function getTrackedCaloriesBurned(userId, email) {
+export async function getTrackedCaloriesBurned(userId: UserId, email: Email): Promise<{ trackedCaloriesBurned: TrackedCaloriesBurned[] }> {
   const trackedCaloriesBurned = await trackedCaloriesBurnedDatabase.find({
     userId: userId,
     email: email
   })
-  .then(res => {
-    const trackedCaloriesBurned = res.map(trackedCalories => {
+  .then((res: any) => {
+    const trackedCaloriesBurned = res.map((trackedCalories: Document) => {
       return {
         dateTracked: trackedCalories.dateTracked,
         activity: trackedCalories.activity,
@@ -22,7 +24,7 @@ async function getTrackedCaloriesBurned(userId, email) {
 
     return trackedCaloriesBurned
   })
-  .catch(error => {
+  .catch((error: Error) => {
     // TODO: handle error
     console.log(error)
   })
@@ -33,7 +35,8 @@ async function getTrackedCaloriesBurned(userId, email) {
 }
 
 // calories burned operations
-async function addTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
+export async function addTrackedCaloriesBurned(userId: UserId, email: Email, 
+  trackedCaloriesBurned: TrackedCaloriesBurned): Promise<any> {
   const trackedCaloriesBurnedExists = await trackedCaloriesBurnedDatabase.findOne({
     userId: userId,
     email: email,
@@ -59,7 +62,7 @@ async function addTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
   }
 }
 
-async function removeTrackedCaloriesBurned(userId, email, activityId) {
+export async function removeTrackedCaloriesBurned(userId: UserId, email: Email, activityId: ActivityId): Promise<void> {
   const trackedCaloriesBurnedExists = await trackedCaloriesBurnedDatabase.findOne({
     userId: userId,
     email: email,
@@ -78,7 +81,8 @@ async function removeTrackedCaloriesBurned(userId, email, activityId) {
 }
 
 // user sign out
-async function updateTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
+export async function updateTrackedCaloriesBurned(userId: UserId, email: Email, 
+  trackedCaloriesBurned: TrackedCaloriesBurned[]): Promise<void> {
   const trackedCaloriesBurnedExists = await trackedCaloriesBurnedDatabase.findOne({
     userId: userId,
     email: email
@@ -101,11 +105,4 @@ async function updateTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
   } else {
     return
   }
-}
-
-module.exports = {
-  getTrackedCaloriesBurned,
-  addTrackedCaloriesBurned,
-  removeTrackedCaloriesBurned,
-  updateTrackedCaloriesBurned
 }

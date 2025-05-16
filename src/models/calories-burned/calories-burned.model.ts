@@ -1,40 +1,36 @@
-const { getTrackedCaloriesBurned,
+import { getTrackedCaloriesBurned,
   addTrackedCaloriesBurned, removeTrackedCaloriesBurned,
   updateTrackedCaloriesBurned
-} = require("./calories-burned.mongo.crud")
+} from "./calories-burned.mongo.crud.js"
+import { ActivityId, Email, TrackedCaloriesBurned, UserId } from "./calories-burned.types.js"
 
 // TODO: handle error
 
-
 // sign in
-async function getTrackedCaloriesBurnedData(userId, email) {
+export async function getTrackedCaloriesBurnedData(userId: UserId, email: Email): Promise<any> {
   console.log("Getting tracked calories burned data")
   return getTrackedCaloriesBurned(userId, email)
 }
 
 // calories burned operations
-async function postTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
+export async function postTrackedCaloriesBurned(userId: UserId, email: Email, 
+  trackedCaloriesBurned: TrackedCaloriesBurned): Promise<boolean> {
   await addTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
   console.log("Posting tracked calories burned data")
   return true
 }
 
-async function deleteTrackedCaloriesBurned(userId, email, activityId) {
+export async function deleteTrackedCaloriesBurned(userId: UserId, email: Email, 
+  activityId: ActivityId): Promise<boolean> {
   await removeTrackedCaloriesBurned(userId, email, activityId)
   console.log("Deleting tracked calories burned data")
   return true
 }
 
 // sign out
-async function putTrackedCaloriesBurned(userId, email, trackedCaloriesBurned) {
+export async function putTrackedCaloriesBurned(userId: UserId, email: Email, 
+  trackedCaloriesBurned: TrackedCaloriesBurned[]): Promise<boolean> {
   await updateTrackedCaloriesBurned(userId, email, trackedCaloriesBurned)
   console.log("Updating tracked calories burned data")
   return true
-}
-
-module.exports = {
-  getTrackedCaloriesBurnedData,
-  postTrackedCaloriesBurned,
-  deleteTrackedCaloriesBurned,
-  putTrackedCaloriesBurned
 }
