@@ -1,30 +1,37 @@
-const { getNutritionTrackedDaysData, getNutritionTrackedDaysSummaryData,
+import { Request, Response } from 'express';
+
+import { getNutritionTrackedDaysData, getNutritionTrackedDaysSummaryData,
   postNutritionTrackedDay, putNutritionTrackedDay, deleteNutritionTrackedDay,
-  putNutritionTrackedDaysData, putNutritionTrackedDaysSummaryData } = require("../../models/nutrition-tracker/nutrition-tracker.model")
+  putNutritionTrackedDaysData, putNutritionTrackedDaysSummaryData } 
+from "../../models/nutrition-tracker/nutrition-tracker.model.js"
 
 // signed in
-async function httpGetNutritionTrackedDays(req, res) {
+export async function httpGetNutritionTrackedDays(req: Request, res: Response) {
   // return res.status(200).json(getNutritionTrackedDays());
   try {
     const userId = req.params.userid;
     const email = req.params.email;
     const resGetNutritionTrackedDays = await getNutritionTrackedDaysData(userId, email);
 
-    if (resGetNutritionTrackedDays) return res.status(200).json(resGetNutritionTrackedDays);
+    if (resGetNutritionTrackedDays) {
+      res.status(200).json(resGetNutritionTrackedDays)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
   }
 };
 
-async function httpGetNutritionTrackedDaysSummary(req, res) {
+export async function httpGetNutritionTrackedDaysSummary(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(getNutritionTrackedDaysSummary());
   try {
     const userId = req.params.userid;
     const email = req.params.email;
     const resGetNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummaryData(userId, email);
 
-    if (resGetNutritionTrackedDaysSummary) return res.status(200).json(resGetNutritionTrackedDaysSummary);
+    if (resGetNutritionTrackedDaysSummary) {
+      res.status(200).json(resGetNutritionTrackedDaysSummary)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
@@ -32,7 +39,7 @@ async function httpGetNutritionTrackedDaysSummary(req, res) {
 };
 
 // nutrition tracked days operations
-async function httpPostNutritionTrackedDay(req, res) {
+export async function httpPostNutritionTrackedDay(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(postNutritionTrackedDay());
   try {
     const nutritionTrackedDay = req.body;
@@ -40,14 +47,16 @@ async function httpPostNutritionTrackedDay(req, res) {
     const email = req.params.email;
     const resPostNutritionTrackedDay = await postNutritionTrackedDay(userId, email, nutritionTrackedDay);
 
-    if (resPostNutritionTrackedDay) return res.status(200)
+    if (resPostNutritionTrackedDay) {
+      res.status(200)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
   }
 };
 
-async function httpDeleteNutritionTrackedDay(req, res) {
+export async function httpDeleteNutritionTrackedDay(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(deleteNutritionTrackedDay());
   try {
     const nutritionTrackedDate = String(req.body)
@@ -55,14 +64,16 @@ async function httpDeleteNutritionTrackedDay(req, res) {
     const email = req.params.email;
     const resDeleteNutritionTrackedDay = await deleteNutritionTrackedDay(userId, email, nutritionTrackedDate);
 
-    if (resDeleteNutritionTrackedDay) return res.status(200)
+    if (resDeleteNutritionTrackedDay) {
+      res.status(200)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
   }
 };
 
-async function httpPutNutritionTrackedDay(req, res) {
+export async function httpPutNutritionTrackedDay(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putNutritionTrackedDay());
   try {
     const { originalNutritionTrackedDay } = req.body;
@@ -71,7 +82,9 @@ async function httpPutNutritionTrackedDay(req, res) {
     const email = req.params.email;
     const resPutNutritionTrackedDay = await putNutritionTrackedDay(userId, email, originalNutritionTrackedDay, updatedNutritionTrackedDay);
 
-    if (resPutNutritionTrackedDay) return res.status(200)
+    if (resPutNutritionTrackedDay) {
+      res.status(200)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
@@ -79,7 +92,7 @@ async function httpPutNutritionTrackedDay(req, res) {
 };
 
 // signed out
-async function httpPutNutritionTrackedDays(req, res) {
+export async function httpPutNutritionTrackedDays(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putNutritionTrackedDays());
   try {
     const userId = req.params.userid;
@@ -87,14 +100,16 @@ async function httpPutNutritionTrackedDays(req, res) {
     const { nutritionTrackedDays } = req.body;
     const resPutNutritionTrackedDays = await putNutritionTrackedDaysData(userId, email, nutritionTrackedDays);
 
-    if (resPutNutritionTrackedDays) return res.status(200);
+    if (resPutNutritionTrackedDays) {
+      res.status(200)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
   }
 };
 
-async function httpPutNutritionTrackedDaysSummary(req, res) {
+export async function httpPutNutritionTrackedDaysSummary(req: Request, res: Response): Promise<void> {
   // return res.status(200).json(putNutritionTrackedDaysSummary());
   try {
     const userId = req.params.userid;
@@ -102,19 +117,11 @@ async function httpPutNutritionTrackedDaysSummary(req, res) {
     const { nutritionTrackedDaysSummary } = req.body;
     const resPutNutritionTrackedDaysSummary = await putNutritionTrackedDaysSummaryData(userId, email, nutritionTrackedDaysSummary);
 
-    if (resPutNutritionTrackedDaysSummary) return res.status(200);
+    if (resPutNutritionTrackedDaysSummary) {
+      res.status(200)
+    }
   } catch (error) {
     // TODO: handle error
     console.log(error);
   }
 };
-
-module.exports = {
-  httpGetNutritionTrackedDays,
-  httpGetNutritionTrackedDaysSummary,
-  httpPostNutritionTrackedDay,
-  httpPutNutritionTrackedDay,
-  httpDeleteNutritionTrackedDay,
-  httpPutNutritionTrackedDays,
-  httpPutNutritionTrackedDaysSummary,
-}
