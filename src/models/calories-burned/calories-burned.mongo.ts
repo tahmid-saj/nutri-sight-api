@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from 'mongoose'
 
 const trackedCaloriesBurnedSchema = new mongoose.Schema({
   userId: {
@@ -35,6 +35,4 @@ const trackedCaloriesBurnedSchema = new mongoose.Schema({
   },
 })
 
-const trackedCaloriesBurnedDatabase = mongoose.model("TrackedCaloriesBurned", trackedCaloriesBurnedSchema)
-
-module.exports = trackedCaloriesBurnedDatabase
+export const trackedCaloriesBurnedDatabase = mongoose.model("TrackedCaloriesBurned", trackedCaloriesBurnedSchema)
