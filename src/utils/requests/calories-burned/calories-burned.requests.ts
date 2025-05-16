@@ -2,7 +2,8 @@ const { errorOnGetSearchActivity } = require("../../errors/calories-burned.error
 require("dotenv").config();
 
 // helper functions
-async function processSearchedActivity(activity, dateTracked, weightPounds, durationMinutes, activityResults) {
+export async function processSearchedActivity(activity: string, dateTracked: string, 
+    activityResults: any) {
   return activityResults.map((activityResult) => {
     return {
       activity: String(activityResult.name),
@@ -16,7 +17,8 @@ async function processSearchedActivity(activity, dateTracked, weightPounds, dura
 }
 
 // searching activity
-async function getSearchedActivity(activity, dateTracked, weightPounds, durationMinutes) {
+export async function getSearchedActivity(activity: string, dateTracked: string, 
+  weightPounds: string, durationMinutes: string) {
   try {
     let url = `${process.env.REACT_APP_API_NINJAS_CALORIES_BURNED_URL}${activity}`
 
@@ -35,7 +37,7 @@ async function getSearchedActivity(activity, dateTracked, weightPounds, duration
     })
 
     const resJSON = await resActivityResults.json()
-    const res = await processSearchedActivity(activity, dateTracked, weightPounds, durationMinutes, resJSON)
+    const res = await processSearchedActivity(activity, dateTracked, resJSON)
     return {
       searchedActivities: res
     }
@@ -45,8 +47,4 @@ async function getSearchedActivity(activity, dateTracked, weightPounds, duration
       return console.error("Request failed: ", error)
     }
   }
-}
-
-module.exports = {
-  getSearchedActivity
 }

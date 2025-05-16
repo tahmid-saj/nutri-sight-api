@@ -1,5 +1,5 @@
 // nutrient-predictor errors
 
-const errorOnGetNutrientPredictions = () => {
+export const errorOnGetNutrientPredictions = () => {
   console.log("Error getting nutrient predictions")
 }

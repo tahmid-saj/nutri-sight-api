@@ -1,4 +1,4 @@
-const res = async (trackedDayInfo) => {
+export const res = async (trackedDayInfo: any) => {
   try {
     const resActivityResults = await fetch(``, {
       method: "GET",

@@ -1,4 +1,4 @@
-const resNutrition = async (food) => {
+export const resNutrition = async (food: any) => {
   try {
     const resActivityResults = await fetch(`https://api.api-ninjas.com/v1/nutrition?query=` + food.description, {
       method: "GET",
@@ -19,5 +19,5 @@ const resNutrition = async (food) => {
 }
 
 resNutrition({
-  description: "1 pound of steak with mashed potatoes and a can of sprite"
+  food: "1 pound of steak with mashed potatoes and a can of sprite"
 })

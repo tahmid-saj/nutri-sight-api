@@ -2,7 +2,7 @@ const { errorOnGetNutrientPredictions } = require("../../errors/nutrient-predict
 require("dotenv").config();
 
 // helper functions
-async function processNutrientPredictions(nutrientPredictions) {
+export async function processNutrientPredictions(nutrientPredictions) {
   return nutrientPredictions.map((nutrientPrediction) => {
     return {
       name: nutrientPrediction.name,
@@ -25,7 +25,7 @@ async function processNutrientPredictions(nutrientPredictions) {
   })
 }
 
-async function getNutrientPrediction(mealDescription) {
+export async function getNutrientPrediction(mealDescription: any) {
   try {
     const resNutrientPredictions = await fetch(`${process.env.REACT_APP_API_NINJAS_NUTRIENT_PREDICTOR_URL}${mealDescription}`, {
       method: "GET",
@@ -48,6 +48,3 @@ async function getNutrientPrediction(mealDescription) {
   }
 }
 
-module.exports = {
-  getNutrientPrediction
-}
