@@ -1,4 +1,4 @@
-import { User } from "../../../models/users/users.types.ts";
+import { User } from "../../../models/users/users.types.js";
 
 export const usersKey = (user: User) => `users:${user.userId}:${user.email}`
 
