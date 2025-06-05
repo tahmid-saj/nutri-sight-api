@@ -2,6 +2,7 @@ import { Micronutrient, NutritionTrackedDay,
   NutritionTrackedDaysSummary } from "../../../models/nutrition-tracker/nutrition-tracker.types.ts";
 import { User } from "../../../models/users/users.types.ts";
 import { redisClient } from "../../../services/redis/redis.services.ts";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.ts";
 import { nutritionTrackedDaysSummaryKey, userNutritionTrackedDayKey, 
   userNutritionTrackedDayMicronutrientsKey, userNutritionTrackedDaysKey } from "./nutrition-tracker.keys.ts";
 
@@ -57,7 +58,10 @@ export const deserializeNutritionTrackedDayMicronutrients = (micronutrients: str
   })
 }
 
-export const deserializeNutritionTrackedDaysSummary = (nutritionTrackedDaysSummary: NutritionTrackedDaysSummary): { nutritionTrackedDaysSummary: NutritionTrackedDaysSummary } => {
+export const deserializeNutritionTrackedDaysSummary = (
+  nutritionTrackedDaysSummary: NutritionTrackedDaysSummary
+): { nutritionTrackedDaysSummary: NutritionTrackedDaysSummary } => {
+
   return {
     nutritionTrackedDaysSummary: {
       averageDailyCaloriesConsumption: Number(nutritionTrackedDaysSummary.averageDailyCaloriesConsumption),
@@ -108,15 +112,24 @@ export const saveNutritionTrackedDays = async (user: User, nutritionTrackedDays:
   await Promise.all(
     nutritionTrackedDays.map(async (trackedDate) => {
       await Promise.all([
-        redisClient.sAdd(userNutritionTrackedDaysKey(user), trackedDate.dateTracked),
+        redisClient.multi()
+          .sAdd(userNutritionTrackedDaysKey(user), trackedDate.dateTracked)
+          .expire(userNutritionTrackedDaysKey(user), CACHING_TTL.low)
+          .exec(),
 
-        redisClient.hSet(userNutritionTrackedDayKey(user, trackedDate.dateTracked),
-          serializeNutritionTrackedDay(trackedDate))
+        redisClient.multi()
+          .hSet(userNutritionTrackedDayKey(user, trackedDate.dateTracked),
+            serializeNutritionTrackedDay(trackedDate))
+          .expire(userNutritionTrackedDayKey(user, trackedDate.dateTracked), CACHING_TTL.low)
+          .exec()
       ])
 
       if (trackedDate.micronutrients) {
-        redisClient.rPush(userNutritionTrackedDayMicronutrientsKey(user, trackedDate.dateTracked),
-        serializeNutritionTrackedDayMicronutrients(trackedDate.micronutrients))
+        redisClient.multi()
+          .rPush(userNutritionTrackedDayMicronutrientsKey(user, trackedDate.dateTracked),
+            serializeNutritionTrackedDayMicronutrients(trackedDate.micronutrients))
+          .expire(userNutritionTrackedDayMicronutrientsKey(user, trackedDate.dateTracked), CACHING_TTL.low)
+          .exec()
       }
     })
   )
@@ -125,6 +138,9 @@ export const saveNutritionTrackedDays = async (user: User, nutritionTrackedDays:
 export const saveNutritionTrackedDaysSummary = async (user: User, 
   nutritionTrackedDaysSummary: NutritionTrackedDaysSummary) => {
   
-  await redisClient.hSet(nutritionTrackedDaysSummaryKey(user), 
-    serializeNutritionTrackedDaysSummary(nutritionTrackedDaysSummary))
+  await redisClient.multi()
+    .hSet(nutritionTrackedDaysSummaryKey(user), 
+      serializeNutritionTrackedDaysSummary(nutritionTrackedDaysSummary))
+    .expire(nutritionTrackedDaysSummaryKey(user), CACHING_TTL.low)
+    .exec()
 }
