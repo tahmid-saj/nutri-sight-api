@@ -1,7 +1,7 @@
-import { User } from "../../../models/users/users.types.ts";
-import { redisClient } from "../../../services/redis/redis.services.ts";
-import { CACHING_TTL } from "../../../utils/constants/shared.constants.ts";
-import { usersKey, usersUniqueKey } from "./users.keys.ts";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.services.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
+import { usersKey, usersUniqueKey } from "./users.keys.js";
 
 // helper functions
 const serialize = (user: User) => {

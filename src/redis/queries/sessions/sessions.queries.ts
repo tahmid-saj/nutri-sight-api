@@ -1,7 +1,7 @@
-import { Session } from "../../../models/users/users.types.ts"
-import { redisClient } from "../../../services/redis/redis.services.ts"
-import { CACHING_TTL } from "../../../utils/constants/shared.constants.ts"
-import { sessionsKey } from "./sessions.keys.ts"
+import { Session } from "../../../models/users/users.types.js"
+import { redisClient } from "../../../services/redis/redis.services.js"
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js"
+import { sessionsKey } from "./sessions.keys.js"
 
 // helper functions
 const serialize = (session: Session) => {
