@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { mongoConnect } from "./services/mongodb/mongodb.service.ts";
+import { redisConnect } from "./services/redis/redis.services.ts";
 import { app } from "./app.js";
 
 import { loadFilesSync } from "@graphql-tools/load-files";
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 4000;
 
 async function startServer() {
   await mongoConnect();
+  await redisConnect()
 
   // ✅ TypeDefs can still be loaded from .graphql files
   const typesArray = loadFilesSync(path.join(path.resolve(), "**/*.graphql"));
