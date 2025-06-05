@@ -12,3 +12,10 @@ export type TrackedCaloriesBurned = {
   totalCaloriesBurned: number,
   activityId: number
 }
+
+export type ActivitySearchResult = {
+  name: string,
+  calories_per_hour: string | number,
+  duration_minutes: string | number,
+  total_calories: string | number
+}

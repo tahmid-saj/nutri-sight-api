@@ -1,3 +1,4 @@
+import { ActivitySearchResult } from "../../../models/calories-burned/calories-burned.types.ts"
 import { errorOnGetSearchActivity } from "../../errors/calories-burned.errors.ts"
 import dotenv from "dotenv"
 
@@ -6,8 +7,8 @@ dotenv.config()
 
 // helper functions
 export async function processSearchedActivity(activity: string, dateTracked: string, 
-    activityResults: any) {
-  return activityResults.map((activityResult: any) => {
+    activityResults: ActivitySearchResult[]) {
+  return activityResults.map((activityResult: ActivitySearchResult) => {
     return {
       activity: String(activityResult.name),
       searchedActivity: String(activity),
