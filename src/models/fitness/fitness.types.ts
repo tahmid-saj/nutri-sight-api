@@ -16,3 +16,12 @@ export type Exercise = {
   exerciseInstructions?: string,
   exerciseTag: number
 }
+
+export type SearchedExerciseResult = {
+  exerciseName: string
+  exerciseType: string
+  exerciseMuscle: string
+  exerciseEquipment: string
+  exerciseDifficulty: string
+  exerciseInstructions: string
+}
