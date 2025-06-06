@@ -1,3 +1,4 @@
+import { SearchedExerciseResult } from "../../../models/fitness/fitness.types.ts"
 import { errorOnGetSearchedExercise } from "../../errors/fitness.errors.ts"
 import dotenv from "dotenv"
 
@@ -5,7 +6,7 @@ dotenv.config()
 
 
 // helper functions
-export async function processSearchedExercise(exercises: any) {
+export async function processSearchedExercise(exercises: SearchedExerciseResult[]) {
   return exercises.map((exercise: any) => {
     return {
       exerciseName: exercise.name,
