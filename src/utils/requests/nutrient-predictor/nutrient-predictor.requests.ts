@@ -1,3 +1,4 @@
+import { NutrientPrediction } from "../../../models/nutrient-predictor/nutrient-predictor.types.ts"
 import { errorOnGetNutrientPredictions } from "../../errors/nutrient-predictor.errors.ts"
 import dotenv from "dotenv"
 
@@ -5,7 +6,7 @@ dotenv.config()
 
 
 // helper functions
-export async function processNutrientPredictions(nutrientPredictions: any) {
+export function processNutrientPredictions(nutrientPredictions: any): NutrientPrediction[] {
   return nutrientPredictions.map((nutrientPrediction: any) => {
     return {
       name: nutrientPrediction.name,
@@ -24,7 +25,7 @@ export async function processNutrientPredictions(nutrientPredictions: any) {
         fiberG: nutrientPrediction.fiber_g,
         sugarG: nutrientPrediction.sugar_g
       }
-    }
+    } as NutrientPrediction
   })
 }
 
