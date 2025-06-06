@@ -1,3 +1,4 @@
+import { redisClient } from "../../services/redis/redis.services.ts"
 
 export const userLikesRecipe = `
   local recipeKey = KEYS[1]
@@ -55,5 +56,11 @@ export const userViewsRecipe = `
   if inserted then
     redis.call('HINCRBY', recipeKey, 'views', 1)
     redis.call('ZINCRBY', viewedRecipesKey, 1, recipeName)
+  end
+`
+
+export const unlockScript = `
+  if redis.call('GET', KEYS[1]) == ARGV[1] then
+    return redis.call('DEL', KEYS[1])
   end
 `
