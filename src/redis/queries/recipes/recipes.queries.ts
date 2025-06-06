@@ -1,6 +1,7 @@
 import { User } from "../../../models/users/users.types.ts";
 import { redisClient } from "../../../services/redis/redis.services.ts";
 import { CACHING_TTL } from "../../../utils/constants/shared.constants.ts";
+import { withLock } from "../../locks/lock.ts";
 import { usersKey } from "../users/users.keys.ts";
 import { likedRecipesKey, recipeKey, recipeViewsKey, requestedRecipesKey, 
   userLikedRecipesKey, userRequestedRecipesKey, 
@@ -87,6 +88,33 @@ export const userLikesRecipe = async (user: User, recipeName: string) => {
   })
 }
 
+// when a user likes a recipe - with a lock
+export const userLikesRecipeWithLock = async (user: User, recipeName: string) => {
+  return await withLock(recipeName, async (signal: any) => {
+    const userLikedRecipe = await redisClient.sIsMember(userLikedRecipesKey(user), recipeName)
+
+    if (!userLikedRecipe) {
+      if (signal.expired) {
+        throw new Error("Lock expired, can't write any more data")
+      }
+
+      // update recipe hash
+      // update user liked recipes set
+      // update liked recipes sorted set
+      await redisClient.multi()
+        .hIncrBy(recipeKey(recipeName), {
+          likes: 1
+        })
+        .expire(recipeKey(recipeName), CACHING_TTL.high)
+        .sAdd(userLikedRecipesKey(user), recipeName)
+        .expire(userLikedRecipesKey(user), CACHING_TTL.high)
+        .zIncrBy(likedRecipesKey(), 1, recipeName)
+        .expire(likedRecipesKey(), CACHING_TTL.high)
+        .exec()
+    }
+  })
+}
+
 // when a user unlikes a recipe
 export const userUnlikesRecipe = async (user: User, recipeName: string) => {
   await redisClient.executeIsolated(async (isolatedClient: any) => {
@@ -98,7 +126,36 @@ export const userUnlikesRecipe = async (user: User, recipeName: string) => {
 
     if (userLikedRecipe) {
       // update recipe hash
+      // update user liked recipes set
+      // update liked recipes sorted set
       isolatedClient.multi()
+        .hIncrBy(recipeKey(recipeName), {
+          likes: -1
+        })
+        .expire(recipeKey(recipeName), CACHING_TTL.high)
+        .sRem(userLikedRecipesKey(user), recipeName)
+        .expire(userLikedRecipesKey(user), CACHING_TTL.high)
+        .zIncrBy(likedRecipesKey(), -1, recipeName)
+        .expire(likedRecipesKey(), CACHING_TTL.high)
+        .exec()
+    }
+  })
+}
+
+// when a user unlikes a recipe - with a lock
+export const userUnlikesRecipeWithLock = async (user: User, recipeName: string) => {
+  return await withLock(recipeName, async (signal: any) => {
+    const userLikedRecipe = await redisClient.sIsMember(userLikedRecipesKey(user), recipeName)
+
+    if (userLikedRecipe) {
+      if (signal.expired) {
+        throw new Error("Lock expired, can't write any more data")
+      }
+
+      // update recipe hash
+      // update user liked recipes set
+      // update liked recipes sorted set
+      await redisClient.multi()
         .hIncrBy(recipeKey(recipeName), {
           likes: -1
         })
@@ -136,6 +193,29 @@ export const userRequestsRecipe = async (user: User, recipeName: string) => {
   })
 }
 
+// when a user requests a recipe - with a lock
+export const userRequestsRecipeWithLock = async (user: User, recipeName: string) => {
+  return await withLock(recipeName, async (signal: any) => {
+    if (signal.expired) {
+      throw new Error("Lock expired, can't write any more data")
+    }
+
+    // update recipe hash
+    // update user requested recipes set
+    // update requested recipes sorted set
+    await redisClient.multi()
+      .hIncrBy(recipeKey(recipeName), {
+        requests: 1
+      })
+      .expire(recipeKey(recipeName), CACHING_TTL.high)
+      .sAdd(userRequestedRecipesKey(user), recipeName)
+      .expire(userRequestedRecipesKey(user), CACHING_TTL.high)
+      .zIncrBy(requestedRecipesKey(), 1, recipeName)
+      .expire(requestedRecipesKey(), CACHING_TTL.high)
+      .exec()
+  })
+}
+
 // when a user views a recipe
 export const userViewsRecipe = async (user: User, recipeName: string) => {
   await redisClient.executeIsolated(async (isolatedClient: any) => {
@@ -147,6 +227,30 @@ export const userViewsRecipe = async (user: User, recipeName: string) => {
       // update the recipe hash
       // update viewed recipes sorted set
       await isolatedClient.multi()
+        .hIncrBy(recipeKey(recipeName), {
+          views: 1
+        })
+        .expire(recipeKey(recipeName), CACHING_TTL.high)
+        .zIncrBy(viewedRecipesKey(), 1, recipeName)
+        .expire(viewedRecipesKey(), CACHING_TTL.high)
+        .exec()
+    }
+  })
+}
+
+// when a user views a recipe - with a lock
+export const userViewsRecipeWithLock = async (user: User, recipeName: string) => {
+  return await withLock(recipeName, async (signal: any) => {
+    const inserted = await redisClient.pfAdd(recipeViewsKey(recipeName), usersKey(user))
+    
+    if (signal.expired) {
+      throw new Error("Lock expired, can't write any more data")
+    }
+
+    if (inserted) {
+      // update the recipe hash
+      // update viewed recipes sorted set
+      await redisClient.multi()
         .hIncrBy(recipeKey(recipeName), {
           views: 1
         })
