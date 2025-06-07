@@ -11,7 +11,7 @@ export const redisClient = createClient({
 })
 
 redisClient.on("connect", async () => {
-  console.log("Connected to redis instances")
+  console.log("Connected to redis instance")
 })
 
 redisClient.on("error", (err: any) => {

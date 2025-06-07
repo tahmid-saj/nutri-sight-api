@@ -6,6 +6,7 @@ import { usersKey } from "../users/users.keys.js";
 import { likedRecipesKey, recipeKey, recipeViewsKey, requestedRecipesKey, 
   userLikedRecipesKey, userRequestedRecipesKey, 
   viewedRecipesKey} from "./recipes.keys.js";
+import { v4 as uuidv4 } from "uuid"
 
 // helper functions
 
@@ -33,55 +34,54 @@ export const areViewedRecipesCached = async () => {
 
 // getters
 
-// gets all liked recipe names of user
+// gets all liked recipeIds of user
 export const getAllUserLikedRecipes = async (user: User) => {
   return await redisClient.sMembers(userLikedRecipesKey(user))
 }
 
-// gets the most liked recipe names
+// gets the most liked recipeIds
 export const getMostLikedRecipes = async () => {
-  return await redisClient.zrevrange(likedRecipesKey(), 0, 9, "WITHSCORES")
+  return await redisClient.zRange(likedRecipesKey(), 0, 9, { REV: true, WITHSCORES: true });
 }
 
-// gets all the requested recipe names of user
+// gets all the requested recipeIds of user
 export const getAllUserRequestedRecipes = async (user: User) => {
   return await redisClient.sMembers(userRequestedRecipesKey(user))
 }
 
-// gets the most requested recipe names
+// gets the most requested recipeIds
 export const getMostRequestedRecipes = async () => {
-  return await redisClient.zrevrange(requestedRecipesKey(), 0, 9, "WITHSCORES")
+  return await redisClient.zRange(requestedRecipesKey(), 0, 9, { REV: true, WITHSCORES: true });
 }
 
-// gets the most viewed recipe names
+// gets the most viewed recipeIds
 export const getMostViewedRecipes = async () => {
-  return await redisClient.zrevrange(viewedRecipesKey(), 0, 0, "WITHSCORES")
+  return await redisClient.zRange(viewedRecipesKey(), 0, 9, { REV: true, WITHSCORES: true });  
 }
 
 // setters
 
 // when a user likes a recipe
-export const userLikesRecipe = async (user: User, recipeName: string) => {
+export const userLikesRecipe = async (user: User, recipeId: string, recipeName: string) => {
   await redisClient.executeIsolated(async (isolatedClient: any) => {
     // watch for the below keys
-    await isolatedClient.watch(recipeKey(recipeName))
+    await initializeRecipeHash(recipeId, recipeName)
+    await isolatedClient.watch(recipeKey(recipeId))
     await isolatedClient.watch(userLikedRecipesKey(user))
     await isolatedClient.watch(likedRecipesKey())
 
-    const userLikedRecipe = await isolatedClient.sIsMember(userLikedRecipesKey(user), recipeName)
+    const userLikedRecipe = await isolatedClient.sIsMember(userLikedRecipesKey(user), recipeId)
     
     if (!userLikedRecipe) {
       // update recipe hash
       // update user liked recipes set
       // update liked recipes sorted set
       await isolatedClient.multi()
-        .hIncrBy(recipeKey(recipeName), {
-          likes: 1
-        })
-        .expire(recipeKey(recipeName), CACHING_TTL.high)
-        .sAdd(userLikedRecipesKey(user), recipeName)
+        .hIncrBy(recipeKey(recipeId), "likes", 1)
+        .expire(recipeKey(recipeId), CACHING_TTL.high)
+        .sAdd(userLikedRecipesKey(user), recipeId)
         .expire(userLikedRecipesKey(user), CACHING_TTL.high)
-        .zIncrBy(likedRecipesKey(), 1, recipeName)
+        .zIncrBy(likedRecipesKey(), 1, recipeId)
         .expire(likedRecipesKey(), CACHING_TTL.high)
         .exec()
     }
@@ -89,9 +89,13 @@ export const userLikesRecipe = async (user: User, recipeName: string) => {
 }
 
 // when a user likes a recipe - with a lock
-export const userLikesRecipeWithLock = async (user: User, recipeName: string) => {
-  return await withLock(recipeName, async (signal: any) => {
-    const userLikedRecipe = await redisClient.sIsMember(userLikedRecipesKey(user), recipeName)
+export const userLikesRecipeWithLock = async (user: User, recipeId: string, recipeName: string) => {
+  const lockId = uuidv4()
+
+  await withLock(lockId, async (signal: any) => {
+    await initializeRecipeHash(recipeId, recipeName)
+
+    const userLikedRecipe = await redisClient.sIsMember(userLikedRecipesKey(user), recipeId)
 
     if (!userLikedRecipe) {
       if (signal.expired) {
@@ -102,13 +106,11 @@ export const userLikesRecipeWithLock = async (user: User, recipeName: string) =>
       // update user liked recipes set
       // update liked recipes sorted set
       await redisClient.multi()
-        .hIncrBy(recipeKey(recipeName), {
-          likes: 1
-        })
-        .expire(recipeKey(recipeName), CACHING_TTL.high)
-        .sAdd(userLikedRecipesKey(user), recipeName)
+        .hIncrBy(recipeKey(recipeId), "likes", 1)
+        .expire(recipeKey(recipeId), CACHING_TTL.high)
+        .sAdd(userLikedRecipesKey(user), recipeId)
         .expire(userLikedRecipesKey(user), CACHING_TTL.high)
-        .zIncrBy(likedRecipesKey(), 1, recipeName)
+        .zIncrBy(likedRecipesKey(), 1, recipeId)
         .expire(likedRecipesKey(), CACHING_TTL.high)
         .exec()
     }
@@ -116,26 +118,26 @@ export const userLikesRecipeWithLock = async (user: User, recipeName: string) =>
 }
 
 // when a user unlikes a recipe
-export const userUnlikesRecipe = async (user: User, recipeName: string) => {
+export const userUnlikesRecipe = async (user: User, recipeId: string, recipeName: string) => {
   await redisClient.executeIsolated(async (isolatedClient: any) => {
-    await isolatedClient.watch(recipeKey(recipeName))
+    await initializeRecipeHash(recipeId, recipeName)
+    await isolatedClient.watch(recipeKey(recipeId))
     await isolatedClient.watch(userLikedRecipesKey(user))
     await isolatedClient.watch(likedRecipesKey())
 
-    const userLikedRecipe = await isolatedClient.sIsMember(userLikedRecipesKey(user), recipeName)
+    const userLikedRecipe = await isolatedClient.sIsMember(userLikedRecipesKey(user), recipeId)
 
     if (userLikedRecipe) {
       // update recipe hash
       // update user liked recipes set
       // update liked recipes sorted set
       isolatedClient.multi()
-        .hIncrBy(recipeKey(recipeName), {
-          likes: -1
-        })
-        .expire(recipeKey(recipeName), CACHING_TTL.high)
-        .sRem(userLikedRecipesKey(user), recipeName)
+        .hIncrBy(recipeKey(recipeId), "likes", -1)
+
+        .expire(recipeKey(recipeId), CACHING_TTL.high)
+        .sRem(userLikedRecipesKey(user), recipeId)
         .expire(userLikedRecipesKey(user), CACHING_TTL.high)
-        .zIncrBy(likedRecipesKey(), -1, recipeName)
+        .zIncrBy(likedRecipesKey(), -1, recipeId)
         .expire(likedRecipesKey(), CACHING_TTL.high)
         .exec()
     }
@@ -143,9 +145,13 @@ export const userUnlikesRecipe = async (user: User, recipeName: string) => {
 }
 
 // when a user unlikes a recipe - with a lock
-export const userUnlikesRecipeWithLock = async (user: User, recipeName: string) => {
-  return await withLock(recipeName, async (signal: any) => {
-    const userLikedRecipe = await redisClient.sIsMember(userLikedRecipesKey(user), recipeName)
+export const userUnlikesRecipeWithLock = async (user: User, recipeId: string, recipeName: string) => {
+  const lockId = uuidv4()
+
+  await withLock(lockId, async (signal: any) => {
+    await initializeRecipeHash(recipeId, recipeName)
+
+    const userLikedRecipe = await redisClient.sIsMember(userLikedRecipesKey(user), recipeId)
 
     if (userLikedRecipe) {
       if (signal.expired) {
@@ -156,13 +162,11 @@ export const userUnlikesRecipeWithLock = async (user: User, recipeName: string) 
       // update user liked recipes set
       // update liked recipes sorted set
       await redisClient.multi()
-        .hIncrBy(recipeKey(recipeName), {
-          likes: -1
-        })
-        .expire(recipeKey(recipeName), CACHING_TTL.high)
-        .sRem(userLikedRecipesKey(user), recipeName)
+        .hIncrBy(recipeKey(recipeId), "likes", -1)
+        .expire(recipeKey(recipeId), CACHING_TTL.high)
+        .sRem(userLikedRecipesKey(user), recipeId)
         .expire(userLikedRecipesKey(user), CACHING_TTL.high)
-        .zIncrBy(likedRecipesKey(), -1, recipeName)
+        .zIncrBy(likedRecipesKey(), -1, recipeId)
         .expire(likedRecipesKey(), CACHING_TTL.high)
         .exec()
     }
@@ -170,68 +174,70 @@ export const userUnlikesRecipeWithLock = async (user: User, recipeName: string) 
 }
 
 // when a user requests a recipe
-export const userRequestsRecipe = async (user: User, recipeName: string) => {
+export const userRequestsRecipe = async (user: User, recipeId: string, recipeName: string) => {
   await redisClient.executeIsolated(async (isolatedClient: any) => {
     // watch for the below keys
-    await isolatedClient.watch(recipeKey(recipeName))
+    await initializeRecipeHash(recipeId, recipeName)
+    await isolatedClient.watch(recipeKey(recipeId))
     await isolatedClient.watch(userRequestedRecipesKey(user))
     await isolatedClient.watch(requestedRecipesKey())
 
     // update recipe hash
     // update user requested recipes set
     // update requested recipes sorted set
-    await isolatedClient.multi()
-      .hIncrBy(recipeKey(recipeName), {
-        requests: 1
-      })
-      .expire(recipeKey(recipeName), CACHING_TTL.high)
-      .sAdd(userRequestedRecipesKey(user), recipeName)
+    await redisClient.multi()
+      .hIncrBy(recipeKey(recipeId), "requests", 1)
+      .expire(recipeKey(recipeId), CACHING_TTL.high)
+      .sAdd(userRequestedRecipesKey(user), recipeId)
       .expire(userRequestedRecipesKey(user), CACHING_TTL.high)
-      .zIncrBy(requestedRecipesKey(), 1, recipeName)
+      .zIncrBy(requestedRecipesKey(), 1, recipeId)
       .expire(requestedRecipesKey(), CACHING_TTL.high)
       .exec()
   })
 }
 
 // when a user requests a recipe - with a lock
-export const userRequestsRecipeWithLock = async (user: User, recipeName: string) => {
-  return await withLock(recipeName, async (signal: any) => {
+export const userRequestsRecipeWithLock = async (user: User, recipeId: string, recipeName: string) => {
+  const lockId = uuidv4()
+  
+  await withLock(lockId, async (signal: any) => {
+    await initializeRecipeHash(recipeId, recipeName)
+
     if (signal.expired) {
       throw new Error("Lock expired, can't write any more data")
     }
+
+    console.log(recipeKey(recipeId))
 
     // update recipe hash
     // update user requested recipes set
     // update requested recipes sorted set
     await redisClient.multi()
-      .hIncrBy(recipeKey(recipeName), {
-        requests: 1
-      })
-      .expire(recipeKey(recipeName), CACHING_TTL.high)
-      .sAdd(userRequestedRecipesKey(user), recipeName)
+      .hIncrBy(recipeKey(recipeId), "requests", 1)
+      .expire(recipeKey(recipeId), CACHING_TTL.high)
+      .sAdd(userRequestedRecipesKey(user), recipeId)
       .expire(userRequestedRecipesKey(user), CACHING_TTL.high)
-      .zIncrBy(requestedRecipesKey(), 1, recipeName)
+      .zIncrBy(requestedRecipesKey(), 1, recipeId)
       .expire(requestedRecipesKey(), CACHING_TTL.high)
       .exec()
   })
 }
 
 // when a user views a recipe
-export const userViewsRecipe = async (user: User, recipeName: string) => {
+export const userViewsRecipe = async (user: User, recipeId: string, recipeName: string) => {
   await redisClient.executeIsolated(async (isolatedClient: any) => {
-    await isolatedClient.watch(recipeKey(recipeName))
+    await initializeRecipeHash(recipeId, recipeName)
+    await isolatedClient.watch(recipeKey(recipeId))
     await isolatedClient.watch(viewedRecipesKey())
 
-    const inserted = await isolatedClient.pfAdd(recipeViewsKey(recipeName), usersKey(user))
+    const inserted = await isolatedClient.pfAdd(recipeViewsKey(recipeId), usersKey(user))
     if (inserted) {
       // update the recipe hash
       // update viewed recipes sorted set
       await isolatedClient.multi()
-        .hIncrBy(recipeKey(recipeName), {
-          views: 1
-        })
-        .expire(recipeKey(recipeName), CACHING_TTL.high)
-        .zIncrBy(viewedRecipesKey(), 1, recipeName)
+        .hIncrBy(recipeKey(recipeId), "views", 1)
+        .expire(recipeKey(recipeId), CACHING_TTL.high)
+        .zIncrBy(viewedRecipesKey(), 1, recipeId)
         .expire(viewedRecipesKey(), CACHING_TTL.high)
         .exec()
     }
@@ -239,9 +245,13 @@ export const userViewsRecipe = async (user: User, recipeName: string) => {
 }
 
 // when a user views a recipe - with a lock
-export const userViewsRecipeWithLock = async (user: User, recipeName: string) => {
-  return await withLock(recipeName, async (signal: any) => {
-    const inserted = await redisClient.pfAdd(recipeViewsKey(recipeName), usersKey(user))
+export const userViewsRecipeWithLock = async (user: User, recipeId: string, recipeName: string) => {
+  const lockId = uuidv4()
+  
+  await withLock(lockId, async (signal: any) => {
+    await initializeRecipeHash(recipeId, recipeName)
+
+    const inserted = await redisClient.pfAdd(recipeViewsKey(recipeId), usersKey(user))
     
     if (signal.expired) {
       throw new Error("Lock expired, can't write any more data")
@@ -251,13 +261,28 @@ export const userViewsRecipeWithLock = async (user: User, recipeName: string) =>
       // update the recipe hash
       // update viewed recipes sorted set
       await redisClient.multi()
-        .hIncrBy(recipeKey(recipeName), {
-          views: 1
-        })
-        .expire(recipeKey(recipeName), CACHING_TTL.high)
-        .zIncrBy(viewedRecipesKey(), 1, recipeName)
+        .hIncrBy(recipeKey(recipeId), "views", 1)
+        .expire(recipeKey(recipeId), CACHING_TTL.high)
+        .zIncrBy(viewedRecipesKey(), 1, recipeId)
         .expire(viewedRecipesKey(), CACHING_TTL.high)
         .exec()
     }
   })
+}
+
+export const initializeRecipeHash = async (recipeId: string, recipeName: string) => {
+  // if the recipe is not yet cached, then initialize it
+  const recipeExists = await redisClient.exists(recipeKey(recipeId))
+
+  if (!recipeExists) {
+    await redisClient.multi()
+      .hSet(recipeKey(recipeId), {
+        recipeName: recipeName,
+        likes: 0,
+        requests: 0,
+        views: 0
+      })
+      .expire(recipeKey(recipeId), CACHING_TTL.high)
+      .exec()
+  }
 }

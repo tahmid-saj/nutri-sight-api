@@ -17,8 +17,9 @@ export const withLock = async (key: string, cb: (signal: any) => any) => {
     // setting the lock value / acquiring the lock
     const acquired = await redisClient.set(locksKey(key), token, {
       NX: true,
-      PX: 2000
+      PX: 6000
     })
+
 
     if (!acquired) {
       // if the lock was not acquired, we'll have a brief pause (retryDelayMs), then we'll retry again
@@ -26,12 +27,13 @@ export const withLock = async (key: string, cb: (signal: any) => any) => {
       continue
     }
 
+
     // if the set is successful, then run the callback provided
     try {
       const signal = { expired: false }
       setTimeout(() => {
         signal.expired = true
-      }, 2000)
+      }, 6000)
 
       const result = await cb(signal)
       return result
