@@ -1,11 +1,11 @@
-import { User } from "../../../models/users/users.types.ts";
-import { redisClient } from "../../../services/redis/redis.services.ts";
-import { CACHING_TTL } from "../../../utils/constants/shared.constants.ts";
-import { withLock } from "../../locks/lock.ts";
-import { usersKey } from "../users/users.keys.ts";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.services.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
+import { withLock } from "../../locks/lock.js";
+import { usersKey } from "../users/users.keys.js";
 import { likedRecipesKey, recipeKey, recipeViewsKey, requestedRecipesKey, 
   userLikedRecipesKey, userRequestedRecipesKey, 
-  viewedRecipesKey} from "./recipes.keys.ts";
+  viewedRecipesKey} from "./recipes.keys.js";
 
 // helper functions
 

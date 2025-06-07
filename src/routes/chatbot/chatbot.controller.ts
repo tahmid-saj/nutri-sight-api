@@ -1,8 +1,8 @@
 import { Request, response, Response } from 'express';
 
-import { getChatBotResponse, getChatBotResponseStream } from "../../utils/requests/chatbot/chatbot.requests.ts"
-import { RANDOM_SEPARATOR } from '../../utils/constants/chatbot.constants.ts';
-import { getChatbotSessionRequests, saveChatbotSessionRequest, sessionIdExists } from '../../redis/queries/chatbot/chatbot.queries.ts';
+import { getChatBotResponse, getChatBotResponseStream } from "../../utils/requests/chatbot/chatbot.requests.js"
+import { RANDOM_SEPARATOR } from '../../utils/constants/chatbot.constants.js';
+import { getChatbotSessionRequests, saveChatbotSessionRequest, sessionIdExists } from '../../redis/queries/chatbot/chatbot.queries.js';
 
 // chatbot response
 export async function httpGetChatBotResponse(req: Request, res: Response): Promise<void> {

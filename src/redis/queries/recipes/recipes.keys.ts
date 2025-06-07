@@ -1,4 +1,4 @@
-import { User } from "../../../models/users/users.types.ts"
+import { User } from "../../../models/users/users.types.js"
 
 // hash containing fields like likes, requests, views, etc of recipe
 export const recipeKey = (recipeName: string) => `recipe#${recipeName}`

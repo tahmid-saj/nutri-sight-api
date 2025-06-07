@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { getSearchedActivity } from "../../utils/requests/calories-burned/calories-burned.requests.ts"
+import { getSearchedActivity } from "../../utils/requests/calories-burned/calories-burned.requests.js"
 import { getTrackedCaloriesBurnedData, 
   postTrackedCaloriesBurned, deleteTrackedCaloriesBurned,
   putTrackedCaloriesBurned 
-} from "../../models/calories-burned/calories-burned.model.ts"
+} from "../../models/calories-burned/calories-burned.model.js"
 import { areTrackedCaloriesBurnedCached, getSearchedActivityCached, getTrackedCaloriesBurned, 
-  isSearchedActivityCached, saveSearchedActivity, saveTrackedCaloriesBurned } from '../../redis/queries/calories-burned/calories-burned.queries.ts';
-import { User } from '../../models/users/users.types.ts';
+  isSearchedActivityCached, saveSearchedActivity, saveTrackedCaloriesBurned } from '../../redis/queries/calories-burned/calories-burned.queries.js';
+import { User } from '../../models/users/users.types.js';
 
 // searching activity
 export async function httpGetSearchedActivity(req: Request, res: Response): Promise<void> {

@@ -1,8 +1,8 @@
 import { getTrackedCaloriesBurned,
   addTrackedCaloriesBurned, removeTrackedCaloriesBurned,
   updateTrackedCaloriesBurned
-} from "../../models/calories-burned/calories-burned.mongo.crud.ts"
-import { ActivityId, Email, TrackedCaloriesBurned, UserId } from "../../models/calories-burned/calories-burned.types.ts"
+} from "../../models/calories-burned/calories-burned.mongo.crud.js"
+import { ActivityId, Email, TrackedCaloriesBurned, UserId } from "../../models/calories-burned/calories-burned.types.js"
 
 export async function trackedCaloriesBurnedByUser(userId: UserId, email: Email): Promise<TrackedCaloriesBurned[]> {
   const trackedCaloriesBurned = await getTrackedCaloriesBurned(userId, email)

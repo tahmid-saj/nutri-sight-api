@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto"
-import { redisClient } from "../../services/redis/redis.services.ts"
-import { locksKey } from "./lock.keys.ts"
+import { redisClient } from "../../services/redis/redis.services.js"
+import { locksKey } from "./lock.keys.js"
 
 export const withLock = async (key: string, cb: (signal: any) => any) => {
   // initialize the retry behavior

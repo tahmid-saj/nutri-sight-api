@@ -1,4 +1,4 @@
-import { redisClient } from "../../../services/redis/redis.services.ts"
+import { redisClient } from "../../../services/redis/redis.services.js"
 import { CACHING_TTL } from "../../../utils/constants/shared.constants.js"
 import { chatbotSessionRequestKey, chatbotSessionResponseKey } from "./chatbot.keys.js"
 import { v4 as uuidv4 } from "uuid"

@@ -1,12 +1,12 @@
 import express, { Router } from 'express'
 
-import { testRouter } from "./test-route/test-route.router.ts"
-import { chatbotRouter } from "./chatbot/chatbot.router.ts"
-import { nutrientPredictorRouter } from "./nutrient-predictor/nutrient-predictor.router.ts"
-import { nutritionTrackerRouter } from "./nutrition-tracker/nutrition-tracker.router.ts"
-import { fitnessRouter } from "./fitness/fitness.router.ts"
-import { caloriesBurnedRouter } from "./calories-burned/calories-burned.router.ts"
-import { recipesRouter } from "./recipes/recipes.router.ts"
+import { testRouter } from "./test-route/test-route.router.js"
+import { chatbotRouter } from "./chatbot/chatbot.router.js"
+import { nutrientPredictorRouter } from "./nutrient-predictor/nutrient-predictor.router.js"
+import { nutritionTrackerRouter } from "./nutrition-tracker/nutrition-tracker.router.js"
+import { fitnessRouter } from "./fitness/fitness.router.js"
+import { caloriesBurnedRouter } from "./calories-burned/calories-burned.router.js"
+import { recipesRouter } from "./recipes/recipes.router.js"
 
 const api: Router = express.Router();
 

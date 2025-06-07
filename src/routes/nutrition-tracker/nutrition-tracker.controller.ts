@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { getNutritionTrackedDaysData, getNutritionTrackedDaysSummaryData,
   postNutritionTrackedDay, putNutritionTrackedDay, deleteNutritionTrackedDay,
   putNutritionTrackedDaysData, putNutritionTrackedDaysSummaryData } 
-from "../../models/nutrition-tracker/nutrition-tracker.model.ts"
+from "../../models/nutrition-tracker/nutrition-tracker.model.js"
 
 // signed in
 export async function httpGetNutritionTrackedDays(req: Request, res: Response) {

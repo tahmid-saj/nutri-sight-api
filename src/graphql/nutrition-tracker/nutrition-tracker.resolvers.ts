@@ -1,10 +1,10 @@
 import { NutritionTrackedDate, NutritionTrackedDay, 
-  NutritionTrackedDaysSummary } from "../../models/nutrition-tracker/nutrition-tracker.types.ts"
+  NutritionTrackedDaysSummary } from "../../models/nutrition-tracker/nutrition-tracker.types.js"
 import { nutritionTrackedDaysByUser, nutritionTrackedDaysSummaryByUser, 
   createUserNutritionTrackedDay, deleteUserNutritionTrackedDay, 
   updateUserNutritionTrackedDay, updateUserNutritionTrackedDays,
   updateUserNutritionTrackedDaysSummary
-} from "./nutrition-tracker.model.ts"
+} from "./nutrition-tracker.model.js"
 
 type UserArgs = {
   userId: string,

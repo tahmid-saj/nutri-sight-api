@@ -1,5 +1,5 @@
-import { NutrientPrediction } from "../../../models/nutrient-predictor/nutrient-predictor.types.ts"
-import { errorOnGetNutrientPredictions } from "../../errors/nutrient-predictor.errors.ts"
+import { NutrientPrediction } from "../../../models/nutrient-predictor/nutrient-predictor.types.js"
+import { errorOnGetNutrientPredictions } from "../../errors/nutrient-predictor.errors.js"
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -29,7 +29,7 @@ export function processNutrientPredictions(nutrientPredictions: any): NutrientPr
   })
 }
 
-export async function getNutrientPrediction(mealDescription: any) {
+export async function getNutrientPrediction(mealDescription: string) {
   try {
     const resNutrientPredictions = await fetch(`${process.env.REACT_APP_API_NINJAS_NUTRIENT_PREDICTOR_URL}${mealDescription}`, {
       method: "GET",

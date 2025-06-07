@@ -1,6 +1,6 @@
 import express, { Router } from "express"
 
-import { httpGetNutrientPrediction } from "./nutrient-predictor.controller.ts"
+import { httpGetNutrientPrediction } from "./nutrient-predictor.controller.js"
 
 const nutrientPredictorRouter: Router = express.Router()
 

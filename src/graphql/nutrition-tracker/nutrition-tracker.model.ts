@@ -1,9 +1,9 @@
 import { getNutritionTrackedDays, getNutritionTrackedDaysSummary,
   addNutritionTrackedDay, updateNutritionTrackedDay, removeNutritionTrackedDay,
   updateNutritionTrackedDays, updateNutritionTrackedDaysSummary
-} from "../../models/nutrition-tracker/nutrition-tracker.mongo.crud.ts"
+} from "../../models/nutrition-tracker/nutrition-tracker.mongo.crud.js"
 import { Email, NutritionTrackedDate, NutritionTrackedDay, 
-  NutritionTrackedDaysSummary, UserId } from "../../models/nutrition-tracker/nutrition-tracker.types.ts"
+  NutritionTrackedDaysSummary, UserId } from "../../models/nutrition-tracker/nutrition-tracker.types.js"
 
 export async function nutritionTrackedDaysByUser(userId: UserId, email: Email): Promise<NutritionTrackedDay[]> {
   const nutritionTrackedDays = await getNutritionTrackedDays(userId, email)

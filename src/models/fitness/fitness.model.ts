@@ -1,8 +1,8 @@
 import { getExercises,
   addExercise, removeExercise,
   updateExercises
-} from "./fitness.mongo.crud.ts"
-import { UserId, Email, Exercise, ExerciseTag } from "./fitness.types.ts"
+} from "./fitness.mongo.crud.js"
+import { UserId, Email, Exercise, ExerciseTag } from "./fitness.types.js"
 
 // TODO: handle error
 

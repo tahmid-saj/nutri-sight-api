@@ -1,6 +1,6 @@
-import { ActivitySearchResult } from "../../../models/calories-burned/calories-burned.types.ts"
-import { getSearchedActivityCached, isSearchedActivityCached, saveSearchedActivity } from "../../../redis/queries/calories-burned/calories-burned.queries.ts"
-import { errorOnGetSearchActivity } from "../../errors/calories-burned.errors.ts"
+import { ActivitySearchResult } from "../../../models/calories-burned/calories-burned.types.js"
+import { getSearchedActivityCached, isSearchedActivityCached, saveSearchedActivity } from "../../../redis/queries/calories-burned/calories-burned.queries.js"
+import { errorOnGetSearchActivity } from "../../errors/calories-burned.errors.js"
 import dotenv from "dotenv"
 
 dotenv.config()

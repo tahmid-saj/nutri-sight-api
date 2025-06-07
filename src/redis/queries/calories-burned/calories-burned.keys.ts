@@ -1,4 +1,4 @@
-import { User } from "../../../models/users/users.types.ts";
+import { User } from "../../../models/users/users.types.js";
 
 // set containing user's tracked calories burned activityIDs
 export const userTrackedCaloriesBurnedKey = (user: User) => `user-tracked-calories-burned#${user.userId}:${user.email}`
