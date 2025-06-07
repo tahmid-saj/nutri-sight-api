@@ -25,10 +25,10 @@ export async function processSearchedActivity(activity: string, dateTracked: str
 export async function getSearchedActivity(activity: string, dateTracked: string, 
   weightPounds: string, durationMinutes: string) {
   try {
-    let resResults;
+    let results;
     const searchedActivityCached = await isSearchedActivityCached(activity, weightPounds, durationMinutes)
     if (searchedActivityCached) {
-      resResults = await getSearchedActivityCached(activity, weightPounds, durationMinutes) 
+      results = await getSearchedActivityCached(activity, weightPounds, durationMinutes) 
     } else {
       let url = `${process.env.REACT_APP_API_NINJAS_CALORIES_BURNED_URL}${activity}`
   
@@ -46,13 +46,13 @@ export async function getSearchedActivity(activity: string, dateTracked: string,
         }
       })
   
-      resResults = await resActivityResults.json()
+      results = await resActivityResults.json()
   
       // cache the activity results
-      await saveSearchedActivity(activity, weightPounds, durationMinutes, resResults)
+      await saveSearchedActivity(activity, weightPounds, durationMinutes, results)
     }
 
-    const res = await processSearchedActivity(activity, dateTracked, resResults)
+    const res = await processSearchedActivity(activity, dateTracked, results)
     return {
       searchedActivities: res
     }

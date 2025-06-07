@@ -38,21 +38,21 @@ export const deserializeExercise = (exercise: { [key: string]: string }): Exerci
   return resExercise
 }
 
-export const serializeSearchedExercise = (searchedExerciseResults: SearchedExerciseResult[]) => {
+export const serializeSearchedExercise = (searchedExerciseResults: SearchedExerciseResult[]): string[] => {
   return searchedExerciseResults.map((result) => {
-    return `name=${result.exerciseName}!type=${result.exerciseType}!muscle=${result.exerciseMuscle}!equipment=${result.exerciseEquipment}!difficulty=${result.exerciseDifficulty}!instructions=${result.exerciseInstructions}`
+    return `name=${result.name}!type=${result.type}!muscle=${result.muscle}!equipment=${result.equipment}!difficulty=${result.difficulty}!instructions=${result.instructions}`
   })
 }
 
 export const deserializeSearchedExercise = (searchedExerciseResults: string[]) => {
   return searchedExerciseResults.map((result) => {
     const data = result.split("!")
-    const name = data[0]?.split("=")
-    const type = data[1]?.split("=")
-    const muscle = data[2]?.split("=")
-    const equipment = data[3]?.split("=")
-    const difficulty = data[4]?.split("=")
-    const instructions = data[5]?.split("=")
+    const name = data[0]?.split("=")[1]
+    const type = data[1]?.split("=")[1]
+    const muscle = data[2]?.split("=")[1]
+    const equipment = data[3]?.split("=")[1]
+    const difficulty = data[4]?.split("=")[1]
+    const instructions = data[5]?.split("=")[1]
 
     return {
       name, type, muscle, equipment, difficulty, instructions
@@ -74,8 +74,8 @@ export const getExercises = async (user: User) => {
   const exercises = await redisClient.sMembers(userFitnessKey(user))
 
   const resExercises = await Promise.all(
-    exercises.map(async (exerciseTag: number) => {
-      const resExercise = await redisClient.hGetAll(userFitnessExerciseKey(user, exerciseTag))
+    exercises.map(async (exerciseTag: string) => {
+      const resExercise = await redisClient.hGetAll(userFitnessExerciseKey(user, Number(exerciseTag)))
       return deserializeExercise(resExercise)
     })
   )
@@ -85,7 +85,7 @@ export const getExercises = async (user: User) => {
   }
 }
 
-export const getSearchedExercise = async (exerciseName: string, exerciseType: string, 
+export const getSearchedExerciseCached = async (exerciseName: string, exerciseType: string, 
   exerciseMuscle: string, exerciseDifficulty: string) => {
   const searchedExercise = await redisClient.lRange(searchedExerciseKey(exerciseName, exerciseType, 
     exerciseMuscle, exerciseDifficulty), 0, -1)
@@ -94,11 +94,11 @@ export const getSearchedExercise = async (exerciseName: string, exerciseType: st
 
 export const saveExercises = async (user: User, exercises: Exercise[]) => {
   await Promise.all(
-    exercises.map(async (exercise) => {
+    exercises.map(async (exercise: Exercise) => {
       await Promise.all([
         // save exercise to set
         redisClient.multi()
-          .sAdd(userFitnessKey(user), exercise.exerciseTag)
+          .sAdd(userFitnessKey(user), String(exercise.exerciseTag))
           .expire(userFitnessKey(user), CACHING_TTL.low)
           .exec(),
 
@@ -114,6 +114,9 @@ export const saveExercises = async (user: User, exercises: Exercise[]) => {
 
 export const saveSearchedExercise = async (exerciseName: string, exerciseType: string, 
   exerciseMuscle: string, exerciseDifficulty: string, searchedExerciseResults: SearchedExerciseResult[]) => {
+
+  if (!searchedExerciseResults || searchedExerciseResults.length === 0) return
+
   await redisClient.multi()
     .rPush(searchedExerciseKey(exerciseName, exerciseType, exerciseMuscle, exerciseDifficulty),
       serializeSearchedExercise(searchedExerciseResults))
