@@ -12,7 +12,7 @@ export const withLock = async (key: string, cb: (signal: any) => any) => {
 
   // implementing the retry behavior
   while (retries >= 0) {
-    retries--;
+    retries--
 
     // setting the lock value / acquiring the lock
     const acquired = await redisClient.set(locksKey(key), token, {
@@ -34,6 +34,7 @@ export const withLock = async (key: string, cb: (signal: any) => any) => {
       }, 2000)
 
       const result = await cb(signal)
+      return result
     } finally {
       // after the callback is run, we'll unset the locked key
       await unlock(locksKey(key), token)
@@ -41,7 +42,7 @@ export const withLock = async (key: string, cb: (signal: any) => any) => {
   }
 }
 
-const pause = (duration: number) => {
+const pause = async (duration: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, duration)
   })
@@ -50,7 +51,7 @@ const pause = (duration: number) => {
 export const unlock = async (key: string, token: string) => {
   const resToken = await redisClient.get(key)
 
-  if (resToken == token) {
+  if (resToken === token) {
     await redisClient.del(key)
   }
 }

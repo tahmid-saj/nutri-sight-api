@@ -1,4 +1,3 @@
-import { redisClient } from "../../services/redis/redis.services.ts"
 
 export const userLikesRecipe = `
   local recipeKey = KEYS[1]
