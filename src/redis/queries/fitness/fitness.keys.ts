@@ -1,4 +1,4 @@
-import { User } from "../../../models/users/users.types.ts";
+import { User } from "../../../models/users/users.types.js";
 
 // set containing exercise tags belonging to user
 export const userFitnessKey = (user: User) => `user-fitness#${user.userId}:${user.email}`

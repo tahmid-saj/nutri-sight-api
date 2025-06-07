@@ -1,5 +1,5 @@
-import { errorOnDisplaySearchedRecipes } from "../../errors/recipes.errors.ts"
-import { TIMEOUT_SEC } from "../../constants/recipes.constants.ts"
+import { errorOnDisplaySearchedRecipes } from "../../errors/recipes.errors.js"
+import { TIMEOUT_SEC } from "../../constants/recipes.constants.js"
 import dotenv from "dotenv"
 
 dotenv.config()

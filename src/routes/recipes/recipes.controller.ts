@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { getRecipes, getRecipe } from "../../utils/requests/recipes/recipes.requests.ts"
+import { getRecipes, getRecipe } from "../../utils/requests/recipes/recipes.requests.js"
 
 // multiple recipes
 export async function httpGetRecipes(req: Request, res: Response): Promise<void> {

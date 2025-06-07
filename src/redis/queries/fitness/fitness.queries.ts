@@ -1,8 +1,8 @@
-import { Exercise, SearchedExerciseResult } from "../../../models/fitness/fitness.types.ts";
-import { User } from "../../../models/users/users.types.ts";
-import { redisClient } from "../../../services/redis/redis.services.ts";
-import { CACHING_TTL } from "../../../utils/constants/shared.constants.ts";
-import { searchedExerciseKey, userFitnessExerciseKey, userFitnessKey } from "./fitness.keys.ts";
+import { Exercise, SearchedExerciseResult } from "../../../models/fitness/fitness.types.js";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.services.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
+import { searchedExerciseKey, userFitnessExerciseKey, userFitnessKey } from "./fitness.keys.js";
 
 // helper functions
 export const serializeExercise = (exercise: Exercise) => {

@@ -1,4 +1,4 @@
-import { User } from "../../../models/users/users.types.ts";
+import { User } from "../../../models/users/users.types.js";
 
 // set containing dates tracked by user
 export const userNutritionTrackedDaysKey = (user: User) => `user-nutrition-tracked-days#${user.userId}:${user.email}`

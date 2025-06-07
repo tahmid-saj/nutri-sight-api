@@ -1,6 +1,6 @@
-import { TrackedCaloriesBurned } from "../../models/calories-burned/calories-burned.types.ts"
+import { TrackedCaloriesBurned } from "../../models/calories-burned/calories-burned.types.js"
 import { trackedCaloriesBurnedByUser, createUserTrackedCaloriesBurned, 
-  deleteUserTrackedCaloriesBurned, updateUserTrackedCaloriesBurned } from "./calories-burned.model.ts"
+  deleteUserTrackedCaloriesBurned, updateUserTrackedCaloriesBurned } from "./calories-burned.model.js"
 
 type UserArgs = {
   userId: string,

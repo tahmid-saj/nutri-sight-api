@@ -1,8 +1,8 @@
-import { ActivitySearchResult, TrackedCaloriesBurned } from "../../../models/calories-burned/calories-burned.types.ts";
-import { User } from "../../../models/users/users.types.ts";
-import { redisClient } from "../../../services/redis/redis.services.ts";
-import { CACHING_TTL } from "../../../utils/constants/shared.constants.ts";
-import { searchedActivityKey, userActivityCaloriesBurnedKey, userTrackedCaloriesBurnedKey } from "./calories-burned.keys.ts";
+import { ActivitySearchResult, TrackedCaloriesBurned } from "../../../models/calories-burned/calories-burned.types.js";
+import { User } from "../../../models/users/users.types.js";
+import { redisClient } from "../../../services/redis/redis.services.js";
+import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
+import { searchedActivityKey, userActivityCaloriesBurnedKey, userTrackedCaloriesBurnedKey } from "./calories-burned.keys.js";
 
 // helper functions
 export const serializeTrackedCaloriesBurned = (trackedCaloriesBurned: TrackedCaloriesBurned) => {

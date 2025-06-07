@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 
 import { getExercisesData, postExercise, 
-  deleteExercise, putExercises } from "../../models/fitness/fitness.model.ts"
-import { getSearchedExercise } from "../../utils/requests/fitness/fitness.requests.ts"
-import { User } from '../../models/users/users.types.ts';
-import { areExercisesCached, getExercises, saveExercises } from '../../redis/queries/fitness/fitness.queries.ts';
+  deleteExercise, putExercises } from "../../models/fitness/fitness.model.js"
+import { getSearchedExercise } from "../../utils/requests/fitness/fitness.requests.js"
+import { User } from '../../models/users/users.types.js';
+import { areExercisesCached, getExercises, saveExercises } from '../../redis/queries/fitness/fitness.queries.js';
 
 // searching exercise
 export async function httpGetSearchedExercise(req: Request, res: Response): Promise<void> {

@@ -1,6 +1,6 @@
-import { Exercise } from "../../models/fitness/fitness.types.ts"
+import { Exercise } from "../../models/fitness/fitness.types.js"
 import { exercisesByUser, createUserExercise, 
-  deleteUserExercise, updateUserExercises } from "./fitness.model.ts"
+  deleteUserExercise, updateUserExercises } from "./fitness.model.js"
 
 type UserArgs = {
   userId: string,

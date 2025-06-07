@@ -3,7 +3,7 @@ import express, { Router } from 'express'
 import { httpGetNutritionTrackedDays, httpGetNutritionTrackedDaysSummary,
   httpPostNutritionTrackedDay, httpPutNutritionTrackedDay, httpDeleteNutritionTrackedDay,
   httpPutNutritionTrackedDays, httpPutNutritionTrackedDaysSummary } 
-from "./nutrition-tracker.controller.ts"
+from "./nutrition-tracker.controller.js"
 
 const nutritionTrackerRouter: Router = express.Router();
 

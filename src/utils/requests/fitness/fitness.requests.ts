@@ -1,6 +1,6 @@
-import { SearchedExerciseResult } from "../../../models/fitness/fitness.types.ts"
-import { getSearchedExerciseCached, isSearchedExerciseCached, saveSearchedExercise } from "../../../redis/queries/fitness/fitness.queries.ts"
-import { errorOnGetSearchedExercise } from "../../errors/fitness.errors.ts"
+import { SearchedExerciseResult } from "../../../models/fitness/fitness.types.js"
+import { getSearchedExerciseCached, isSearchedExerciseCached, saveSearchedExercise } from "../../../redis/queries/fitness/fitness.queries.js"
+import { errorOnGetSearchedExercise } from "../../errors/fitness.errors.js"
 import dotenv from "dotenv"
 
 dotenv.config()

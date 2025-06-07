@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-import { mongoConnect } from "./services/mongodb/mongodb.service.ts";
-import { redisConnect } from "./services/redis/redis.services.ts";
+import { mongoConnect } from "./services/mongodb/mongodb.service.js";
+import { redisConnect } from "./services/redis/redis.services.js";
 import { app } from "./app.js";
 
 import { loadFilesSync } from "@graphql-tools/load-files";
@@ -13,7 +13,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { ApolloServer } from "apollo-server-express";
 
 // ✅ Import resolvers directly
-import { resolvers as caloriesBurnedResolvers } from "./graphql/calories-burned/calories-burned.resolvers.ts";
+import { resolvers as caloriesBurnedResolvers } from "./graphql/calories-burned/calories-burned.resolvers.js";
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 4000;
