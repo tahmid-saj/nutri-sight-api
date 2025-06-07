@@ -10,7 +10,7 @@
     "outDir": "dist",
     "rootDir": "./src",
     "allowImportingTsExtensions": true,
-    "noEmit": true,
+    "noEmit": false,
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },

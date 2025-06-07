@@ -10,11 +10,11 @@ import { nutritionTrackedDaysSummaryKey, userNutritionTrackedDayKey,
 export const serializeNutritionTrackedDay = (trackedDay: NutritionTrackedDay) => {
   return {
     dateTracked: trackedDay.dateTracked,
-    calories: trackedDay.dateTracked,
+    calories: trackedDay.calories,
 
-    carbohydrates: trackedDay.dateTracked,
-    protein: trackedDay.dateTracked,
-    fat: trackedDay.dateTracked
+    carbohydrates: trackedDay.macronutrients.carbohydrates,
+    protein: trackedDay.macronutrients.protein,
+    fat: trackedDay.macronutrients.fat
   }
 }
 
@@ -49,7 +49,7 @@ export const deserializeNutritionTrackedDayMicronutrients = (micronutrients: str
   return micronutrients.map((micronutrient) => {
     const data = micronutrient.split("!")
     const name = data[0]?.split("=")[1]!
-    const amount = Number(data[1]?.split("=")[1])
+    const amount = Number(data[1]?.split("=")[1]!)
     const unit = data[2]?.split("=")[1]!
 
     return {
@@ -100,7 +100,9 @@ export const getNutritionTrackedDays = async (user: User) => {
     })
   )
 
-  return resNutritionTrackedDays
+  return {
+    nutritionTrackedDays: resNutritionTrackedDays
+  }
 }
 
 export const getNutritionTrackedDaysSummary = async (user: User) => {
@@ -113,7 +115,7 @@ export const saveNutritionTrackedDays = async (user: User, nutritionTrackedDays:
     nutritionTrackedDays.map(async (trackedDate) => {
       await Promise.all([
         redisClient.multi()
-          .sAdd(userNutritionTrackedDaysKey(user), trackedDate.dateTracked)
+          .sAdd(userNutritionTrackedDaysKey(user), String(trackedDate.dateTracked))
           .expire(userNutritionTrackedDaysKey(user), CACHING_TTL.low)
           .exec(),
 
