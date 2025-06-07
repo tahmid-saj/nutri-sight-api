@@ -60,28 +60,28 @@ export const getTrackedCaloriesBurned = async (user: User) => {
 
   const resTrackedCaloriesBurned = await Promise.all(
     activityIds.map(async (activityId: string) => {
-      const resTrackedDate = await redisClient.hGetAll(userActivityCaloriesBurnedKey(user, activityId))
+      const resTrackedDate = await redisClient.hGetAll(userActivityCaloriesBurnedKey(user, Number(activityId)))
       return deserializeTrackedCaloriesBurned(resTrackedDate)
     })
   )
-
+ 
   return {
     trackedCaloriesBurned: resTrackedCaloriesBurned
   }
 }
 
-export const getSearchedActivity = async (activity: string, weightPounds: string, durationMinutes: string) => {
+export const getSearchedActivityCached = async (activity: string, weightPounds: string, durationMinutes: string) => {
   const resSearchedActivityResults = await redisClient.lRange(searchedActivityKey(activity, weightPounds, durationMinutes), 0, -1)
   return deserializeActivitySearchResults(resSearchedActivityResults)
 }
 
 export const saveTrackedCaloriesBurned = async (user: User, trackedCaloriesBurned: TrackedCaloriesBurned[]) => {
   await Promise.all(
-    trackedCaloriesBurned.map(async (trackedDate) => {
+    trackedCaloriesBurned.map(async (trackedDate: TrackedCaloriesBurned) => {
       await Promise.all([
         // save trackedDate in set
         redisClient.multi()
-          .sAdd(userTrackedCaloriesBurnedKey(user), trackedDate.dateTracked)
+          .sAdd(userTrackedCaloriesBurnedKey(user), String(trackedDate.activityId))
           .expire(userTrackedCaloriesBurnedKey(user), CACHING_TTL.low)
           .exec(),
 

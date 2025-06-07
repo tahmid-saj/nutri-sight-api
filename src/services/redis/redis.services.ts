@@ -17,5 +17,5 @@ redisClient.on("error", (err: any) => {
 })
 
 export async function redisConnect() {
-  await redisClient.connect
+  await redisClient.connect()
 }

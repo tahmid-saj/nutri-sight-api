@@ -4,6 +4,9 @@ import { getTrackedCaloriesBurnedData,
   postTrackedCaloriesBurned, deleteTrackedCaloriesBurned,
   putTrackedCaloriesBurned 
 } from "../../models/calories-burned/calories-burned.model.ts"
+import { areTrackedCaloriesBurnedCached, getSearchedActivityCached, getTrackedCaloriesBurned, 
+  isSearchedActivityCached, saveSearchedActivity, saveTrackedCaloriesBurned } from '../../redis/queries/calories-burned/calories-burned.queries.ts';
+import { User } from '../../models/users/users.types.ts';
 
 // searching activity
 export async function httpGetSearchedActivity(req: Request, res: Response): Promise<void> {
@@ -14,7 +17,7 @@ export async function httpGetSearchedActivity(req: Request, res: Response): Prom
     const durationMinutes = String(req.body.durationMinutes)
 
     const resGetSearchedActivity = await getSearchedActivity(activity, dateTracked, weightPounds, durationMinutes)
-
+  
     if (resGetSearchedActivity) {
       res.status(200).json(resGetSearchedActivity)
     }
@@ -28,10 +31,22 @@ export async function httpGetTrackedCaloriesBurned(req: Request, res: Response):
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetTrackedCaloriesBurned = await getTrackedCaloriesBurnedData(userId!, email!)
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
 
-    if (resGetTrackedCaloriesBurned) {  
-      res.status(200).json(resGetTrackedCaloriesBurned)
+    const trackedCaloriesBurnedCached = await areTrackedCaloriesBurnedCached(user)
+    if (trackedCaloriesBurnedCached) {
+      const resTrackedCaloriesBurned = await getTrackedCaloriesBurned(user)
+      res.status(200).json(resTrackedCaloriesBurned)
+    } else {
+      const resGetTrackedCaloriesBurned = await getTrackedCaloriesBurnedData(userId!, email!)
+  
+      if (resGetTrackedCaloriesBurned) {  
+        await saveTrackedCaloriesBurned(user, resGetTrackedCaloriesBurned.trackedCaloriesBurned)
+        res.status(200).json(resGetTrackedCaloriesBurned)
+      }
     }
   } catch (error) {
     // TODO: handle error
@@ -77,7 +92,13 @@ export async function httpPutTrackedCaloriesBurned(req: Request, res: Response):
   try {
     const userId = req.params.userid;
     const email = req.params.email;
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
+
     const { trackedCaloriesBurned } = req.body
+    await saveTrackedCaloriesBurned(user, trackedCaloriesBurned)
     const resPutTrackedCaloriesBurned = await putTrackedCaloriesBurned(userId!, email!, trackedCaloriesBurned)
 
     if (resPutTrackedCaloriesBurned) {

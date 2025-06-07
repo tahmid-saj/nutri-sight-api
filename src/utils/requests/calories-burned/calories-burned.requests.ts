@@ -1,4 +1,5 @@
 import { ActivitySearchResult } from "../../../models/calories-burned/calories-burned.types.ts"
+import { getSearchedActivityCached, isSearchedActivityCached, saveSearchedActivity } from "../../../redis/queries/calories-burned/calories-burned.queries.ts"
 import { errorOnGetSearchActivity } from "../../errors/calories-burned.errors.ts"
 import dotenv from "dotenv"
 
@@ -24,24 +25,34 @@ export async function processSearchedActivity(activity: string, dateTracked: str
 export async function getSearchedActivity(activity: string, dateTracked: string, 
   weightPounds: string, durationMinutes: string) {
   try {
-    let url = `${process.env.REACT_APP_API_NINJAS_CALORIES_BURNED_URL}${activity}`
-
-    if (weightPounds !== "") {
-      url = url + `&weight=${weightPounds}`
-    }
-    if (durationMinutes !== "") {
-      url = url + `&duration=${durationMinutes}`
-    }
-
-    const resActivityResults = await fetch(`${url}`, {
-      method: "GET",
-      headers: {
-        "X-Api-Key": `${process.env.API_NINJAS_KEY}`
+    let resResults;
+    const searchedActivityCached = await isSearchedActivityCached(activity, weightPounds, durationMinutes)
+    if (searchedActivityCached) {
+      resResults = await getSearchedActivityCached(activity, weightPounds, durationMinutes) 
+    } else {
+      let url = `${process.env.REACT_APP_API_NINJAS_CALORIES_BURNED_URL}${activity}`
+  
+      if (weightPounds !== "") {
+        url = url + `&weight=${weightPounds}`
       }
-    })
+      if (durationMinutes !== "") {
+        url = url + `&duration=${durationMinutes}`
+      }
+  
+      const resActivityResults = await fetch(`${url}`, {
+        method: "GET",
+        headers: {
+          "X-Api-Key": `${process.env.API_NINJAS_KEY}`
+        }
+      })
+  
+      resResults = await resActivityResults.json()
+  
+      // cache the activity results
+      await saveSearchedActivity(activity, weightPounds, durationMinutes, resResults)
+    }
 
-    const resJSON = await resActivityResults.json()
-    const res = await processSearchedActivity(activity, dateTracked, resJSON)
+    const res = await processSearchedActivity(activity, dateTracked, resResults)
     return {
       searchedActivities: res
     }
