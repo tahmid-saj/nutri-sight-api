@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import { getExercisesData, postExercise, 
   deleteExercise, putExercises } from "../../models/fitness/fitness.model.ts"
 import { getSearchedExercise } from "../../utils/requests/fitness/fitness.requests.ts"
+import { User } from '../../models/users/users.types.ts';
+import { areExercisesCached, getExercises, saveExercises } from '../../redis/queries/fitness/fitness.queries.ts';
 
 // searching exercise
 export async function httpGetSearchedExercise(req: Request, res: Response): Promise<void> {
@@ -24,11 +26,24 @@ export async function httpGetExercises(req: Request, res: Response): Promise<voi
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetExercises = await getExercisesData(userId!, email!)
-
-    if (resGetExercises) {
-      res.status(200).json(resGetExercises)
+    const user: User = {
+      userId: userId!,
+      email: email!
     }
+
+    const exercisesCached = await areExercisesCached(user)
+    if (exercisesCached) {
+      const resExercises = await getExercises(user)
+      res.status(200).json(resExercises)
+    } else {
+      const resGetExercises = await getExercisesData(userId!, email!)
+  
+      if (resGetExercises) {
+        await saveExercises(user, resGetExercises.exercises)
+        res.status(200).json(resGetExercises)
+      }
+    }
+
   } catch (error) {
     // TODO: handle error
     console.log(error)
@@ -73,7 +88,13 @@ export async function httpPutExercises(req: Request, res: Response): Promise<voi
   try {
     const userId = req.params.userid;
     const email = req.params.email;
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
+
     const { exercises } = req.body
+    await saveExercises(user, exercises)
     const resPutExercises = await putExercises(userId!, email!, exercises)
 
     if (resPutExercises) {

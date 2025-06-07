@@ -1,7 +1,6 @@
 import { errorOnGetChatBotResponse } from "../../errors/chatbot.errors.ts"
 import { DEFAULT_CHATBOT_MAX_TOKENS } from "../../constants/chatbot.constants.ts"
 import { openai } from "../../../services/open-ai/open-ai.service.ts"
-import dotenv from "dotenv"
 
 export async function getChatBotResponse(messageInput: string) {
   try {

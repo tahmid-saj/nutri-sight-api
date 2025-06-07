@@ -36,10 +36,10 @@ export const serializeActivitySearchResults = (activitySearchResults: ActivitySe
 export const deserializeActivitySearchResults = (activitySearchResults: string[]): ActivitySearchResult[] => {
   return activitySearchResults.map((result) => {
     const data = result.split("!")
-    const name = String(data[0]?.split("="))
-    const calories_per_hour = Number(data[1]?.split("="))
-    const duration_minutes = Number(data[2]?.split("="))
-    const total_calories = Number(data[3]?.split("="))
+    const name = String(data[0]?.split("=")[1])
+    const calories_per_hour = Number(data[1]?.split("=")[1])
+    const duration_minutes = Number(data[2]?.split("=")[1])
+    const total_calories = Number(data[3]?.split("=")[1])
 
     return {
       name, calories_per_hour, duration_minutes, total_calories

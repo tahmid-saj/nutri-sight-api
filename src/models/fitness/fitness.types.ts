@@ -18,10 +18,10 @@ export type Exercise = {
 }
 
 export type SearchedExerciseResult = {
-  exerciseName: string
-  exerciseType: string
-  exerciseMuscle: string
-  exerciseEquipment: string
-  exerciseDifficulty: string
-  exerciseInstructions: string
+  name: string
+  type: string
+  muscle: string
+  equipment: string
+  difficulty: string
+  instructions: string
 }
