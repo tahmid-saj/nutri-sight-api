@@ -4,6 +4,10 @@ import { getNutritionTrackedDaysData, getNutritionTrackedDaysSummaryData,
   postNutritionTrackedDay, putNutritionTrackedDay, deleteNutritionTrackedDay,
   putNutritionTrackedDaysData, putNutritionTrackedDaysSummaryData } 
 from "../../models/nutrition-tracker/nutrition-tracker.model.js"
+import { User } from '../../models/users/users.types.js';
+import { areNutritionTrackedDaysCached, getNutritionTrackedDays, getNutritionTrackedDaysSummary, 
+  isNutritionTrackedDaysSummaryCached, saveNutritionTrackedDays, 
+  saveNutritionTrackedDaysSummary } from '../../redis/queries/nutrition-tracker/nutrition-tracker.queries.js';
 
 // signed in
 export async function httpGetNutritionTrackedDays(req: Request, res: Response) {
@@ -11,10 +15,24 @@ export async function httpGetNutritionTrackedDays(req: Request, res: Response) {
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetNutritionTrackedDays = await getNutritionTrackedDaysData(userId!, email!);
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
 
-    if (resGetNutritionTrackedDays) {
-      res.status(200).json(resGetNutritionTrackedDays)
+    const nutritionTrackedDaysCached = await areNutritionTrackedDaysCached(user)
+    if (nutritionTrackedDaysCached) {
+      const resNutritionTrackedDays = await getNutritionTrackedDays(user)
+      res.status(200).json(resNutritionTrackedDays)
+      return
+    } else {
+      const resGetNutritionTrackedDays = await getNutritionTrackedDaysData(userId!, email!);
+  
+      if (resGetNutritionTrackedDays) {
+        await saveNutritionTrackedDays(user, resGetNutritionTrackedDays.nutritionTrackedDays)
+        res.status(200).json(resGetNutritionTrackedDays)
+        return
+      }
     }
   } catch (error) {
     // TODO: handle error
@@ -27,10 +45,24 @@ export async function httpGetNutritionTrackedDaysSummary(req: Request, res: Resp
   try {
     const userId = req.params.userid;
     const email = req.params.email;
-    const resGetNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummaryData(userId!, email!);
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
 
-    if (resGetNutritionTrackedDaysSummary) {
-      res.status(200).json(resGetNutritionTrackedDaysSummary)
+    const nutritionTrackedDaysSummaryCached = await isNutritionTrackedDaysSummaryCached(user)
+    if (nutritionTrackedDaysSummaryCached) {
+      const resNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummary(user)
+      res.status(200).json(resNutritionTrackedDaysSummary)
+      return
+    } else {
+      const resGetNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummaryData(userId!, email!);
+  
+      if (resGetNutritionTrackedDaysSummary) {
+        await saveNutritionTrackedDaysSummary(user, resGetNutritionTrackedDaysSummary.nutritionTrackedDaysSummary)
+        res.status(200).json(resGetNutritionTrackedDaysSummary)
+        return
+      }
     }
   } catch (error) {
     // TODO: handle error
@@ -97,7 +129,13 @@ export async function httpPutNutritionTrackedDays(req: Request, res: Response): 
   try {
     const userId = req.params.userid;
     const email = req.params.email;
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
+
     const { nutritionTrackedDays } = req.body;
+    await saveNutritionTrackedDays(user, nutritionTrackedDays)
     const resPutNutritionTrackedDays = await putNutritionTrackedDaysData(userId!, email!, nutritionTrackedDays);
 
     if (resPutNutritionTrackedDays) {
@@ -114,7 +152,13 @@ export async function httpPutNutritionTrackedDaysSummary(req: Request, res: Resp
   try {
     const userId = req.params.userid;
     const email = req.params.email;
+    const user: User = {
+      userId: userId!,
+      email: email!
+    }
+
     const { nutritionTrackedDaysSummary } = req.body;
+    await saveNutritionTrackedDaysSummary(user, nutritionTrackedDaysSummary)
     const resPutNutritionTrackedDaysSummary = await putNutritionTrackedDaysSummaryData(userId!, email!, nutritionTrackedDaysSummary);
 
     if (resPutNutritionTrackedDaysSummary) {

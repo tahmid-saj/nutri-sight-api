@@ -1,4 +1,6 @@
-import { createClient } from "redis"
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { createClient } = require("redis")
 
 export const redisClient = createClient({
   socket: {

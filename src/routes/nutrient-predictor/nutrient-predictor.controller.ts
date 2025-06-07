@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { getNutrientPrediction } from "../../utils/requests/nutrient-predictor/nutrient-predictor.requests.js"
-import { isNutrientPredictionCached, saveNutrientPrediction } from '../../redis/queries/nutrient-predictor/nutrient-predictor.queries.ts';
+import { isNutrientPredictionCached, saveNutrientPrediction } from '../../redis/queries/nutrient-predictor/nutrient-predictor.queries.js';
 
 // nutrient prediction
 export async function httpGetNutrientPrediction(req: Request, res: Response): Promise<void> {
