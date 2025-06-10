@@ -1,17 +1,17 @@
 import { Request, Response } from "express"
-import { createChatroom, getChatroom } from "../../models/chat-rooms/chat-rooms.model.js"
+import { createChatroom, getChatrooms, 
+  addChatroomUser, removeChatroomUser, sendChatroomMessage } from "../../models/chat-rooms/chat-rooms.model.js"
 import { ChatroomInfo } from "../../models/chat-rooms/chat-rooms.types.js"
 import { CHATROOM_USER_OPERATIONS } from "../../utils/constants/chat-rooms.constants.js"
-import { addUserToChatroom, removeUserFromChatroom, sendMessageToChatroom } from "../../models/chat-rooms/chat-rooms.mongo.crud.js"
 
-// get chatroom
-export async function httpGetChatroom(req: Request, res: Response) {
+// get chatrooms
+export async function httpGetChatrooms(req: Request, res: Response) {
   try {
-    const chatroomId = req.params.chatroomId!
-    const resChatroom = await getChatroom(chatroomId)
+    const { userId } = req.body
+    const resUserChatrooms = await getChatrooms(userId)
 
-    if (resChatroom) {
-      res.status(200).json(resChatroom)
+    if (resUserChatrooms) {
+      res.status(200).json(resUserChatrooms)
     }
   } catch (err) {
     console.log(err)
@@ -46,10 +46,10 @@ export async function httpAddRemoveChatroomUser(req: Request, res: Response) {
     const { userId } = req.body
 
     if (operation === CHATROOM_USER_OPERATIONS.add) {
-      const resAdd = await addUserToChatroom(chatroomId!, userId)
+      const resAdd = await addChatroomUser(chatroomId!, userId)
       res.status(200).json(resAdd)
     } else if (operation === CHATROOM_USER_OPERATIONS.remove) {
-      const resRemove = await removeUserFromChatroom(chatroomId!, userId)
+      const resRemove = await removeChatroomUser(chatroomId!, userId)
       res.status(200).json(resRemove)
     }
   } catch (err) {
@@ -63,7 +63,7 @@ export async function httpSendChatroomMessage(req: Request, res: Response) {
     const chatroomId = req.params.chatroomId
     const { messageInfo } = req.body
 
-    const resSendMessage = await sendMessageToChatroom(chatroomId!, messageInfo)
+    const resSendMessage = await sendChatroomMessage(chatroomId!, messageInfo)
     if (resSendMessage) {
       res.status(200).json(resSendMessage)
     }
