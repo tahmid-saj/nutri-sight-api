@@ -26,6 +26,10 @@ const chatroomMessageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  userName: {
+    type: String,
+    required: true
+  },
   chatroomId: {
     type: String,
     required: true
@@ -41,4 +45,4 @@ const chatroomMessageSchema = new mongoose.Schema({
 })
 
 export const chatroomsDatabase = mongoose.model("chatrooms", chatroomsSchema)
-export const chatroomMessages = mongoose.model("chatroomMessages", chatroomMessageSchema)
+export const chatroomMessagesDatabase = mongoose.model("chatroomMessages", chatroomMessageSchema)

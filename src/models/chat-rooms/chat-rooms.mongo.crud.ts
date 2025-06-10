@@ -1,36 +1,74 @@
-import { ChatroomInfo, ChatroomMessage } from "./chat-rooms.types.js";
-import { chatroomsDatabase, chatroomMessages } from "./chat-rooms.mongo.js";
+import { ChatRoom, ChatroomInfo, ChatroomMessage } from "./chat-rooms.types.js";
+import { chatroomsDatabase, chatroomMessagesDatabase } from "./chat-rooms.mongo.js";
+
 
 /**
- * Fetch chatroom data by ID
+ * Fetch chatrooms and chatroom messages for a given userId
  */
-export async function getChatroomData(chatroomId: string) {
+export async function getChatroomsData(userId: string) {
   try {
-    const chatroom = await chatroomsDatabase.findOne({ chatroomId }).lean();
-    return chatroom;
+    // Get all chatrooms where the user is a member
+    const chatrooms = await chatroomsDatabase.find({ members: userId }).lean();
+
+    const chatroomIds = chatrooms.map(room => room.chatroomId);
+
+    // Get all messages from those chatrooms
+    const messages: any = await chatroomMessagesDatabase.find({ chatroomId: { $in: chatroomIds } }).lean();
+
+    // Group messages by chatroomId
+    const chatroomMessages = chatroomIds.map(chatroomId => {
+      const messagesForRoom = messages
+        .filter((msg: any) => msg.chatroomId === chatroomId)
+        .map((msg: any) => ({
+          userId: msg.userId,
+          userName: msg.userName,
+          message: msg.message,
+          time: msg.time
+        }));
+
+      return {
+        chatroomId,
+        chatroomName: chatroomId,
+        messages: messagesForRoom
+      };
+    });
+
+    return {
+      chatrooms: chatrooms,
+      chatroomsMessages: chatroomMessages
+    }
   } catch (error) {
-    console.error("Failed to get chatroom data:", error);
-    return null;
+    console.error("Failed to get chatrooms and messages:", error);
+    return [[], []];
   }
 }
 
 /**
- * Save a new chatroom
+ * Upsert a chatroom by chatroomId
  */
 export async function saveChatroom(chatroomInfo: ChatroomInfo): Promise<boolean> {
   try {
-    const newChatroom = new chatroomsDatabase({
-      ...chatroomInfo,
-      countMembers: 0,
-      members: []
-    });
-    await newChatroom.save();
-    return true;
+    const result = await chatroomsDatabase.updateOne(
+      { chatroomId: chatroomInfo.chatroomId }, // match condition
+      {
+        $set: {
+          chatroomName: chatroomInfo.chatroomName,
+        },
+        $setOnInsert: {
+          countMembers: 0,
+          members: []
+        }
+      },
+      { upsert: true }
+    );
+
+    return result.acknowledged === true;
   } catch (error) {
-    console.error("Failed to save chatroom:", error);
+    console.error("Failed to upsert chatroom:", error);
     return false;
   }
 }
+
 
 /**
  * Add a user to a chatroom
@@ -75,7 +113,7 @@ export async function removeUserFromChatroom(chatroomId: string, userId: string)
  */
 export async function sendMessageToChatroom(chatroomId: string, messageInfo: ChatroomMessage) {
   try {
-    const newMessage = new chatroomMessages({
+    const newMessage = new chatroomMessagesDatabase({
       ...messageInfo,
       chatroomId
     });

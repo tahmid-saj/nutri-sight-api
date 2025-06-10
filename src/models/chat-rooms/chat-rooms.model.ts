@@ -1,8 +1,8 @@
-import { addUserToChatroom, getChatroomData, removeUserFromChatroom, saveChatroom, sendMessageToChatroom } from "./chat-rooms.mongo.crud.js";
+import { addUserToChatroom, getChatroomsData, removeUserFromChatroom, saveChatroom, sendMessageToChatroom } from "./chat-rooms.mongo.crud.js";
 import { ChatroomInfo, ChatroomMessage } from "./chat-rooms.types.js";
 
-export async function getChatroom(chatroomId: string) {
-  return getChatroomData(chatroomId)
+export async function getChatrooms(userId: string) {
+  return getChatroomsData(userId)
 }
 
 export async function createChatroom(chatroomInfo: ChatroomInfo) {

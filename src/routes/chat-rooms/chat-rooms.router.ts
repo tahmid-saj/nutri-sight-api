@@ -1,11 +1,11 @@
 import express, { Router } from "express"
-import { httpAddRemoveChatroomUser, httpCreateChatroom, 
-  httpGetChatroom, httpSendChatroomMessage } from "./chat-rooms.controller.js"
+import { httpAddRemoveChatroomUser, httpCreateChatroom,
+  httpGetChatrooms, httpSendChatroomMessage } from "./chat-rooms.controller.js"
 
 const chatroomsRouter: Router = express.Router()
 
-// get chatroom
-chatroomsRouter.get("/chatrooms/:chatroomId", httpGetChatroom)
+// get chatrooms and messages for user
+chatroomsRouter.post("/chatrooms/messages", httpGetChatrooms)
 
 // create chatroom
 chatroomsRouter.post("/chatrooms", httpCreateChatroom)

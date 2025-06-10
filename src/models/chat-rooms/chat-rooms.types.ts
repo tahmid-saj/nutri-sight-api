@@ -11,6 +11,7 @@ export type ChatRoom = {
 
 export type ChatroomMessage = {
   userId: string,
+  userName: string,
   message: string,
   time: string | Date
 }
