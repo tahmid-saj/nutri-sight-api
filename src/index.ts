@@ -15,7 +15,7 @@ import { ApolloServer } from "apollo-server-express";
 import { resolvers as caloriesBurnedResolvers } from "./graphql/calories-burned/calories-burned.resolvers.js";
 
 const server = http.createServer(app);
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 async function startServer() {
   console.log("App is starting...");
