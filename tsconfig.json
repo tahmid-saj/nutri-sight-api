@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -10,7 +10,8 @@
     "outDir": "dist",
     "rootDir": "./src",
     "allowImportingTsExtensions": true,
-    "noEmit": false,
+    "resolveJsonModule": true,
+    "noEmit": true,
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },

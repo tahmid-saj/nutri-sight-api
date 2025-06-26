@@ -7,7 +7,7 @@ import { nutritionTrackerRouter } from "./nutrition-tracker/nutrition-tracker.ro
 import { fitnessRouter } from "./fitness/fitness.router.js"
 import { caloriesBurnedRouter } from "./calories-burned/calories-burned.router.js"
 import { recipesRouter } from "./recipes/recipes.router.js"
-import { chatroomsRouter } from './chat-rooms/chat-rooms.router.ts'
+import { chatroomsRouter } from './chat-rooms/chat-rooms.router.js'
 
 const api: Router = express.Router();
 
