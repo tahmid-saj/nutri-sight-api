@@ -1,5 +1,5 @@
 import { User } from "../../../models/users/users.types.js";
-import { redisClient } from "../../../services/redis/redis.services.js";
+import { redisClient } from "../../../services/redis/redis.service.js";
 import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { usersKey, usersUniqueKey } from "./users.keys.js";
 

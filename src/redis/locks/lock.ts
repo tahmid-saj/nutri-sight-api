@@ -1,5 +1,5 @@
 import { randomBytes } from "crypto"
-import { redisClient } from "../../services/redis/redis.services.js"
+import { redisClient } from "../../services/redis/redis.service.js"
 import { locksKey } from "./lock.keys.js"
 
 export const withLock = async (key: string, cb: (signal: any) => any) => {
