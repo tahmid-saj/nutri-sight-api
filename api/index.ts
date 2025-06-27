@@ -7,7 +7,7 @@ import { redisConnect } from '../src/services/redis/redis.service.js';
 import serverless from 'serverless-http';
 
 let isConnected = false;
-const handler = serverless(app); // wrap ONCE
+const handler = serverless(app);
 
 async function bootstrap() {
   if (!isConnected) {
@@ -19,7 +19,6 @@ async function bootstrap() {
 
 export default async function (req: any, res: any) {
   await bootstrap();
-
   return handler(req, res);
 }
 
