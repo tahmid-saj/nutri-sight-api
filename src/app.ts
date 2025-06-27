@@ -10,14 +10,7 @@ const app = express() as any
 
 // middleware
 // TODO: move to env
-app.use(cors({ origin: "https://www.nutritiontracker.io" }));
-app.options("*", cors());
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log("✅ Middleware hit for:", req.method, req.path);
-  next();
-});
-
+app.use(cors());
 app.use(morgan("combined"));
 app.use(helmet())
 app.use(express.json());
