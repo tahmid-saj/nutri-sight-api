@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+import serverless from 'serverless-http';
 import { app } from "../src/app.js";
 import { mongoConnect } from "../src/services/mongodb/mongodb.service.js";
 import { redisConnect } from '../src/services/redis/redis.service.js';
 
-import serverless from 'serverless-http';
-
 let isConnected = false;
+const handler = serverless(app); // wrap only once, globally
 
 async function bootstrap() {
   if (!isConnected) {
@@ -17,9 +17,7 @@ async function bootstrap() {
   }
 }
 
-const handler = async (req: any, res: any) => {
+export default async function (req: any, res: any) {
   await bootstrap();
-  return serverless(app)(req, res);
-};
-
-export default handler;
+  return handler(req, res);
+}
