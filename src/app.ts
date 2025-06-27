@@ -8,7 +8,7 @@ import { api } from "./routes/api.routes.js";
 
 const app = express();
 
-// Proper CORS middleware first
+// CORS middleware (early)
 app.use(cors({
   origin: "https://www.nutritiontracker.io",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -16,16 +16,18 @@ app.use(cors({
   credentials: true,
 }));
 
-// Handle preflight early
+// Handle preflight before any other route
 app.options("*", cors());
 
 app.use(morgan("combined"));
 app.use(helmet());
 app.use(express.json());
 app.use(bodyParser.text());
+
+// All API routes
 app.use("/v1", api);
 
-// Global error handler (with CORS headers again)
+// Global error handler (add headers again)
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error("Global error handler caught:", err);
   res.setHeader('Access-Control-Allow-Origin', 'https://www.nutritiontracker.io');
