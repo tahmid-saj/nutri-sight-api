@@ -4,6 +4,7 @@
       "maxDuration": 60
     }
   },
+  "buildCommand": "npm run build",
   "routes": [
     {
       "src": "/v1/.*",
