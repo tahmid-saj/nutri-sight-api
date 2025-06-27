@@ -6,9 +6,19 @@
   },
   "routes": [
     {
+      "src": "/v1/.*",
+      "methods": ["OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "https://www.nutritiontracker.io",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": "true"
+      },
+      "status": 204
+    },
+    {
       "src": "/(.*)",
-      "dest": "api/index.ts",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+      "dest": "api/index.ts"
     }
   ]
 }
