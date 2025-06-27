@@ -37,6 +37,11 @@ export async function httpGetNutrientPrediction(req: Request, res: Response): Pr
 // get food prediction
 export async function httpGetFoodPrediction(req: Request, res: Response): Promise<void> {
   try {
+    // Add CORS headers here
+    res.setHeader('Access-Control-Allow-Origin', 'https://www.nutritiontracker.io');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
     if (!req.file) {
       res.status(400).json({ error: "No image uploaded" });
     }
