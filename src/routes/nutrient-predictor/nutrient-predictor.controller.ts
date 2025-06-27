@@ -37,11 +37,13 @@ export async function httpGetNutrientPrediction(req: Request, res: Response): Pr
 // get food prediction
 export async function httpGetFoodPrediction(req: Request, res: Response): Promise<void> {
   try {
-    const imagePath = req?.file?.path!
-    const imageBuffer = await fs.readFile(imagePath!)
+    if (!req.file) {
+      res.status(400).json({ error: "No image uploaded" });
+    }
 
-    const base64Image = imageBuffer.toString("base64")!
-    const mimeType = req?.file?.mimetype!
+    const imageBuffer = req?.file?.buffer;
+    const base64Image = imageBuffer?.toString("base64");
+    const mimeType = req?.file?.mimetype;
 
     const response = await openai.chat.completions.create({
       model: process.env.REACT_APP_OPEN_API_MODEL!,
@@ -64,20 +66,16 @@ export async function httpGetFoodPrediction(req: Request, res: Response): Promis
       ],
     });
 
-    const foodObject = response.choices[0]?.message?.content
-    console.log(foodObject)
+    const foodObject = response.choices[0]?.message?.content;
+    console.log(foodObject);
 
-    res.status(200).json(foodObject)
+    res.status(200).json({ description: foodObject });
   } catch (error) {
     console.error("OpenAI image processing failed:", error);
     res.status(500).json({ error: "Image processing failed" });
-  } finally {
-    // clean up uploaded file
-    if (req.file?.path) {
-      await fs.unlink(req.file.path)
-    }
   }
 }
+
 
 // generating pre-signed URL
 // export async function httpGeneratePresignedURL(req: Request, res: Response): Promise<void> {
