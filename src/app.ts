@@ -8,7 +8,7 @@ import { api } from "./routes/api.routes.js";
 
 const app = express();
 
-// CORS middleware
+// Proper CORS middleware first
 app.use(cors({
   origin: "https://www.nutritiontracker.io",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -16,28 +16,20 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://www.nutritiontracker.io');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
-
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error("Global error handler caught:", err);
-  res.setHeader('Access-Control-Allow-Origin', 'https://www.nutritiontracker.io');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  res.status(500).json({ error: "Internal Server Error" });
-});
-
-
-app.options("*", cors()); // For preflight
+// Handle preflight early
+app.options("*", cors());
 
 app.use(morgan("combined"));
 app.use(helmet());
 app.use(express.json());
 app.use(bodyParser.text());
 app.use("/v1", api);
+
+// Global error handler (with CORS headers again)
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error("Global error handler caught:", err);
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.nutritiontracker.io');
+  res.status(500).json({ error: "Internal Server Error" });
+});
 
 export { app };
