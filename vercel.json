@@ -1,5 +1,16 @@
 {
   "functions": {
     "api/index.ts": { "maxDuration": 60 }
-  }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "https://www.nutritiontracker.io" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,PUT,POST,DELETE,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" },
+        { "key": "Access-Control-Allow-Credentials", "value": "true" }
+      ]
+    }
+  ]
 }
