@@ -1,4 +1,7 @@
 import { Request, Response } from 'express';
+import fs from "fs/promises"
+import path from "path"
+import { openai } from '../../services/open-ai/open-ai.service.js';
 
 // import { s3Client } from '../../services/s3/s3.service.js';
 // import { PutObjectCommand } from "@aws-sdk/client-s3"
@@ -28,6 +31,51 @@ export async function httpGetNutrientPrediction(req: Request, res: Response): Pr
   } catch (error) {
     // TODO: handle error
     console.log(error)
+  }
+}
+
+// get food prediction
+export async function httpGetFoodPrediction(req: Request, res: Response): Promise<void> {
+  try {
+    const imagePath = req?.file?.path!
+    const imageBuffer = await fs.readFile(imagePath!)
+
+    const base64Image = imageBuffer.toString("base64")!
+    const mimeType = req?.file?.mimetype!
+
+    const response = await openai.chat.completions.create({
+      model: process.env.REACT_APP_OPEN_API_MODEL!,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: "Please describe the food in this image as accurately as possible in a single sentence.",
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: `data:${mimeType};base64,${base64Image}`,
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const foodObject = response.choices[0]?.message?.content
+    console.log(foodObject)
+
+    res.status(200).json(foodObject)
+  } catch (error) {
+    console.error("OpenAI image processing failed:", error);
+    res.status(500).json({ error: "Image processing failed" });
+  } finally {
+    // clean up uploaded file
+    if (req.file?.path) {
+      await fs.unlink(req.file.path)
+    }
   }
 }
 
