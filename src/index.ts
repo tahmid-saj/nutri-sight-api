@@ -32,21 +32,21 @@ async function startServer() {
     await mongoConnect();
     await redisConnect();
 
-    const typesArray = loadFilesSync(path.join(path.resolve(), "**/*.graphql"));
+    // const typesArray = loadFilesSync(path.join(path.resolve(), "**/*.graphql"));
 
-    const schema = makeExecutableSchema({
-      typeDefs: typesArray,
-      resolvers: [caloriesBurnedResolvers],
-    });
+    // const schema = makeExecutableSchema({
+    //   typeDefs: typesArray,
+    //   resolvers: [caloriesBurnedResolvers],
+    // });
 
-    const apolloServer = new ApolloServer({ schema });
+    // const apolloServer = new ApolloServer({ schema });
 
-    await apolloServer.start();
+    // await apolloServer.start();
 
-    apolloServer.applyMiddleware({
-      app,
-      path: "/graphql",
-    });
+    // apolloServer.applyMiddleware({
+    //   app,
+    //   path: "/graphql",
+    // });
 
     server.listen(PORT, () => {
       console.log(`Listening on port ${PORT}`);
