@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
@@ -22,6 +22,15 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error("Global error handler caught:", err);
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.nutritiontracker.io');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
 
 app.options("*", cors()); // For preflight
 
