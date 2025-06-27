@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
@@ -12,6 +12,12 @@ const app = express() as any
 // TODO: move to env
 app.use(cors({ origin: "https://www.nutritiontracker.io" }));
 app.options("*", cors());
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log("✅ Middleware hit for:", req.method, req.path);
+  next();
+});
+
 app.use(morgan("combined"));
 app.use(helmet())
 app.use(express.json());
