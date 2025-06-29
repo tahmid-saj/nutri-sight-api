@@ -2,14 +2,16 @@
   "name": "nutri-sight-api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon --watch src --ext ts --exec \"node --trace-uncaught --trace-warnings --loader ts-node/esm\" src/index.ts",
-    "build": "rimraf dist && tsc",
+    "watch": "nodemon --watch src --ext ts --exec \"node --trace-uncaught --trace-warnings --loader ts-node/esm\" src/index.ts",
+    "build": "tsc --listFiles",
+    "start": "node dist/index.js",
     "ts.check": "tsc --project tsconfig.json --noEmit",
     "add-build": "git add dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf dist"
   },
   "keywords": [],
   "author": "",
