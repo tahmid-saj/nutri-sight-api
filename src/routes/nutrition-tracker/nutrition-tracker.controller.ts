@@ -10,7 +10,7 @@ import { areNutritionTrackedDaysCached, getNutritionTrackedDays, getNutritionTra
   saveNutritionTrackedDaysSummary } from '../../redis/queries/nutrition-tracker/nutrition-tracker.queries.js';
 
 // signed in
-export async function httpGetNutritionTrackedDays(req: Request, res: Response) {
+export async function httpGetNutritionTrackedDays(req: Request, res: Response): Promise<any> {
   // return res.status(200).json(getNutritionTrackedDays());
   try {
     const userId = req.params.userid;

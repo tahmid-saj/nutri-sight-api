@@ -5,7 +5,8 @@ import { getTrackedCaloriesBurnedData,
   putTrackedCaloriesBurned 
 } from "../../models/calories-burned/calories-burned.model.js"
 import { areTrackedCaloriesBurnedCached, getSearchedActivityCached, getTrackedCaloriesBurned, 
-  isSearchedActivityCached, saveSearchedActivity, saveTrackedCaloriesBurned } from '../../redis/queries/calories-burned/calories-burned.queries.js';
+  isSearchedActivityCached, saveSearchedActivity, 
+  saveTrackedCaloriesBurned } from '../../redis/queries/calories-burned/calories-burned.queries.js';
 import { User } from '../../models/users/users.types.js';
 
 // searching activity
