@@ -1,9 +1,8 @@
 import express, { Router } from "express"
 import multer from "multer"
 
-import { httpGetNutrientPrediction, httpGetFoodPrediction
-  // httpGeneratePresignedURL 
-} from "./nutrient-predictor.controller.js"
+import { httpGetNutrientPrediction, 
+  httpGetFoodPrediction } from "./nutrient-predictor.controller.js"
 
 const nutrientPredictorRouter: Router = express.Router()
 
@@ -11,13 +10,12 @@ const nutrientPredictorRouter: Router = express.Router()
 // predict nutrients from description
 nutrientPredictorRouter.post("/predict-nutrients", httpGetNutrientPrediction)
 
-const upload = multer({
-  dest: "uploads/"
-})
+// setup multer to store image in memory
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // the upload.single() middleware below will first upload the image
 nutrientPredictorRouter.post("/food-prediction", upload.single("image"), httpGetFoodPrediction)
 
-// nutrientPredictorRouter.post("/pre-signedurl", httpGeneratePresignedURL)
 
 export { nutrientPredictorRouter }

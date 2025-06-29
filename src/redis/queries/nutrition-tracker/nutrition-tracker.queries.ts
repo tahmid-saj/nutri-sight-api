@@ -4,7 +4,8 @@ import { User } from "../../../models/users/users.types.js";
 import { redisClient } from "../../../services/redis/redis.service.js";
 import { CACHING_TTL } from "../../../utils/constants/shared.constants.js";
 import { nutritionTrackedDaysSummaryKey, userNutritionTrackedDayKey, 
-  userNutritionTrackedDayMicronutrientsKey, userNutritionTrackedDaysKey } from "./nutrition-tracker.keys.js";
+  userNutritionTrackedDayMicronutrientsKey, 
+  userNutritionTrackedDaysKey } from "./nutrition-tracker.keys.js";
 
 // helper functions
 export const serializeNutritionTrackedDay = (trackedDay: NutritionTrackedDay) => {

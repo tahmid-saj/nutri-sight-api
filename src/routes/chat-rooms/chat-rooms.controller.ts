@@ -1,11 +1,12 @@
 import { Request, Response } from "express"
 import { createChatroom, getChatrooms, 
-  addChatroomUser, removeChatroomUser, sendChatroomMessage } from "../../models/chat-rooms/chat-rooms.model.js"
+  addChatroomUser, removeChatroomUser, 
+  sendChatroomMessage } from "../../models/chat-rooms/chat-rooms.model.js"
 import { ChatroomInfo } from "../../models/chat-rooms/chat-rooms.types.js"
 import { CHATROOM_USER_OPERATIONS } from "../../utils/constants/chat-rooms.constants.js"
 
 // get chatrooms
-export async function httpGetChatrooms(req: Request, res: Response) {
+export async function httpGetChatrooms(req: Request, res: Response): Promise<any> {
   try {
     const { userId } = req.body
     const resUserChatrooms = await getChatrooms(userId)
@@ -20,7 +21,7 @@ export async function httpGetChatrooms(req: Request, res: Response) {
 }
 
 // create chatroom
-export async function httpCreateChatroom(req: Request, res: Response) {
+export async function httpCreateChatroom(req: Request, res: Response): Promise<any> {
   try {
     const { chatroomId } = req.body
     const { chatroomName } = req.body
@@ -41,7 +42,7 @@ export async function httpCreateChatroom(req: Request, res: Response) {
 }
 
 // add / remove userId to chatroom
-export async function httpAddRemoveChatroomUser(req: Request, res: Response) {
+export async function httpAddRemoveChatroomUser(req: Request, res: Response): Promise<any> {
   try {
     const operation = req.query.op
     const chatroomId = req.params.chatroomId
@@ -61,7 +62,7 @@ export async function httpAddRemoveChatroomUser(req: Request, res: Response) {
 }
 
 // user sends message to chatroom
-export async function httpSendChatroomMessage(req: Request, res: Response) {
+export async function httpSendChatroomMessage(req: Request, res: Response): Promise<any> {
   try {
     const chatroomId = req.params.chatroomId
     const { messageInfo } = req.body

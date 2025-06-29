@@ -9,7 +9,8 @@ import { openai } from '../../services/open-ai/open-ai.service.js';
 // import { NUTRIENT_PREDICTOR_PRE_SIGNED_URL_TTL } from '../../utils/constants/nutrient-predictor.constants.js';
 
 import { getNutrientPrediction } from "../../utils/requests/nutrient-predictor/nutrient-predictor.requests.js"
-import { isNutrientPredictionCached, saveNutrientPrediction } from '../../redis/queries/nutrient-predictor/nutrient-predictor.queries.js';
+import { isNutrientPredictionCached, 
+  saveNutrientPrediction } from '../../redis/queries/nutrient-predictor/nutrient-predictor.queries.js';
 
 // nutrient prediction
 export async function httpGetNutrientPrediction(req: Request, res: Response): Promise<any> {
@@ -46,6 +47,12 @@ export async function httpGetFoodPrediction(req: Request, res: Response): Promis
     const base64Image = imageBuffer?.toString("base64");
     const mimeType = req?.file?.mimetype;
 
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+    if (!allowedTypes.includes(mimeType)) {
+      return res.status(400).json({ error: "Unsupported image format. Please upload a JPEG, PNG, GIF, or WebP image." });
+    }
+
     const response = await openai.chat.completions.create({
       model: process.env.REACT_APP_OPEN_API_MODEL!,
       messages: [
@@ -76,25 +83,3 @@ export async function httpGetFoodPrediction(req: Request, res: Response): Promis
     return res.status(500).json({ error: "Image processing failed" });
   }
 }
-
-
-// generating pre-signed URL
-// export async function httpGeneratePresignedURL(req: Request, res: Response): Promise<void> {
-//   try {
-//     const { objectKey } = req.body
-    
-//     const command = PutObjectCommand({
-//       Bucket: process.env.AWS_S3_NUTRIENT_PREDICTOR_BUCKET,
-//       objectKey,
-//       ContentType: "application/octet-stream"
-//     })
-
-//     // generate pre-signed URL valid for N mins
-//     const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: NUTRIENT_PREDICTOR_PRE_SIGNED_URL_TTL })
-//     if (presignedUrl) {
-//       res.status(200).json(presignedUrl)
-//     }
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }

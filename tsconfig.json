@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "ESNext",                         
+    "moduleResolution": "node",           
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "outDir": "./dist",
+    "outDir": "dist",
     "rootDir": "./src",
     "resolveJsonModule": true,
     "noEmit": false,
