@@ -5,17 +5,18 @@ import { RANDOM_SEPARATOR } from '../../utils/constants/chatbot.constants.js';
 import { getChatbotSessionRequests, saveChatbotSessionRequest, sessionIdExists } from '../../redis/queries/chatbot/chatbot.queries.js';
 
 // chatbot response
-export async function httpGetChatBotResponse(req: Request, res: Response): Promise<void> {
+export async function httpGetChatBotResponse(req: Request, res: Response): Promise<any> {
   try {
     const messageInput = String(req.body)
     const resGetChatBotResponse = await getChatBotResponse(messageInput)
 
     if (resGetChatBotResponse) {
-      res.status(200).json(resGetChatBotResponse)
+      return res.status(200).json(resGetChatBotResponse)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
@@ -51,7 +52,7 @@ export async function httpGetChatBotSession(req: Request, res: Response) {
   if (sessionExists) {
     const sessionData = await getChatbotSessionRequests(sessionId)
     if (sessionData) {
-      res.status(200).json(sessionData)
+      return res.status(200).json(sessionData)
     }
   }
 }

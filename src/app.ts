@@ -9,7 +9,13 @@ import { api } from "./routes/api.routes.js";
 const app = express();
 
 // middleware
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true // only if you need cookies/auth headers
+}));
+
 app.options("*", cors());
 
 app.use(morgan("combined"));

@@ -11,10 +11,11 @@ export async function httpGetChatrooms(req: Request, res: Response) {
     const resUserChatrooms = await getChatrooms(userId)
 
     if (resUserChatrooms) {
-      res.status(200).json(resUserChatrooms)
+      return res.status(200).json(resUserChatrooms)
     }
   } catch (err) {
     console.log(err)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
@@ -31,10 +32,11 @@ export async function httpCreateChatroom(req: Request, res: Response) {
     const resCreateChatroom = await createChatroom(chatroomInfo)
 
     if (resCreateChatroom) {
-      res.status(200).json(resCreateChatroom)
+      return res.status(200).json(resCreateChatroom)
     }
   } catch (err) {
     console.log(err)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
@@ -47,13 +49,14 @@ export async function httpAddRemoveChatroomUser(req: Request, res: Response) {
 
     if (operation === CHATROOM_USER_OPERATIONS.add) {
       const resAdd = await addChatroomUser(chatroomId!, userId)
-      res.status(200).json(resAdd)
+      return res.status(200).json(resAdd)
     } else if (operation === CHATROOM_USER_OPERATIONS.remove) {
       const resRemove = await removeChatroomUser(chatroomId!, userId)
-      res.status(200).json(resRemove)
+      return res.status(200).json(resRemove)
     }
   } catch (err) {
     console.log(err)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
@@ -65,9 +68,10 @@ export async function httpSendChatroomMessage(req: Request, res: Response) {
 
     const resSendMessage = await sendChatroomMessage(chatroomId!, messageInfo)
     if (resSendMessage) {
-      res.status(200).json(resSendMessage)
+      return res.status(200).json(resSendMessage)
     }
   } catch (err) {
     console.log(err)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
