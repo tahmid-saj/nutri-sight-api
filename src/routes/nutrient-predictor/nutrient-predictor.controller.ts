@@ -12,33 +12,34 @@ import { getNutrientPrediction } from "../../utils/requests/nutrient-predictor/n
 import { isNutrientPredictionCached, saveNutrientPrediction } from '../../redis/queries/nutrient-predictor/nutrient-predictor.queries.js';
 
 // nutrient prediction
-export async function httpGetNutrientPrediction(req: Request, res: Response): Promise<void> {
+export async function httpGetNutrientPrediction(req: Request, res: Response): Promise<any> {
   try {
     const mealDescription = String(req.body)
 
     const nutrientPredictionCached = await isNutrientPredictionCached(mealDescription)
     if (nutrientPredictionCached) {
       const resNutrientPrediction = await getNutrientPrediction(mealDescription)
-      res.status(200).json(resNutrientPrediction)
+      return res.status(200).json(resNutrientPrediction)
     } else {
       const resGetNutrientPrediction = await getNutrientPrediction(mealDescription)
   
       if (resGetNutrientPrediction) {
         await saveNutrientPrediction(mealDescription, resGetNutrientPrediction.predictionResults)
-        res.status(200).json(resGetNutrientPrediction)
+        return res.status(200).json(resGetNutrientPrediction)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // get food prediction
-export async function httpGetFoodPrediction(req: Request, res: Response): Promise<void> {
+export async function httpGetFoodPrediction(req: Request, res: Response): Promise<any> {
   try {  
     if (!req.file) {
-      res.status(400).json({ error: "No image uploaded" });
+      return res.status(400).json({ error: "No image uploaded" });
     }
 
     const imageBuffer = req?.file?.buffer;
@@ -69,10 +70,10 @@ export async function httpGetFoodPrediction(req: Request, res: Response): Promis
     const foodObject = response.choices[0]?.message?.content;
     console.log(foodObject);
 
-    res.status(200).json({ description: foodObject });
+    return res.status(200).json({ description: foodObject });
   } catch (error) {
     console.error("OpenAI image processing failed:", error);
-    res.status(500).json({ error: "Image processing failed" });
+    return res.status(500).json({ error: "Image processing failed" });
   }
 }
 

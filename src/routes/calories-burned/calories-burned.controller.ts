@@ -9,7 +9,7 @@ import { areTrackedCaloriesBurnedCached, getSearchedActivityCached, getTrackedCa
 import { User } from '../../models/users/users.types.js';
 
 // searching activity
-export async function httpGetSearchedActivity(req: Request, res: Response): Promise<void> {
+export async function httpGetSearchedActivity(req: Request, res: Response): Promise<any> {
   try {
     const activity = String(req.body.activity)
     const dateTracked = String(req.body.dateTracked)
@@ -19,15 +19,16 @@ export async function httpGetSearchedActivity(req: Request, res: Response): Prom
     const resGetSearchedActivity = await getSearchedActivity(activity, dateTracked, weightPounds, durationMinutes)
   
     if (resGetSearchedActivity) {
-      res.status(200).json(resGetSearchedActivity)
+      return res.status(200).json(resGetSearchedActivity)
     }
   } catch (error) {
     console.log(error)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // signed in
-export async function httpGetTrackedCaloriesBurned(req: Request, res: Response): Promise<void> {
+export async function httpGetTrackedCaloriesBurned(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid;
     const email = req.params.email;
@@ -39,23 +40,24 @@ export async function httpGetTrackedCaloriesBurned(req: Request, res: Response):
     const trackedCaloriesBurnedCached = await areTrackedCaloriesBurnedCached(user)
     if (trackedCaloriesBurnedCached) {
       const resTrackedCaloriesBurned = await getTrackedCaloriesBurned(user)
-      res.status(200).json(resTrackedCaloriesBurned)
+      return res.status(200).json(resTrackedCaloriesBurned)
     } else {
       const resGetTrackedCaloriesBurned = await getTrackedCaloriesBurnedData(userId!, email!)
   
       if (resGetTrackedCaloriesBurned) {  
         await saveTrackedCaloriesBurned(user, resGetTrackedCaloriesBurned.trackedCaloriesBurned)
-        res.status(200).json(resGetTrackedCaloriesBurned)
+        return res.status(200).json(resGetTrackedCaloriesBurned)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // calories burned operations
-export async function httpPostTrackedCaloriesBurned(req: Request, res: Response): Promise<void> {
+export async function httpPostTrackedCaloriesBurned(req: Request, res: Response): Promise<any> {
   try {
     const trackedCaloriesBurned = req.body
     const userId = req.params.userid;
@@ -63,15 +65,16 @@ export async function httpPostTrackedCaloriesBurned(req: Request, res: Response)
     const resPostTrackedCaloriesBurned = await postTrackedCaloriesBurned(userId!, email!, trackedCaloriesBurned)
 
     if (resPostTrackedCaloriesBurned) {
-      res.status(200)
+      return res.status(200)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
-export async function httpDeleteTrackedCaloriesBurned(req: Request, res: Response): Promise<void> {
+export async function httpDeleteTrackedCaloriesBurned(req: Request, res: Response): Promise<any> {
   try {
     const activityId = Number(String(req.body)) 
     const userId = req.params.userid;
@@ -79,16 +82,17 @@ export async function httpDeleteTrackedCaloriesBurned(req: Request, res: Respons
     const resDeleteTrackedCaloriesBurned = await deleteTrackedCaloriesBurned(userId!, email!, activityId)
 
     if (resDeleteTrackedCaloriesBurned) {
-      res.status(200)
+      return res.status(200)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
 // signed out
-export async function httpPutTrackedCaloriesBurned(req: Request, res: Response): Promise<void> {
+export async function httpPutTrackedCaloriesBurned(req: Request, res: Response): Promise<any> {
   try {
     const userId = req.params.userid;
     const email = req.params.email;
@@ -102,10 +106,11 @@ export async function httpPutTrackedCaloriesBurned(req: Request, res: Response):
     const resPutTrackedCaloriesBurned = await putTrackedCaloriesBurned(userId!, email!, trackedCaloriesBurned)
 
     if (resPutTrackedCaloriesBurned) {
-      res.status(200)
+      return res.status(200)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error)
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }

@@ -23,24 +23,23 @@ export async function httpGetNutritionTrackedDays(req: Request, res: Response) {
     const nutritionTrackedDaysCached = await areNutritionTrackedDaysCached(user)
     if (nutritionTrackedDaysCached) {
       const resNutritionTrackedDays = await getNutritionTrackedDays(user)
-      res.status(200).json(resNutritionTrackedDays)
-      return
+      return res.status(200).json(resNutritionTrackedDays)
     } else {
       const resGetNutritionTrackedDays = await getNutritionTrackedDaysData(userId!, email!);
   
       if (resGetNutritionTrackedDays) {
         await saveNutritionTrackedDays(user, resGetNutritionTrackedDays.nutritionTrackedDays)
-        res.status(200).json(resGetNutritionTrackedDays)
-        return
+        return res.status(200).json(resGetNutritionTrackedDays)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-export async function httpGetNutritionTrackedDaysSummary(req: Request, res: Response): Promise<void> {
+export async function httpGetNutritionTrackedDaysSummary(req: Request, res: Response): Promise<any> {
   // return res.status(200).json(getNutritionTrackedDaysSummary());
   try {
     const userId = req.params.userid;
@@ -53,25 +52,24 @@ export async function httpGetNutritionTrackedDaysSummary(req: Request, res: Resp
     const nutritionTrackedDaysSummaryCached = await isNutritionTrackedDaysSummaryCached(user)
     if (nutritionTrackedDaysSummaryCached) {
       const resNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummary(user)
-      res.status(200).json(resNutritionTrackedDaysSummary)
-      return
+      return res.status(200).json(resNutritionTrackedDaysSummary)
     } else {
       const resGetNutritionTrackedDaysSummary = await getNutritionTrackedDaysSummaryData(userId!, email!);
   
       if (resGetNutritionTrackedDaysSummary) {
         await saveNutritionTrackedDaysSummary(user, resGetNutritionTrackedDaysSummary.nutritionTrackedDaysSummary)
-        res.status(200).json(resGetNutritionTrackedDaysSummary)
-        return
+        return res.status(200).json(resGetNutritionTrackedDaysSummary)
       }
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 // nutrition tracked days operations
-export async function httpPostNutritionTrackedDay(req: Request, res: Response): Promise<void> {
+export async function httpPostNutritionTrackedDay(req: Request, res: Response): Promise<any> {
   // return res.status(200).json(postNutritionTrackedDay());
   try {
     const nutritionTrackedDay = req.body;
@@ -80,15 +78,16 @@ export async function httpPostNutritionTrackedDay(req: Request, res: Response): 
     const resPostNutritionTrackedDay = await postNutritionTrackedDay(userId!, email!, nutritionTrackedDay);
 
     if (resPostNutritionTrackedDay) {
-      res.status(200)
+      return res.status(200)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-export async function httpDeleteNutritionTrackedDay(req: Request, res: Response): Promise<void> {
+export async function httpDeleteNutritionTrackedDay(req: Request, res: Response): Promise<any> {
   // return res.status(200).json(deleteNutritionTrackedDay());
   try {
     const nutritionTrackedDate = String(req.body)
@@ -97,15 +96,16 @@ export async function httpDeleteNutritionTrackedDay(req: Request, res: Response)
     const resDeleteNutritionTrackedDay = await deleteNutritionTrackedDay(userId!, email!, nutritionTrackedDate);
 
     if (resDeleteNutritionTrackedDay) {
-      res.status(200)
+      return res.status(200)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-export async function httpPutNutritionTrackedDay(req: Request, res: Response): Promise<void> {
+export async function httpPutNutritionTrackedDay(req: Request, res: Response): Promise<any> {
   // return res.status(200).json(putNutritionTrackedDay());
   try {
     const { originalNutritionTrackedDay } = req.body;
@@ -115,16 +115,17 @@ export async function httpPutNutritionTrackedDay(req: Request, res: Response): P
     const resPutNutritionTrackedDay = await putNutritionTrackedDay(userId!, email!, originalNutritionTrackedDay, updatedNutritionTrackedDay);
 
     if (resPutNutritionTrackedDay) {
-      res.status(200)
+      return res.status(200)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 // signed out
-export async function httpPutNutritionTrackedDays(req: Request, res: Response): Promise<void> {
+export async function httpPutNutritionTrackedDays(req: Request, res: Response): Promise<any> {
   // return res.status(200).json(putNutritionTrackedDays());
   try {
     const userId = req.params.userid;
@@ -139,15 +140,16 @@ export async function httpPutNutritionTrackedDays(req: Request, res: Response): 
     const resPutNutritionTrackedDays = await putNutritionTrackedDaysData(userId!, email!, nutritionTrackedDays);
 
     if (resPutNutritionTrackedDays) {
-      res.status(200)
+      return res.status(200)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-export async function httpPutNutritionTrackedDaysSummary(req: Request, res: Response): Promise<void> {
+export async function httpPutNutritionTrackedDaysSummary(req: Request, res: Response): Promise<any> {
   // return res.status(200).json(putNutritionTrackedDaysSummary());
   try {
     const userId = req.params.userid;
@@ -162,10 +164,11 @@ export async function httpPutNutritionTrackedDaysSummary(req: Request, res: Resp
     const resPutNutritionTrackedDaysSummary = await putNutritionTrackedDaysSummaryData(userId!, email!, nutritionTrackedDaysSummary);
 
     if (resPutNutritionTrackedDaysSummary) {
-      res.status(200)
+      return res.status(200)
     }
   } catch (error) {
     // TODO: handle error
     console.log(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
