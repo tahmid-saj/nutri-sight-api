@@ -1,5 +1,7 @@
-.git
-
 node_modules
-
-public
+Dockerfile
+.dockerignore
+*.log
+out
+tests
+deploy.sh

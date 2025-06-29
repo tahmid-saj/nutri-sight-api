@@ -30,3 +30,7 @@ tests
 /dist
 
 /out
+/deploy
+deploy*.sh
+
+/uploads

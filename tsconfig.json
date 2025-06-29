@@ -7,11 +7,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "outDir": "dist",
+    "outDir": "./dist",
     "rootDir": "./src",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "noEmit": true,
+    "noEmit": false,
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },

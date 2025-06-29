@@ -9,3 +9,4 @@ const httpGetTestRoute = async (req: Request, res: Response): Promise<void> => {
 testRouter.get("/testroute", httpGetTestRoute)
 
 export { testRouter }
+
